@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>map/nasabluemarble.jpg</file>
+        <file>map/nasaearthlights.jpg</file>
+        <file>stylesheet.css</file>
+        <file>qlog.png</file>
+        <file>data/bands.json</file>
+    </qresource>
+</RCC>
