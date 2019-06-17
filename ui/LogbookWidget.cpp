@@ -2,9 +2,9 @@
 #include <QMessageBox>
 #include <QDoubleSpinBox>
 #include <QStyledItemDelegate>
-#include "models/bandmodel.h"
-#include "logbookwidget.h"
-#include "ui_logbookwidget.h"
+#include "models/BandModel.h"
+#include "LogbookWidget.h"
+#include "ui_LogbookWidget.h"
 
 class CallsignDelegate : public QStyledItemDelegate {
 public:

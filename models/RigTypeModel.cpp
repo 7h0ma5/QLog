@@ -1,4 +1,4 @@
-#include "rigtypemodel.h"
+#include "RigTypeModel.h"
 
 RigTypeModel::RigTypeModel(QObject* parent)
     : QAbstractListModel(parent)

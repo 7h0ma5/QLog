@@ -1,7 +1,7 @@
 #ifndef ADXFORMAT_H
 #define ADXFORMAT_H
 
-#include "logformat.h"
+#include "LogFormat.h"
 
 class QXmlStreamWriter;
 

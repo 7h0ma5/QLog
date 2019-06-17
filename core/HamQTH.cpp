@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QtXml>
 #include <QDebug>
-#include "hamqth.h"
+#include "HamQTH.h"
 
 #define API_URL "http://www.hamqth.com/xml.php"
 

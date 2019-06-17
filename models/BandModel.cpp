@@ -1,7 +1,7 @@
 #include <QJsonDocument>
 #include <QDebug>
 #include <QFile>
-#include "bandmodel.h"
+#include "BandModel.h"
 
 BandModel::BandModel(bool allowEmpty, QObject *parent)
     : QAbstractListModel(parent),

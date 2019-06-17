@@ -22,6 +22,7 @@ signals:
 private slots:
     void rigConnect();
     void showSettings();
+    void showStatistics();
     void importLog();
     void exportLog();
     void showAbout();

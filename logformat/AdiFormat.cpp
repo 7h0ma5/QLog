@@ -1,6 +1,6 @@
 #include <QSqlRecord>
 #include <QDebug>
-#include "adiformat.h"
+#include "AdiFormat.h"
 
 void AdiFormat::exportStart() {
     stream << "### QLog ADIF Export\n";
@@ -151,7 +151,12 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("country", contact.take("country"));
     record.setValue("pfx", contact.take("pfx"));
 
-    QDate date = QDate::fromString(contact.take("qso_date").toString(), "yyyyMMdd");
+    QDate date_on = QDate::fromString(contact.take("qso_date").toString(), "yyyyMMdd");
+    QDate date_off = QDate::fromString(contact.take("qso_date_off").toString(), "yyyyMMdd");
+
+    if (date_off.isNull() || date_off.isValid()) {
+        date_off = date_on;
+    }
 
     QTime time_on = parseTime(contact.take("time_on").toString());
     QTime time_off = parseTime(contact.take("time_off").toString());
@@ -163,8 +168,8 @@ bool AdiFormat::importNext(QSqlRecord& record) {
         time_on = time_off;
     }
 
-    QDateTime start_time(date, time_on, Qt::UTC);
-    QDateTime end_time(date, time_off, Qt::UTC);
+    QDateTime start_time(date_on, time_on, Qt::UTC);
+    QDateTime end_time(date_off, time_off, Qt::UTC);
 
     qDebug() << time_on << start_time;
 

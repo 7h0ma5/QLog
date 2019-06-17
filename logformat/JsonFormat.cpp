@@ -1,7 +1,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSqlRecord>
-#include "jsonformat.h"
+#include "JsonFormat.h"
 
 void JsonFormat::exportContact(QSqlRecord& record) {
     QJsonObject contact;

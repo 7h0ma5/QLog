@@ -1,10 +1,10 @@
 #include <QtSql>
-#include "logformat.h"
-#include "adiformat.h"
-#include "adxformat.h"
-#include "jsonformat.h"
+#include "LogFormat.h"
+#include "AdiFormat.h"
+#include "AdxFormat.h"
+#include "JsonFormat.h"
 #include "core/utils.h"
-#include "core/dxcc.h"
+#include "core/Dxcc.h"
 
 LogFormat::LogFormat(QTextStream& stream) : QObject(nullptr), stream(stream) {
     this->defaults = nullptr;
@@ -108,7 +108,7 @@ void LogFormat::runImport() {
 
         model.insertRecord(-1, record);
 
-        if (count % 10 == 0) {
+        if (count % 50 == 0) {
             emit progress(stream.pos());
         }
 

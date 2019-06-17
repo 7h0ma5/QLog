@@ -2,13 +2,15 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QLabel>
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "ui/settingsdialog.h"
-#include "ui/importdialog.h"
-#include "ui/exportdialog.h"
-#include "core/fldigi.h"
-#include "core/rig.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include "ui/SettingsDialog.h"
+#include "ui/ImportDialog.h"
+#include "ui/ExportDialog.h"
+#include "ui/StatisticsWidget.h"
+#include "core/Fldigi.h"
+#include "core/Rig.h"
+#include "core/Wsjtx.h"
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -30,6 +32,10 @@ MainWindow::MainWindow(QWidget* parent) :
 
     Fldigi* fldigi = new Fldigi(this);
     connect(fldigi, SIGNAL(contactAdded()), ui->logbookWidget, SLOT(updateTable()));
+
+    Wsjtx* wsjtx = new Wsjtx(this);
+    connect(wsjtx, &Wsjtx::statusReceived, ui->wsjtxWidget, &WsjtxWidget::statusReceived);
+    connect(wsjtx, &Wsjtx::decodeReceived, ui->wsjtxWidget, &WsjtxWidget::decodeReceived);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -51,6 +57,12 @@ void MainWindow::showSettings() {
     if (sw.exec() == QDialog::Accepted) {
         emit settingsChanged();
     }
+}
+
+void MainWindow::showStatistics() {
+    qDebug() << "statistics";
+    StatisticsWidget* stats = new StatisticsWidget();
+    stats->show();
 }
 
 void MainWindow::importLog() {

@@ -8,7 +8,7 @@
 #include <QStringRef>
 #include <QDir>
 #include <QFile>
-#include "dxcc.h"
+#include "Dxcc.h"
 
 #define CTY_URL "http://www.country-files.com/cty/cty.csv"
 

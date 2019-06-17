@@ -1,6 +1,6 @@
 #include <QSqlRecord>
 #include <QtXml>
-#include "logformat/adxformat.h"
+#include "logformat/AdxFormat.h"
 
 void AdxFormat::exportStart() {
     QString date = QDateTime::currentDateTimeUtc().toString("yyyyMMdd hhmmss");

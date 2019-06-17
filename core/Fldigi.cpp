@@ -1,8 +1,8 @@
 #include <QTcpSocket>
 #include <QtXml>
 #include <QtDebug>
-#include "fldigi.h"
-#include "logformat/adiformat.h"
+#include "Fldigi.h"
+#include "logformat/AdiFormat.h"
 
 Fldigi::Fldigi(QObject *parent) :
     QTcpServer(parent)

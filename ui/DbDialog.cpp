@@ -1,6 +1,6 @@
 #include <QSettings>
-#include "ui/dbdialog.h"
-#include "ui_dbdialog.h"
+#include "ui/DbDialog.h"
+#include "ui_DbDialog.h"
 
 DbDialog::DbDialog(QWidget *parent) :
     QDialog(parent),

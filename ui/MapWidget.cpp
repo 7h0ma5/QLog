@@ -6,8 +6,8 @@
 #include <QVector3D>
 #include <cmath>
 #include "core/utils.h"
-#include "mapwidget.h"
-#include "ui_mapwidget.h"
+#include "MapWidget.h"
+#include "ui_MapWidget.h"
 
 MapWidget::MapWidget(QWidget *parent) :
     QWidget(parent),

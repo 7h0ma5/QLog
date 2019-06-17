@@ -2,8 +2,8 @@
 #define NEWCONTACTWIDGET_H
 
 #include <QWidget>
-#include "core/hamqth.h"
-#include "core/dxcc.h"
+#include "core/HamQTH.h"
+#include "core/Dxcc.h"
 
 namespace Ui {
 class NewContactWidget;
@@ -64,6 +64,7 @@ private:
     QTimer* contactTimer;
     Ui::NewContactWidget *ui;
     CoordPrecision coordPrec;
+    QList<QVariant> modes;
 };
 
 #endif // NEWCONTACTWIDGET_H

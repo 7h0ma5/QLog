@@ -65,6 +65,8 @@
     <addaction name="separator"/>
     <addaction name="actionImport"/>
     <addaction name="actionExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionStatistics"/>
    </widget>
    <widget class="QMenu" name="menuRig">
     <property name="title">
@@ -164,6 +166,21 @@
    <addaction name="separator"/>
    <addaction name="actionDXClusterWindow"/>
    <addaction name="actionMapWindow"/>
+  </widget>
+  <widget class="QDockWidget" name="wsjtxDockWidget">
+   <property name="windowTitle">
+    <string>Wsjtx</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="WsjtxWidget" name="wsjtxWidget" native="true"/>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionQuit">
    <property name="icon">
@@ -267,13 +284,21 @@
     <string>Map</string>
    </property>
   </action>
+  <action name="actionStatistics">
+   <property name="icon">
+    <iconset theme="x-office-spreadsheet"/>
+   </property>
+   <property name="text">
+    <string>Statistics</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>NewContactWidget</class>
    <extends>QWidget</extends>
-   <header>ui/newcontactwidget.h</header>
+   <header>ui/NewContactWidget.h</header>
    <container>1</container>
    <slots>
     <signal>contactAdded()</signal>
@@ -287,7 +312,7 @@
   <customwidget>
    <class>LogbookWidget</class>
    <extends>QWidget</extends>
-   <header>ui/logbookwidget.h</header>
+   <header>ui/LogbookWidget.h</header>
    <container>1</container>
    <slots>
     <slot>updateTable()</slot>
@@ -296,7 +321,7 @@
   <customwidget>
    <class>DxWidget</class>
    <extends>QWidget</extends>
-   <header>ui/dxwidget.h</header>
+   <header>ui/DxWidget.h</header>
    <container>1</container>
    <slots>
     <signal>tuneDx(QString,double)</signal>
@@ -305,11 +330,17 @@
   <customwidget>
    <class>MapWidget</class>
    <extends>QWidget</extends>
-   <header>ui/mapwidget.h</header>
+   <header>ui/MapWidget.h</header>
    <container>1</container>
    <slots>
     <slot>setTarget(double,double)</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>WsjtxWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/WsjtxWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -538,6 +569,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionStatistics</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showStatistics()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>446</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>settingsChanged()</signal>
@@ -548,5 +595,6 @@
   <slot>exportLog()</slot>
   <slot>showAbout()</slot>
   <slot>rigConnect()</slot>
+  <slot>showStatistics()</slot>
  </slots>
 </ui>

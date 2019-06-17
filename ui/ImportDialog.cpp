@@ -1,7 +1,7 @@
 #include <QFileDialog>
-#include "importdialog.h"
-#include "ui_importdialog.h"
-#include "logformat/logformat.h"
+#include "ImportDialog.h"
+#include "ui_ImportDialog.h"
+#include "logformat/LogFormat.h"
 
 ImportDialog::ImportDialog(QWidget *parent) :
     QDialog(parent),

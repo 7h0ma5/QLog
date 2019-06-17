@@ -5,10 +5,10 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QDebug>
-#include "migration.h"
-#include "ui/dbdialog.h"
-#include "ui/mainwindow.h"
-#include "rig.h"
+#include "Migration.h"
+#include "ui/DbDialog.h"
+#include "ui/MainWindow.h"
+#include "Rig.h"
 
 static void loadStylesheet(QApplication* app) {
     QFile style(":/res/stylesheet.css");

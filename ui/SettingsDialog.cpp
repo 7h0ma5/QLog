@@ -1,8 +1,8 @@
 #include <QSettings>
 #include <QStringListModel>
-#include "settingsdialog.h"
-#include "ui_settingsdialog.h"
-#include "models/rigtypemodel.h"
+#include "SettingsDialog.h"
+#include "ui_SettingsDialog.h"
+#include "models/RigTypeModel.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),

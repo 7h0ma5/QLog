@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QSettings>
-#include "dxwidget.h"
-#include "ui_dxwidget.h"
+#include "DxWidget.h"
+#include "ui_DxWidget.h"
 
 int DxTableModel::rowCount(const QModelIndex&) const {
     return dxData.count();

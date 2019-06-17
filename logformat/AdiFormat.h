@@ -1,7 +1,7 @@
 #ifndef ADIFORMAT_H
 #define ADIFORMAT_H
 
-#include "logformat.h"
+#include "LogFormat.h"
 
 class AdiFormat : public LogFormat {
 public:

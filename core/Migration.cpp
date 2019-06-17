@@ -1,7 +1,7 @@
 #include <QProgressDialog>
 #include <QtSql>
 #include <QDebug>
-#include "core/migration.h"
+#include "core/Migration.h"
 
 /**
  * Migrate the database to the latest schema version.

@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <cstring>
-#include "rig.h"
+#include "Rig.h"
 
 Rig* Rig::instance() {
     static Rig instance;

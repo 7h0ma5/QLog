@@ -1,7 +1,7 @@
 #ifndef JSONFORMAT_H
 #define JSONFORMAT_H
 
-#include "logformat.h"
+#include "LogFormat.h"
 
 class QJsonArray;
 

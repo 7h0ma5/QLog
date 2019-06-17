@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network xml
+QT       += core gui sql network xml charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,62 +28,70 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        core/dxcc.cpp \
-        core/fldigi.cpp \
-        core/hamqth.cpp \
+        core/Dxcc.cpp \
+        core/Fldigi.cpp \
+        core/HamQTH.cpp \
+        core/Migration.cpp \
+        core/Rig.cpp \
+        core/Wsjtx.cpp \
         core/main.cpp \
-        core/migration.cpp \
-        core/rig.cpp \
         core/utils.cpp \
-        logformat/adiformat.cpp \
-        logformat/adxformat.cpp \
-        logformat/jsonformat.cpp \
-        logformat/logformat.cpp \
-        models/bandmodel.cpp \
-        models/rigtypemodel.cpp \
-        ui/dbdialog.cpp \
-        ui/dxwidget.cpp \
-        ui/exportdialog.cpp \
-        ui/importdialog.cpp \
-        ui/logbookwidget.cpp \
-        ui/mainwindow.cpp \
-        ui/mapwidget.cpp \
-        ui/newcontactwidget.cpp \
-        ui/settingsdialog.cpp
+        logformat/AdiFormat.cpp \
+        logformat/AdxFormat.cpp \
+        logformat/JsonFormat.cpp \
+        logformat/LogFormat.cpp \
+        models/BandModel.cpp \
+        models/RigTypeModel.cpp \
+        ui/DbDialog.cpp \
+        ui/DxWidget.cpp \
+        ui/ExportDialog.cpp \
+        ui/ImportDialog.cpp \
+        ui/LogbookWidget.cpp \
+        ui/MainWindow.cpp \
+        ui/MapWidget.cpp \
+        ui/NewContactWidget.cpp \
+        ui/SettingsDialog.cpp \
+        ui/StatisticsWidget.cpp \
+        ui/WsjtxWidget.cpp
 
 HEADERS += \
-        core/dxcc.h \
-        core/fldigi.h \
-        core/hamqth.h \
-        core/migration.h \
-        core/rig.h \
+        core/Dxcc.h \
+        core/Fldigi.h \
+        core/HamQTH.h \
+        core/Migration.h \
+        core/Rig.h \
+        core/Wsjtx.h \
         core/utils.h \
-        logformat/adiformat.h \
-        logformat/adxformat.h \
-        logformat/jsonformat.h \
-        logformat/logformat.h \
-        models/bandmodel.h \
-        models/rigtypemodel.h \
-        ui/dbdialog.h \
-        ui/dxwidget.h \
-        ui/exportdialog.h \
-        ui/importdialog.h \
-        ui/logbookwidget.h \
-        ui/mainwindow.h \
-        ui/mapwidget.h \
-        ui/newcontactwidget.h \
-        ui/settingsdialog.h
+        logformat/AdiFormat.h \
+        logformat/AdxFormat.h \
+        logformat/JsonFormat.h \
+        logformat/LogFormat.h \
+        models/BandModel.h \
+        models/RigTypeModel.h \
+        ui/DbDialog.h \
+        ui/DxWidget.h \
+        ui/ExportDialog.h \
+        ui/ImportDialog.h \
+        ui/LogbookWidget.h \
+        ui/MainWindow.h \
+        ui/MapWidget.h \
+        ui/NewContactWidget.h \
+        ui/SettingsDialog.h \
+        ui/StatisticsWidget.h \
+        ui/WsjtxWidget.h
 
 FORMS += \
-        ui/dbdialog.ui \
-        ui/dxwidget.ui \
-        ui/exportdialog.ui \
-        ui/importdialog.ui \
-        ui/logbookwidget.ui \
-        ui/mainwindow.ui \
-        ui/mapwidget.ui \
-        ui/newcontactwidget.ui \
-        ui/settingsdialog.ui
+        ui/DbDialog.ui \
+        ui/DxWidget.ui \
+        ui/ExportDialog.ui \
+        ui/ImportDialog.ui \
+        ui/LogbookWidget.ui \
+        ui/MainWindow.ui \
+        ui/MapWidget.ui \
+        ui/NewContactWidget.ui \
+        ui/SettingsDialog.ui \
+        ui/StatisticsWidget.ui \
+        ui/WsjtxWidget.ui
 
 RESOURCES += \
     i18n/i18n.qrc \
@@ -118,4 +126,3 @@ else:unix: LIBS += -L$/usr/lib/ -lhamlib
 win32: INCLUDEPATH += $$PWD/../include/
 
 win32: DEPENDPATH += $$PWD/../include/
-

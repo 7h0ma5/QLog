@@ -1,10 +1,10 @@
 #include <QtSql/QtSql>
 #include <QShortcut>
 #include <QDebug>
-#include "core/rig.h"
+#include "core/Rig.h"
 #include "core/utils.h"
-#include "newcontactwidget.h"
-#include "ui_newcontactwidget.h"
+#include "NewContactWidget.h"
+#include "ui_NewContactWidget.h"
 
 NewContactWidget::NewContactWidget(QWidget *parent) :
     QWidget(parent),
@@ -34,6 +34,12 @@ NewContactWidget::NewContactWidget(QWidget *parent) :
 
     QStringListModel* rigModel = new QStringListModel(this);
     ui->rigEdit->setModel(rigModel);
+
+    QFile file(":/res/data/modes.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray data = file.readAll();
+    modes = QJsonDocument::fromJson(data).toVariant().toList();
+    qDebug() << modes;
 
     reloadSettings();
     readSettings();
