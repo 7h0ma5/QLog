@@ -9,7 +9,8 @@ public:
 
 private:
     enum ParserState {
-        HEADER,
+        START,
+        FIELD,
         KEY,
         SIZE,
         DATA_TYPE,
@@ -25,7 +26,8 @@ private:
     bool readContact(QMap<QString, QVariant>& contact);
     QTime parseTime(QString time);
 
-    ParserState state = HEADER;
+    ParserState state = START;
+    bool inHeader = false;
 };
 
 #endif // ADIF2FORMAT_H

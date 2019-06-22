@@ -8,11 +8,11 @@
 #include <QStringRef>
 #include <QDir>
 #include <QFile>
-#include "Dxcc.h"
+#include "Cty.h"
 
 #define CTY_URL "http://www.country-files.com/cty/cty.csv"
 
-Dxcc::Dxcc() {
+Cty::Cty() {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
 
     if (dir.exists("cty.csv")) {
@@ -24,7 +24,7 @@ Dxcc::Dxcc() {
     }
 }
 
-void Dxcc::loadData() {
+void Cty::loadData() {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
     QFile file(dir.filePath("cty.csv"));
     file.open(QIODevice::ReadOnly);
@@ -33,7 +33,7 @@ void Dxcc::loadData() {
     file.close();
 }
 
-void Dxcc::download() {
+void Cty::download() {
     nam = new QNetworkAccessManager(this);
     connect(nam, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(processReply(QNetworkReply*)));
@@ -45,7 +45,7 @@ void Dxcc::download() {
     qDebug() << "download cty.csv from" << url.toString();
 }
 
-DxccEntity Dxcc::lookup(QString callsign) {
+DxccEntity Cty::lookup(QString callsign) {
     for (int i = callsign.length(); i > 0; i--) {
         QString substring = QStringRef(&callsign, 0, i).toString();
 
@@ -77,7 +77,7 @@ DxccEntity Dxcc::lookup(QString callsign) {
     return result;
 }
 
-void Dxcc::processReply(QNetworkReply* reply) {
+void Cty::processReply(QNetworkReply* reply) {
     QByteArray data = reply->readAll();
 
     if (reply->isFinished() && reply->error() == QNetworkReply::NoError) {
@@ -103,7 +103,7 @@ void Dxcc::processReply(QNetworkReply* reply) {
 
 }
 
-void Dxcc::parseData(QTextStream& data) {
+void Cty::parseData(QTextStream& data) {
     qDebug() << "parse data";
     QRegExp prefixSeperator("[\\s;]");
     QRegExp prefixFormat("(=?)([A-Z0-9/]+)(?:\\((\\d+)\\))?(?:\\[(\\d+)\\])?$");
@@ -157,6 +157,6 @@ void Dxcc::parseData(QTextStream& data) {
     }
 }
 
-Dxcc::~Dxcc() {
+Cty::~Cty() {
 
 }

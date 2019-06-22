@@ -28,7 +28,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        core/Dxcc.cpp \
+        core/Cty.cpp \
         core/Fldigi.cpp \
         core/HamQTH.cpp \
         core/Migration.cpp \
@@ -36,6 +36,10 @@ SOURCES += \
         core/Wsjtx.cpp \
         core/main.cpp \
         core/utils.cpp \
+        data/Band.cpp \
+        data/Data.cpp \
+        data/Dxcc.cpp \
+        data/Mode.cpp \
         logformat/AdiFormat.cpp \
         logformat/AdxFormat.cpp \
         logformat/JsonFormat.cpp \
@@ -55,13 +59,17 @@ SOURCES += \
         ui/WsjtxWidget.cpp
 
 HEADERS += \
-        core/Dxcc.h \
+        core/Cty.h \
         core/Fldigi.h \
         core/HamQTH.h \
         core/Migration.h \
         core/Rig.h \
         core/Wsjtx.h \
         core/utils.h \
+        data/Band.h \
+        data/Data.h \
+        data/Dxcc.h \
+        data/Mode.h \
         logformat/AdiFormat.h \
         logformat/AdxFormat.h \
         logformat/JsonFormat.h \

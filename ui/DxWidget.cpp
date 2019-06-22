@@ -2,13 +2,14 @@
 #include <QSettings>
 #include "DxWidget.h"
 #include "ui_DxWidget.h"
+#include "data/Data.h"
 
 int DxTableModel::rowCount(const QModelIndex&) const {
     return dxData.count();
 }
 
 int DxTableModel::columnCount(const QModelIndex&) const {
-    return 5;
+    return 6;
 }
 
 QVariant DxTableModel::data(const QModelIndex& index, int role) const {
@@ -28,6 +29,7 @@ QVariant DxTableModel::headerData(int section, Qt::Orientation orientation, int 
     case 2: return tr("Frequency");
     case 3: return tr("Spotter");
     case 4: return tr("Comment");
+    case 5: return tr("Country");
     default: return QVariant();
     }
 }
@@ -125,7 +127,7 @@ void DxWidget::receive() {
 
     foreach (QString line, lines) {
         if (line.startsWith("login") || line.contains(QRegExp("enter your call(sign)?:"))) {
-            QByteArray call = settings.value("operator/callsign").toByteArray();
+            QByteArray call = settings.value("station/callsign").toByteArray();
             call.append("\n");
             socket->write(call);
         }
@@ -153,8 +155,11 @@ void DxWidget::receive() {
             QString comment = commentRegExp.cap(1).trimmed();
             QString time = commentRegExp.cap(2);
 
+            DxccEntity dxcc = Data::instance()->lookupDxcc(call);
+            QString country = dxcc.country;
+
             QStringList entry;
-            entry << time << call << freq << spotter << comment;
+            entry << time << call << freq << spotter << comment << country;
 
             dxTableModel->addEntry(entry);
             ui->dxTable->repaint();

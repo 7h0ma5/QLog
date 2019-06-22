@@ -89,18 +89,18 @@ void MapWidget::redrawNightOverlay() {
     int daysInYear = QDate::isLeapYear(current.date().year()) ? 366 : 365;
     int longestDay = QDate(current.date().year(), 6, 21).dayOfYear();
 
-    float tilt = 23.5 * cos(2.0*M_PI*((float)(dayOfYear-longestDay)/daysInYear));
+    double tilt = 23.5 * cos(2.0*M_PI*((double)(dayOfYear-longestDay)/daysInYear));
 
-    float sunX = cos(2*M_PI*(secondOfDay/86400.0));
-    float sunY = -sin(2*M_PI*(secondOfDay/86400.0));
-    float sunZ = tan(2*M_PI*(tilt/360.0));
+    double sunX = cos(2*M_PI*(secondOfDay/86400.0));
+    double sunY = -sin(2*M_PI*(secondOfDay/86400.0));
+    double sunZ = tan(2*M_PI*(tilt/360.0));
 
     QVector3D sun(sunX, sunY, sunZ);
     sun.normalize();
 
     // <plot sun position>
-    float theta = acos(sunZ);
-    float phi = atan(sunY/sunX);
+    double theta = acos(sunZ);
+    double phi = atan(sunY/sunX);
     int lon = phi/M_PI * 180 - 180;
     int lat = 90 - theta/M_PI * 180;
     drawPoint(coordToPoint(lat, lon));
@@ -113,15 +113,15 @@ void MapWidget::redrawNightOverlay() {
     uchar* buffer = overlay.bits();
 
     for (int y = 0; y < maxY; y++) {
-        float theta = M_PI*((float)y/(maxY-1));
-        float posZ = cos(theta);
-        float sinTheta = sin(theta);
+        double theta = M_PI*((double)y/(maxY-1));
+        double posZ = cos(theta);
+        double sinTheta = sin(theta);
 
         for (int x = 0; x < maxX; x++) {
-            float phi = 2*M_PI*((float)x/(maxX-1)) - M_PI;
+            double phi = 2*M_PI*((double)x/(maxX-1)) - M_PI;
 
-            float posX = sinTheta*cos(phi);
-            float posY = sinTheta*sin(phi);
+            double posX = sinTheta*cos(phi);
+            double posY = sinTheta*sin(phi);
 
             QVector3D pos(posX, posY, posZ);
             pos.normalize();
@@ -130,7 +130,7 @@ void MapWidget::redrawNightOverlay() {
             buffer[1] = 0;
             buffer[2] = 0;
 
-            float ill = QVector3D::dotProduct(sun, pos);
+            double ill = QVector3D::dotProduct(sun, pos);
             if (ill <= -0.1) {
                 buffer[3] = 255;
             }
@@ -157,8 +157,8 @@ void MapWidget::redrawNightOverlay() {
 }
 
 void MapWidget::pointToRad(QPoint point, double& lat, double& lon) {
-    lat = M_PI/2 - (float)point.y()/(scene->height()-1)*M_PI;
-    lon = 2*M_PI*((float)point.x()/(scene->width()-1)) - M_PI;
+    lat = M_PI/2 - (double)point.y()/(scene->height()-1)*M_PI;
+    lon = 2*M_PI*((double)point.x()/(scene->width()-1)) - M_PI;
 }
 
 void MapWidget::pointToCoord(QPoint point, double& lat, double& lon) {
@@ -181,10 +181,10 @@ QPoint MapWidget::coordToPoint(double lat, double lon) {
 void MapWidget::setTarget(double lat, double lon) {
     clear();
 
-    if (lat == 0 && lon == 0) return;
+    if (lat == 0.0 && lon == 0.0) return;
 
     QSettings settings;
-    QString grid = settings.value("operator/grid").toString();
+    QString grid = settings.value("station/grid").toString();
 
     QPoint point = coordToPoint(lat, lon);
     drawPoint(point);

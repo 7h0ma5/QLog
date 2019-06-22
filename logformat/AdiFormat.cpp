@@ -56,55 +56,114 @@ void AdiFormat::writeField(QString name, QString value, QString type) {
 void AdiFormat::readField(QString& field, QString& value) {
     char c;
 
-    field = "";
-    value = "";
-
-    // find beginning of next field
-    while (!stream.atEnd()) {
-        stream >> c;
-        if (c == '<') break;
-    }
-
-    if (stream.atEnd() || c != '<') return;
-
-    // read field name
-    while (!stream.atEnd()) {
-        stream >> c;
-        if (c == ':' || c == '>') break;
-        field.append(c);
-    }
-    field = field.toLower();
-    if (c == '>' || stream.atEnd()) return;
-
-    // read field length
+    QString typeString;
     QString lengthString;
     int length = 0;
 
     while (!stream.atEnd()) {
-        stream >> c;
-        if (c == ':' || c == '>') break;
-        lengthString.append(c);
-    }
-    if (!lengthString.isEmpty()) {
-        length = lengthString.toInt();
-    }
-    if (stream.atEnd()) {
-        return;
-    }
-
-     // read field type
-    QString type = "";
-    if (c == ':') {
-        while (!stream.atEnd()) {
+        switch (state) {
+        case START:
             stream >> c;
-            if (c == '>') break;
-            type.append(c);
-        }
-    }
+            if (c == '<') {
+                inHeader = false;
+                state = KEY;
+                field = "";
+            }
+            else {
+                inHeader = true;
+                state = FIELD;
+            }
+            break;
 
-    // read field value
-    if (c == '>' && length) {
-        value = QString(stream.read(length));
+        case FIELD:
+            stream >> c;
+            if (c == '<') {
+                state = KEY;
+                field = "";
+            }
+            break;
+
+        case KEY:
+            stream >> c;
+            if (c == ':') {
+                state = SIZE;
+                lengthString = "";
+            }
+            else if (c == '>') {
+                state = FIELD;
+                if (inHeader && field.toLower() == "eoh") {
+                    inHeader = false;
+                }
+                else {
+                    value = "";
+                    return;
+                }
+            }
+            else {
+                field.append(c);
+            }
+            break;
+
+        case SIZE:
+            stream >> c;
+            if (c == ':') {
+                 if (!lengthString.isEmpty()) {
+                    length = lengthString.toInt();
+                 }
+                 state = DATA_TYPE;
+                 typeString = "";
+            }
+            else if (c == '>') {
+                if (!lengthString.isEmpty()) {
+                    length = lengthString.toInt();
+                }
+
+                if (length > 0) {
+                    state = VALUE;
+                    value = "";
+                }
+                else {
+                    state = FIELD;
+                    if (!inHeader) {
+                        value = "";
+                        return;
+                    }
+
+                }
+            }
+            else {
+                lengthString.append(c);
+            }
+            break;
+
+        case DATA_TYPE:
+            stream >> c;
+            if (c == '>') {
+                if (length > 0) {
+                    state = VALUE;
+                    value = "";
+                }
+                else {
+                    state = FIELD;
+                    if (!inHeader) {
+                        value = "";
+                        return;
+                    }
+                }
+            }
+            else {
+                typeString.append(c);
+            }
+            break;
+
+        case VALUE:
+            value = QString(stream.read(length));
+            state = FIELD;
+            if (!inHeader) {
+                return;
+            }
+            break;
+        }
     }
 }
 
@@ -114,6 +173,7 @@ bool AdiFormat::readContact(QMap<QString, QVariant>& contact) {
 
     while (!stream.atEnd()) {
         readField(field, value);
+        field = field.toLower();
 
         if (field == "eor") {
             return true;
@@ -171,7 +231,9 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     QDateTime start_time(date_on, time_on, Qt::UTC);
     QDateTime end_time(date_off, time_off, Qt::UTC);
 
-    qDebug() << time_on << start_time;
+    if (end_time < start_time) {
+        qDebug() << "End time before start time!" << record;
+    }
 
     record.setValue("start_time", start_time);
     record.setValue("end_time", end_time);

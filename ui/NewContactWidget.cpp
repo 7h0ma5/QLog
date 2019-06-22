@@ -14,6 +14,26 @@ NewContactWidget::NewContactWidget(QWidget *parent) :
 
     rig = Rig::instance();
 
+    QStringListModel* rigModel = new QStringListModel(this);
+    ui->rigEdit->setModel(rigModel);
+
+    QStringListModel* submodeModel = new QStringListModel(this);
+    ui->submodeEdit->setModel(submodeModel);
+
+    QStringList modeList = Data::instance()->modeList();
+    QStringListModel* modeModel = new QStringListModel(modeList, this);
+    ui->modeEdit->setModel(modeModel);
+
+    QStringList contestList = Data::instance()->contestList();
+    contestList.prepend("");
+    QStringListModel* contestModel = new QStringListModel(contestList, this);
+    ui->contestEdit->setModel(contestModel);
+
+    QStringList propagationModeList = Data::instance()->propagationModesList();
+    propagationModeList.prepend("");
+    QStringListModel* propagationModeModel = new QStringListModel(propagationModeList, this);
+    ui->propagationModeEdit->setModel(propagationModeModel);
+
     connect(rig, &Rig::frequencyChanged,
             this, &NewContactWidget::changeFrequency);
 
@@ -31,15 +51,6 @@ NewContactWidget::NewContactWidget(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(resetContact()), nullptr, Qt::ApplicationShortcut);
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(saveContact()), nullptr, Qt::ApplicationShortcut);
     new QShortcut(QKeySequence(Qt::Key_F9), this, SLOT(stopContactTimer()), nullptr, Qt::ApplicationShortcut);
-
-    QStringListModel* rigModel = new QStringListModel(this);
-    ui->rigEdit->setModel(rigModel);
-
-    QFile file(":/res/data/modes.json");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QByteArray data = file.readAll();
-    modes = QJsonDocument::fromJson(data).toVariant().toList();
-    qDebug() << modes;
 
     reloadSettings();
     readSettings();
@@ -70,7 +81,7 @@ void NewContactWidget::writeSettings() {
 void NewContactWidget::reloadSettings() {
     QString selectedRig = ui->rigEdit->currentText();
     QSettings settings;
-    QStringList rigs = settings.value("operator/rigs").toStringList();
+    QStringList rigs = settings.value("station/rigs").toStringList();
     QStringListModel* model = (QStringListModel*)ui->rigEdit->model();
     model->setStringList(rigs);
 
@@ -103,12 +114,12 @@ void NewContactWidget::callsignChanged() {
 
 
 void NewContactWidget::queryDxcc(QString callsign) {
-    DxccEntity entity = dxcc.lookup(callsign);
-    if (entity.dxcc) {
-         ui->dxccInfo->setText(entity.country);
-         ui->cqEdit->setText(QString::number(entity.cqz));
-         ui->ituEdit->setText(QString::number(entity.ituz));
-         updateCoordinates(entity.latlon[0], entity.latlon[1], COORD_DXCC);
+    dxccEntity = Data::instance()->lookupDxcc(callsign);
+    if (dxccEntity.dxcc) {
+         ui->dxccInfo->setText(dxccEntity.country);
+         ui->cqEdit->setText(QString::number(dxccEntity.cqz));
+         ui->ituEdit->setText(QString::number(dxccEntity.ituz));
+         updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
     }
 }
 
@@ -164,20 +175,34 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
 
 void NewContactWidget::frequencyChanged() {
     double freq = ui->frequencyEdit->value();
-    QString band = freqToBand(freq);
+    Band band = Data::instance()->band(freq);
 
-    if (band.isEmpty()) {
-        band = "OOM!";
+    if (band.name().isEmpty()) {
+        ui->bandText->setText("OOB!");
     }
-
-    ui->bandText->setText(band);
+    else {
+        ui->bandText->setText(band.name());
+    }
 
     rig->setFrequency(freq);
 }
 
 void NewContactWidget::modeChanged() {
-    QString mode = ui->modeEdit->currentText();
-    rig->setMode(mode);
+    QString modeName = ui->modeEdit->currentText();
+    rig->setMode(modeName);
+
+    QStringListModel* model = (QStringListModel*)ui->submodeEdit->model();
+    Mode mode = Data::instance()->mode(modeName);
+    if (!mode.submodes().isEmpty()) {
+        QStringList submodes = mode.submodes();
+        submodes.prepend("");
+        model->setStringList(submodes);
+    }
+    else {
+        QStringList list;
+        model->setStringList(list);
+    }
+
     setDefaultRst();
 }
 
@@ -233,13 +258,17 @@ void NewContactWidget::saveContact() {
     record.setValue("freq", ui->frequencyEdit->value());
     record.setValue("band", ui->bandText->text());
     record.setValue("mode", ui->modeEdit->currentText());
+    record.setValue("submode", ui->submodeEdit->currentText());
     record.setValue("cqz", ui->cqEdit->text().toInt());
     record.setValue("ituz", ui->ituEdit->text().toInt());
+    record.setValue("dxcc", dxccEntity.dxcc);
+    record.setValue("country", dxccEntity.country);
+    record.setValue("cont", dxccEntity.cont);
 
     QMap<QString, QVariant> fields;
 
-    if (!ui->commentEdit->toPlainText().isEmpty()) {
-        fields.insert("comment", ui->commentEdit->toPlainText());
+    if (!ui->commentEdit->text().isEmpty()) {
+        fields.insert("comment", ui->commentEdit->text());
     }
 
     if (!ui->qslViaEdit->text().isEmpty()) {
@@ -254,8 +283,12 @@ void NewContactWidget::saveContact() {
         fields.insert("my_rig", ui->rigEdit->currentText());
     }
 
-    if (!settings.value("operator/grid").toString().isEmpty()) {
-        fields.insert("my_gridsquare", settings.value("operator/grid").toString());
+    if (!settings.value("station/grid").toString().isEmpty()) {
+        fields.insert("my_gridsquare", settings.value("station/grid").toString());
+    }
+
+    if (!settings.value("station/operator").toString().isEmpty()) {
+        fields.insert("operator", settings.value("station/operator").toString());
     }
 
     QJsonDocument doc = QJsonDocument::fromVariant(QVariant(fields));
@@ -305,7 +338,7 @@ void NewContactWidget::updateCoordinates(double lat, double lon, CoordPrecision 
     if (prec <= coordPrec) return;
 
     QSettings settings;
-    QString myGrid = settings.value("operator/grid").toString();
+    QString myGrid = settings.value("station/grid").toString();
 
     double myLat, myLon;
     gridToCoord(myGrid, myLat, myLon);
@@ -348,15 +381,16 @@ void NewContactWidget::tuneDx(QString callsign, double frequency) {
 }
 
 void NewContactWidget::setDefaultRst() {
-    QString mode = ui->modeEdit->currentText();
-    if (mode == "SSB" || mode == "FM" || mode == "AM") {
-        ui->rstRcvdEdit->setText("59");
-        ui->rstSentEdit->setText("59");
+    QString modeName = ui->modeEdit->currentText();
+    Mode mode = Data::instance()->mode(modeName);
+    QString defaultRst = mode.defaultRst();
+
+    if (defaultRst.isEmpty()) {
+        defaultRst = "599";
     }
-    else {
-        ui->rstRcvdEdit->setText("599");
-        ui->rstSentEdit->setText("599");
-    }
+
+    ui->rstRcvdEdit->setText(defaultRst);
+    ui->rstSentEdit->setText(defaultRst);
 }
 
 NewContactWidget::~NewContactWidget() {

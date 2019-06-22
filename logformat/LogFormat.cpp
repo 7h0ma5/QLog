@@ -4,7 +4,7 @@
 #include "AdxFormat.h"
 #include "JsonFormat.h"
 #include "core/utils.h"
-#include "core/Dxcc.h"
+#include "core/Cty.h"
 
 LogFormat::LogFormat(QTextStream& stream) : QObject(nullptr), stream(stream) {
     this->defaults = nullptr;
@@ -65,7 +65,7 @@ void LogFormat::setDateRange(QDate start, QDate end) {
 void LogFormat::runImport() {
     this->importStart();
 
-    Dxcc dxcc;
+    Cty dxcc;
 
     int count = 0;
 
@@ -95,6 +95,9 @@ void LogFormat::runImport() {
 
         DxccEntity entity = dxcc.lookup(record.value("callsign").toString());
 
+        if (entity.dxcc) {
+            record.setValue("country", entity.country);
+        }
         if (record.value("ituz").isNull() && entity.dxcc) {
             record.setValue("ituz", QString::number(entity.ituz));
         }
@@ -108,7 +111,7 @@ void LogFormat::runImport() {
 
         model.insertRecord(-1, record);
 
-        if (count % 50 == 0) {
+        if (count % 10 == 0) {
             emit progress(stream.pos());
         }
 

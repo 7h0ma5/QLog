@@ -14,13 +14,13 @@ ImportDialog::ImportDialog(QWidget *parent) :
     ui->allCheckBox->setChecked(true);
     ui->startDateEdit->setDate(QDate::currentDate());
     ui->endDateEdit->setDate(QDate::currentDate());
-    ui->gridEdit->setText(settings.value("operator/grid").toString());
+    ui->gridEdit->setText(settings.value("station/grid").toString());
     ui->progressBar->setValue(0);
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum(100);
     //ui->progressBar->setDisabled(true);
 
-    QStringList rigs = settings.value("operator/rigs").toStringList();
+    QStringList rigs = settings.value("station/rigs").toStringList();
     QStringListModel* rigModel = new QStringListModel(rigs, this);
     ui->rigSelect->setModel(rigModel);
     if (!ui->rigSelect->currentText().isEmpty()) {

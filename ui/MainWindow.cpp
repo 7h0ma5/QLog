@@ -11,6 +11,7 @@
 #include "core/Fldigi.h"
 #include "core/Rig.h"
 #include "core/Wsjtx.h"
+#include "data/Data.h"
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -24,8 +25,8 @@ MainWindow::MainWindow(QWidget* parent) :
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("windowState").toByteArray());
 
-    QString op = settings.value("operator/callsign", "NOCALL").toString();
-    QString grid  = settings.value("operator/grid", "NO GRID").toString();
+    QString op = settings.value("station/callsign", "NOCALL").toString();
+    QString grid  = settings.value("station/grid", "NO GRID").toString();
 
     ui->statusBar->addWidget(new QLabel(op, ui->statusBar));
     ui->statusBar->addWidget(new QLabel(grid, ui->statusBar));
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget* parent) :
     Wsjtx* wsjtx = new Wsjtx(this);
     connect(wsjtx, &Wsjtx::statusReceived, ui->wsjtxWidget, &WsjtxWidget::statusReceived);
     connect(wsjtx, &Wsjtx::decodeReceived, ui->wsjtxWidget, &WsjtxWidget::decodeReceived);
+    connect(wsjtx, &Wsjtx::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {

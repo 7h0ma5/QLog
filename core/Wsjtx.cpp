@@ -1,8 +1,12 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 #include <QDataStream>
+#include <QSqlTableModel>
+#include <QSqlRecord>
+#include <QSqlError>
 #include <QDateTime>
 #include "Wsjtx.h"
+#include "data/Data.h"
 
 Wsjtx::Wsjtx(QObject *parent) : QObject(parent)
 {
@@ -29,6 +33,7 @@ void Wsjtx::readPendingDatagrams() {
 
         switch (mtype) {
         case 1: {
+            qDebug() << "status received";
             QByteArray id, mode, tx_mode, sub_mode, report, dx_call, dx_grid, de_call, de_grid;
             WsjtxStatus status;
 
@@ -63,7 +68,7 @@ void Wsjtx::readPendingDatagrams() {
             emit decodeReceived(decode);
             break;
         }
-        case 4: {
+        case 5: {
             QByteArray id, dx_call, dx_grid, mode, rprt_sent, rprt_rcvd, tx_pwr, comments;
             QByteArray name, op_call, my_call, my_grid, exch_sent, exch_rcvd;
             WsjtxLog log;
@@ -87,9 +92,57 @@ void Wsjtx::readPendingDatagrams() {
             log.exch_sent = QString(exch_sent);
             log.exch_rcvd = QString(exch_rcvd);
 
-            emit logReceived(log);
+            insertContact(log);
             break;
         }
         }
     }
 }
+
+void Wsjtx::insertContact(WsjtxLog log) {
+    qDebug() << "insert log";
+    QSqlTableModel model;
+    model.setTable("contacts");
+    model.removeColumn(model.fieldIndex("id"));
+
+    QSqlRecord record = model.record();
+
+    double freq = (double)log.tx_freq/1e6;
+    Band band = Data::instance()->band(freq);
+
+    record.setValue("callsign", log.dx_call);
+    record.setValue("rst_rcvd", log.rprt_rcvd);
+    record.setValue("rst_sent", log.rprt_sent);
+    record.setValue("name", log.name);
+    record.setValue("gridsquare", log.dx_grid);
+    record.setValue("freq", freq);
+    record.setValue("band", band.name());
+    record.setValue("mode", log.mode);
+
+    DxccEntity dxcc = Data::instance()->lookupDxcc(log.dx_call);
+    if (!dxcc.country.isEmpty()) {
+        record.setValue("country", dxcc.country);
+        record.setValue("cqz", dxcc.cqz);
+        record.setValue("ituz", dxcc.ituz);
+        record.setValue("cont", dxcc.cont);
+        record.setValue("dxcc", dxcc.dxcc);
+    }
+
+
+    record.setValue("start_time", log.time_on);
+    record.setValue("end_time", log.time_off);
+
+
+    if (!model.insertRecord(-1, record)) {
+        qDebug() << model.lastError();
+        return;
+    }
+
+    if (!model.submitAll()) {
+        qDebug() << model.lastError();
+        return;
+    }
+
+    emit contactAdded();
+}
+

@@ -43,9 +43,10 @@ void SettingsDialog::deleteRig() {
 
 void SettingsDialog::readSettings() {
     QSettings settings;
-    ui->callsignEdit->setText(settings.value("operator/callsign").toString());
-    ui->locatorEdit->setText(settings.value("operator/grid").toString());
-    QStringList rigs = settings.value("operator/rigs").toStringList();
+    ui->callsignEdit->setText(settings.value("station/callsign").toString());
+    ui->locatorEdit->setText(settings.value("station/grid").toString());
+    ui->operatorEdit->setText(settings.value("station/operator").toString());
+    QStringList rigs = settings.value("station/rigs").toStringList();
     ((QStringListModel*)ui->rigListView->model())->setStringList(rigs);
 
     ui->hamlibModelSelect->setCurrentIndex(settings.value("hamlib/modelrow").toInt());
@@ -59,10 +60,11 @@ void SettingsDialog::readSettings() {
 void SettingsDialog::writeSettings() {
     QSettings settings;
 
-    settings.setValue("operator/callsign", ui->callsignEdit->text());
-    settings.setValue("operator/grid", ui->locatorEdit->text());
+    settings.setValue("station/callsign", ui->callsignEdit->text());
+    settings.setValue("station/grid", ui->locatorEdit->text());
+    settings.setValue("station/operator", ui->operatorEdit->text());
     QStringList rigs = ((QStringListModel*)ui->rigListView->model())->stringList();
-    settings.setValue("operator/rigs", rigs);
+    settings.setValue("station/rigs", rigs);
 
     int row = ui->hamlibModelSelect->currentIndex();
     QModelIndex index = ui->hamlibModelSelect->model()->index(row, 0);

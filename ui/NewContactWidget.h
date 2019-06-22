@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include "core/HamQTH.h"
-#include "core/Dxcc.h"
+#include "core/Cty.h"
+#include "data/Data.h"
 
 namespace Ui {
 class NewContactWidget;
@@ -59,12 +60,11 @@ private:
 private:
     Rig* rig;
     QString callsign;
-    Dxcc dxcc;
+    DxccEntity dxccEntity;
     HamQTH callbook;
     QTimer* contactTimer;
     Ui::NewContactWidget *ui;
     CoordPrecision coordPrec;
-    QList<QVariant> modes;
 };
 
 #endif // NEWCONTACTWIDGET_H

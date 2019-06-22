@@ -86,6 +86,7 @@
     </property>
     <addaction name="actionDXClusterWindow"/>
     <addaction name="actionMapWindow"/>
+    <addaction name="actionWsjtx"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLogbook"/>
@@ -286,10 +287,16 @@
   </action>
   <action name="actionStatistics">
    <property name="icon">
-    <iconset theme="x-office-spreadsheet"/>
+    <iconset theme="x-office-spreadsheet">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Statistics</string>
+   </property>
+  </action>
+  <action name="actionWsjtx">
+   <property name="text">
+    <string>Wsjtx</string>
    </property>
   </action>
  </widget>
@@ -582,6 +589,22 @@
     <hint type="destinationlabel">
      <x>446</x>
      <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWsjtx</sender>
+   <signal>triggered()</signal>
+   <receiver>wsjtxDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>430</y>
     </hint>
    </hints>
   </connection>

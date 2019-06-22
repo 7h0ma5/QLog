@@ -120,7 +120,7 @@ QByteArray Fldigi::addRecord(QString data) {
     xml.writeEndDocument();
 
     QMap<QString, QString> defaults;
-    defaults["my_grid"] = settings.value("operator/grid").toString();
+    defaults["my_grid"] = settings.value("station/grid").toString();
 
     QTextStream in(&data);
     AdiFormat adif(in);

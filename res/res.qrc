@@ -8,5 +8,7 @@
         <file>data/modes.json</file>
         <file>data/dxcc.json</file>
         <file>data/legacy_modes.json</file>
+        <file>data/contests.json</file>
+        <file>data/propagation_modes.json</file>
     </qresource>
 </RCC>

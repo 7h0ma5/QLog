@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDateTime>
 
+class Data;
 class QUdpSocket;
 
 struct WsjtxStatus {
@@ -45,12 +46,13 @@ public:
 signals:
     void statusReceived(WsjtxStatus);
     void decodeReceived(WsjtxDecode);
-    void logReceived(WsjtxLog);
+    void contactAdded();
 
 public slots:
 
 private slots:
     void readPendingDatagrams();
+    void insertContact(WsjtxLog log);
 
 private:
     QUdpSocket* socket;

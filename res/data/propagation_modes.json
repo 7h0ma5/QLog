@@ -1,0 +1,20 @@
+[
+    {"id": "AS", "name": "Aircraft Scatter"},
+    {"id": "AUE", "name": "Aurora-E"},
+    {"id": "AUR", "name": "Aurora"},
+    {"id": "BS", "name": "Back scatter"},
+    {"id": "ECH", "name": "EchoLink"},
+    {"id": "EME", "name": "Earth-Moon-Earth"},
+    {"id": "ES", "name": "Sporadic E"},
+    {"id": "F2", "name": "F2 Reflection"},
+    {"id": "FAI", "name": "Field Aligned Irregularities"},
+    {"id": "INTERNET", "name": "Internet-assisted"},
+    {"id": "ION", "name": "Ionoscatter"},
+    {"id": "IRL", "name": "IRLP"},
+    {"id": "MS", "name": "Meteor scatter"},
+    {"id": "RPT", "name": "Terrestrial or atmospheric repeater or transponder"},
+    {"id": "RS", "name": "Rain scatter"},
+    {"id": "SAT", "name": "Satellite"},
+    {"id": "TEP", "name": "Trans-equatorial"},
+    {"id": "TR", "name": "Tropospheric ducting"}
+]
