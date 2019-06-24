@@ -31,6 +31,7 @@ SOURCES += \
         core/Cty.cpp \
         core/Fldigi.cpp \
         core/HamQTH.cpp \
+        core/Lotw.cpp \
         core/Migration.cpp \
         core/Rig.cpp \
         core/Wsjtx.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
         core/Cty.h \
         core/Fldigi.h \
         core/HamQTH.h \
+        core/Lotw.h \
         core/Migration.h \
         core/Rig.h \
         core/Wsjtx.h \

@@ -23,7 +23,7 @@ QVariant WsjtxTableModel::headerData(int section, Qt::Orientation orientation, i
     if (role != Qt::DisplayRole || orientation != Qt::Horizontal) return QVariant();
 
     switch (section) {
-    case 0: return tr("Freq");
+    case 0: return tr("SNR");
     case 1: return tr("Callsign");
     case 2: return tr("Grid");
     case 3: return tr("Country");
@@ -70,7 +70,7 @@ void WsjtxWidget::decodeReceived(WsjtxDecode decode) {
             QString grid = cqRegExp.cap(3);
             DxccEntity dxcc = Data::instance()->lookupDxcc(callsign);
 
-            entry << QString::number(decode.df) << callsign << grid << dxcc.country;
+            entry << QString::number(decode.snr) << callsign << grid << dxcc.country;
             wsjtxTableModel->addEntry(entry);
             ui->tableView->repaint();
         }

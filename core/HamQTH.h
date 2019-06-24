@@ -10,7 +10,7 @@ class HamQTH : public QObject {
     Q_OBJECT
 
 public:
-    explicit HamQTH(QObject *parent = 0);
+    explicit HamQTH(QObject *parent = nullptr);
 
 signals:
     void callsignResult(const QMap<QString, QString>& data);

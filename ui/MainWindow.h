@@ -25,6 +25,7 @@ private slots:
     void showStatistics();
     void importLog();
     void exportLog();
+    void updateLotw();
     void showAbout();
 
 private:

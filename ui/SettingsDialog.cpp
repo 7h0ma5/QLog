@@ -55,6 +55,9 @@ void SettingsDialog::readSettings() {
 
     ui->hamQthUsernameEdit->setText(settings.value("hamqth/username").toString());
     ui->hamQthPasswordEdit->setText(settings.value("hamqth/password").toString());
+
+    ui->lotwUsernameEdit->setText(settings.value("lotw/username").toString());
+    ui->lotwPasswordEdit->setText(settings.value("lotw/password").toString());
 }
 
 void SettingsDialog::writeSettings() {
@@ -75,6 +78,9 @@ void SettingsDialog::writeSettings() {
 
     settings.setValue("hamqth/username", ui->hamQthUsernameEdit->text());
     settings.setValue("hamqth/password", ui->hamQthPasswordEdit->text());
+
+    settings.setValue("lotw/username", ui->lotwUsernameEdit->text());
+    settings.setValue("lotw/password", ui->lotwPasswordEdit->text());
 }
 
 SettingsDialog::~SettingsDialog() {

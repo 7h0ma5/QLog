@@ -9,6 +9,7 @@
 #include "ui/ExportDialog.h"
 #include "ui/StatisticsWidget.h"
 #include "core/Fldigi.h"
+#include "core/Lotw.h"
 #include "core/Rig.h"
 #include "core/Wsjtx.h"
 #include "data/Data.h"
@@ -76,6 +77,11 @@ void MainWindow::importLog() {
 void MainWindow::exportLog() {
     ExportDialog dialog;
     dialog.exec();
+}
+
+void MainWindow::updateLotw() {
+    Lotw* lotw = new Lotw(this);
+    lotw->update();
 }
 
 void MainWindow::showAbout() {

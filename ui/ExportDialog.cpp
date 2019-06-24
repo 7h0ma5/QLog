@@ -12,7 +12,7 @@ ExportDialog::ExportDialog(QWidget *parent) :
 
     ui->allCheckBox->setChecked(true);
     ui->startDateEdit->setDate(QDate::currentDate());
-    ui->endDateEdit->setDate(QDate::currentDate());
+    ui->endDateEdit->setDate(QDate::currentDate().addDays(1));
 }
 
 void ExportDialog::browse() {

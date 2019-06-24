@@ -97,6 +97,8 @@ void LogFormat::runImport() {
 
         if (entity.dxcc) {
             record.setValue("country", entity.country);
+            record.setValue("dxcc", entity.dxcc);
+            record.setValue("cont", entity.cont);
         }
         if (record.value("ituz").isNull() && entity.dxcc) {
             record.setValue("ituz", QString::number(entity.ituz));
