@@ -115,30 +115,18 @@ void NewContactWidget::callsignChanged() {
     }
 }
 
-
 void NewContactWidget::queryDxcc(QString callsign) {
     dxccEntity = Data::instance()->lookupDxcc(callsign);
     if (dxccEntity.dxcc) {
-         ui->dxccInfo->setText(dxccEntity.country);
-         ui->cqEdit->setText(QString::number(dxccEntity.cqz));
-         ui->ituEdit->setText(QString::number(dxccEntity.ituz));
-         updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
-
-         QSqlQueryModel* queryModel = new QSqlQueryModel;
-         queryModel->setQuery(QString("SELECT contacts.band,\n"
-                              "count(CASE WHEN modes.dxcc = 'CW' THEN 1 END) as cw,\n"
-                              "count(CASE WHEN modes.dxcc = 'PHONE' THEN 1 END) as phone,\n"
-                              "count(CASE WHEN modes.dxcc = 'DIGITAL' THEN 1 END) as digital\n"
-                              "FROM contacts\n"
-                              "INNER JOIN modes ON (contacts.mode = modes.name)\n"
-                              "INNER JOIN bands ON (contacts.band = bands.name)\n"
-                              "WHERE contacts.dxcc = %1 AND bands.enabled = true\n"
-                              "GROUP BY contacts.band\n"
-                              "ORDER BY contacts.band").arg(dxccEntity.dxcc));
-
-         ui->tableView->setModel(queryModel);
-         ui->tableView->show();
-   }
+        ui->dxccInfo->setText(dxccEntity.country);
+        ui->cqEdit->setText(QString::number(dxccEntity.cqz));
+        ui->ituEdit->setText(QString::number(dxccEntity.ituz));
+        updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
+        ui->dxccTableWidget->setDxcc(dxccEntity.dxcc);
+    }
+    else {
+        ui->dxccTableWidget->clear();
+    }
 }
 
 void NewContactWidget::queryDatabase(QString callsign) {
@@ -253,6 +241,7 @@ void NewContactWidget::resetContact() {
     ui->qslViaEdit->clear();
     ui->cqEdit->clear();
     ui->ituEdit->clear();
+    ui->dxccTableWidget->clear();
 
     stopContactTimer();
     setDefaultReport();

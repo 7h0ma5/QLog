@@ -16,9 +16,8 @@ Data* Data::instance() {
 
 QString Data::band(double freq) {
     QSqlQuery query;
-    query.prepare("SELECT name FROM bands WHERE start_freq <= :freq AND end_freq >= :freq");
+    query.prepare("SELECT name FROM bands WHERE :freq BETWEEN start_freq AND end_freq");
     query.bindValue(0, freq);
-    query.bindValue(1, freq);
     query.exec();
 
     if (query.next()) {

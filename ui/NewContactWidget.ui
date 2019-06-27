@@ -406,7 +406,7 @@
        </property>
        <property name="dateTime">
         <datetime>
-         <hour>20</hour>
+         <hour>19</hour>
          <minute>0</minute>
          <second>0</second>
          <year>1999</year>
@@ -875,38 +875,18 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="4">
+   <item row="0" column="1" rowspan="4" colspan="2">
     <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="title">
       <string>Info</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4" columnminimumwidth="0,150">
-      <item row="5" column="0" colspan="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="dxccInfo">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="3" column="0">
        <widget class="QLabel" name="bandLabel">
         <property name="font">
@@ -921,21 +901,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="bandText">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+      <item row="1" column="1">
+       <widget class="QLabel" name="distanceInfo">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="text">
-         <string notr="true">80m</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="bearingInfo">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -947,8 +920,21 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="distanceLabel">
+      <item row="0" column="1">
+       <widget class="QLabel" name="dxccInfo">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="dxccLabel">
         <property name="font">
          <font>
           <pointsize>10</pointsize>
@@ -957,18 +943,12 @@
          </font>
         </property>
         <property name="text">
-         <string>Distance</string>
+         <string>DXCC</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="distanceInfo">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
+      <item row="2" column="1">
+       <widget class="QLabel" name="bearingInfo">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -994,8 +974,21 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="dxccLabel">
+      <item row="3" column="1">
+       <widget class="QLabel" name="bandText">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true">80m</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="distanceLabel">
         <property name="font">
          <font>
           <pointsize>10</pointsize>
@@ -1004,41 +997,55 @@
          </font>
         </property>
         <property name="text">
-         <string>DXCC</string>
+         <string>Distance</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0" colspan="2">
-       <widget class="QTableView" name="tableView">
-        <property name="sizeAdjustPolicy">
-         <enum>QAbstractScrollArea::AdjustToContents</enum>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-       </widget>
+       <widget class="DxccTableWidget" name="dxccTableWidget"/>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DxccTableWidget</class>
+   <extends>QTableView</extends>
+   <header>ui/DxccTableWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
-  <tabstop>callsignEdit</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>rstSentEdit</tabstop>
+  <tabstop>rstRcvdEdit</tabstop>
   <tabstop>nameEdit</tabstop>
   <tabstop>qthEdit</tabstop>
   <tabstop>gridEdit</tabstop>
+  <tabstop>cqEdit</tabstop>
+  <tabstop>ituEdit</tabstop>
   <tabstop>frequencyEdit</tabstop>
-  <tabstop>rstRcvdEdit</tabstop>
-  <tabstop>rstSentEdit</tabstop>
   <tabstop>modeEdit</tabstop>
   <tabstop>submodeEdit</tabstop>
   <tabstop>updateTimeButton</tabstop>
-  <tabstop>resetButton</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>propagationModeEdit</tabstop>
+  <tabstop>comboBox_4</tabstop>
+  <tabstop>comboBox_5</tabstop>
+  <tabstop>commentEdit</tabstop>
   <tabstop>saveButton</tabstop>
+  <tabstop>resetButton</tabstop>
+  <tabstop>rigEdit</tabstop>
+  <tabstop>powerEdit</tabstop>
+  <tabstop>qslViaEdit</tabstop>
+  <tabstop>checkBox_2</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>checkBox_4</tabstop>
+  <tabstop>checkBox_3</tabstop>
+  <tabstop>contestEdit</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>callsignEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>

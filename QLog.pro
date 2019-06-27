@@ -44,9 +44,11 @@ SOURCES += \
         logformat/JsonFormat.cpp \
         logformat/LogFormat.cpp \
         models/BandModel.cpp \
+        models/DxccTableModel.cpp \
         models/RigTypeModel.cpp \
         ui/DbDialog.cpp \
         ui/DxWidget.cpp \
+        ui/DxccTableWidget.cpp \
         ui/ExportDialog.cpp \
         ui/ImportDialog.cpp \
         ui/LogbookWidget.cpp \
@@ -73,9 +75,11 @@ HEADERS += \
         logformat/JsonFormat.h \
         logformat/LogFormat.h \
         models/BandModel.h \
+        models/DxccTableModel.h \
         models/RigTypeModel.h \
         ui/DbDialog.h \
         ui/DxWidget.h \
+        ui/DxccTableWidget.h \
         ui/ExportDialog.h \
         ui/ImportDialog.h \
         ui/LogbookWidget.h \
