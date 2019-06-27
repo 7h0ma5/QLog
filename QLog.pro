@@ -37,10 +37,8 @@ SOURCES += \
         core/Wsjtx.cpp \
         core/main.cpp \
         core/utils.cpp \
-        data/Band.cpp \
         data/Data.cpp \
         data/Dxcc.cpp \
-        data/Mode.cpp \
         logformat/AdiFormat.cpp \
         logformat/AdxFormat.cpp \
         logformat/JsonFormat.cpp \
@@ -68,10 +66,8 @@ HEADERS += \
         core/Rig.h \
         core/Wsjtx.h \
         core/utils.h \
-        data/Band.h \
         data/Data.h \
         data/Dxcc.h \
-        data/Mode.h \
         logformat/AdiFormat.h \
         logformat/AdxFormat.h \
         logformat/JsonFormat.h \

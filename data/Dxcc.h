@@ -3,7 +3,8 @@
 
 #include <QtCore>
 
-struct DxccEntity {
+class DxccEntity {
+public:
     QString country;
     QString prefix;
     qint32 dxcc;
@@ -15,6 +16,7 @@ struct DxccEntity {
 };
 
 struct DxccPrefix {
+public:
     QString prefix;
     bool exact;
     qint32 dxcc;

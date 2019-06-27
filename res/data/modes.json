@@ -1,12 +1,12 @@
 [
-    { "name": "CW" },
-    { "name": "SSB", "rst": "59", "submodes": [
+    { "name": "CW",  "rprt": "599", "dxcc": "CW" },
+    { "name": "SSB", "rprt": "59", "dxcc": "PHONE", "submodes": [
         "LSB",
         "USB"
     ]},
-    { "name": "AM", "rst": "59" },
-    { "name": "FM", "rst": "59" },
-    { "name": "PSK", "submodes": [
+    { "name": "AM", "rprt": "59", "dxcc": "PHONE" },
+    { "name": "FM", "rprt": "59", "dxcc": "PHONE" },
+    { "name": "PSK", "dxcc": "DIGITAL", "submodes": [
         "PSK31",
         "PSK63",
         "PSK63F",
@@ -20,8 +20,8 @@
         "QPSK250",
         "QPSK500"
     ]},
-    { "name": "RTTY" },
-    { "name": "MFSK", "submodes": [
+    { "name": "RTTY", "dxcc": "DIGITAL" },
+    { "name": "MFSK", "dxcc": "DIGITAL", "submodes": [
         "MFSK4",
         "MFSK8",
         "MFSK11",
@@ -30,7 +30,7 @@
         "MFSK31",
         "MFSK32"
     ]},
-    { "name": "OLIVIA", "submodes": [
+    { "name": "OLIVIA", "dxcc": "DIGITAL", "submodes": [
         "OLIVIA 4/125",
         "OLIVIA 4/250",
         "OLIVIA 8/250",
@@ -39,41 +39,41 @@
         "OLIVIA 16/1000",
         "OLIVIA 32/1000"
     ]},
-    { "name": "JT65", "rst": "-1", "submodes": [
+    { "name": "JT65", "rprt": "-1", "dxcc": "DIGITAL", "submodes": [
         "JT65A",
         "JT65B",
         "JT65B2",
         "JT65C",
         "JT65C2"
     ]},
-    { "name": "JT9", "rst": "-1", "submodes": [
+    { "name": "JT9", "rprt": "-1", "dxcc": "DIGITAL", "submodes": [
         "JT9-1",
         "JT9-2",
         "JT9-5",
         "JT9-10",
         "JT9-30"
     ]},
-    { "name": "FT8", "rst": "-1" },
-    { "name": "HELL", "submodes": [
+    { "name": "FT8", "rprt": "-1", "dxcc": "DIGITAL" },
+    { "name": "HELL", "dxcc": "DIGITAL", "submodes": [
         "FMHELL",
         "FSKHELL",
         "HELL80",
         "HFSK",
         "PSKHELL"
     ]},
-    { "name": "CONTESTIA" },
-    { "name": "DOMINO", "submodes": [
+    { "name": "CONTESTIA", "dxcc": "DIGITAL" },
+    { "name": "DOMINO", "dxcc": "DIGITAL", "submodes": [
         "DOMINOEX",
         "DOMINOF"
     ]},
-    { "name": "MT63" },
-    { "name": "JT6M", "rst": "26" },
-    { "name": "JTMSK", "rst": "-1" },
-    { "name": "MSK144", "rst": "0" },
-    { "name": "FSK441", "rst": "26" },
-    { "name": "DIGITALVOICE", "rst": "59" },
-    { "name": "DSTAR", "rst": "59" },
-    { "name": "PKT" },
-    { "name": "ATV" },
-    { "name": "SSTV" }
+    { "name": "MT63", "dxcc": "DIGITAL" },
+    { "name": "JT6M", "rprt": "26", "dxcc": "DIGITAL" },
+    { "name": "JTMSK", "rprt": "-1", "dxcc": "DIGITAL" },
+    { "name": "MSK144", "rprt": "0", "dxcc": "DIGITAL" },
+    { "name": "FSK441", "rprt": "26", "dxcc": "DIGITAL" },
+    { "name": "DIGITALVOICE", "rprt": "59", "dxcc": "PHONE" },
+    { "name": "DSTAR", "rprt": "59", "dxcc": "PHONE" },
+    { "name": "PKT", "dxcc": "DIGITAL" },
+    { "name": "ATV", "dxcc": "DIGITAL" },
+    { "name": "SSTV", "dxcc": "DIGITAL" }
 ]

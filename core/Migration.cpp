@@ -11,11 +11,15 @@ bool Migration::run() {
     int currentVersion = getVersion();
 
     if (currentVersion == latestVersion) {
-        qDebug() << "database already up to date";
+        qDebug() << "Database already up to date";
         return true;
+    }
+    else if (currentVersion < latestVersion) {
+        qDebug() << "Starting database migration";
     }
     else {
         qCritical() << "database from the future";
+        return false;
     }
 
     while (true) {
@@ -31,7 +35,10 @@ bool Migration::run() {
         else break;
     }
 
-    qDebug() << "database migration successful";
+    updateBands();
+    updateModes();
+
+    qDebug() << "Database migration successful";
 
     return true;
 }
@@ -87,6 +94,7 @@ bool Migration::migrate(int toVersion) {
     bool result = false;
     switch (toVersion) {
     case 1: result = migrate1(); break;
+    case 2: result = migrate2(); break;
     }
 
     if (result && setVersion(toVersion) && db.commit()) {
@@ -101,9 +109,8 @@ bool Migration::migrate(int toVersion) {
 }
 
 bool Migration::migrate1() {
-    bool result = true;
-
     QSqlQuery query;
+    bool result = true;
 
     result &= query.exec("CREATE TABLE IF NOT EXISTS schema_versions"
                          "(version SERIAL PRIMARY KEY,"
@@ -133,7 +140,109 @@ bool Migration::migrate1() {
                          ")"
                          );
 
-    qDebug() << query.lastError();
+    return result;
+}
+
+bool Migration::migrate2() {
+    QSqlQuery query;
+    bool result = true;
+
+    result &= query.exec("CREATE TABLE IF NOT EXISTS bands\n"
+                         "(id SERIAL PRIMARY KEY,\n"
+                         "name VARCHAR(10) UNIQUE NOT NULL,"
+                         "start_freq DECIMAL(12,6),"
+                         "end_freq DECIMAL(12,6),"
+                         "enabled BOOLEAN"
+                         ")"
+                         );
+
+    result &= query.exec("CREATE TYPE dxcc_mode AS ENUM ('CW', 'PHONE', 'DIGITAL')");
+
+    result &= query.exec("CREATE TABLE IF NOT EXISTS modes\n"
+                         "(id SERIAL PRIMARY KEY,\n"
+                         "name VARCHAR(15) UNIQUE NOT NULL,"
+                         "submodes JSON,"
+                         "rprt VARCHAR(10),"
+                         "dxcc dxcc_mode,"
+                         "enabled BOOLEAN"
+                         ")"
+                         );
 
     return result;
 }
+
+bool Migration::updateBands() {
+    QFile file(":/res/data/bands.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray data = file.readAll();
+
+    QSqlTableModel model;
+    model.setTable("bands");
+    model.removeColumn(model.fieldIndex("id"));
+    QSqlRecord record = model.record();
+
+    model.select();
+
+    model.removeRows(0, model.rowCount());
+    model.submitAll();
+
+    for (QVariant object : QJsonDocument::fromJson(data).toVariant().toList()) {
+        QVariantMap bandData = object.toMap();
+
+        record = model.record();
+
+        record.clearValues();
+
+        record.setValue("name", bandData.value("name").toString());
+        record.setValue("start_freq", bandData.value("start").toFloat());
+        record.setValue("end_freq", bandData.value("end").toFloat());
+        record.setValue("enabled", true);
+
+        model.insertRecord(-1, record);
+    }
+
+    model.submitAll();
+    return true;
+}
+
+bool Migration::updateModes() {
+    QFile file(":/res/data/modes.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray data = file.readAll();
+
+    QSqlTableModel model;
+    model.setTable("modes");
+    model.removeColumn(model.fieldIndex("id"));
+    QSqlRecord record = model.record();
+
+    model.select();
+
+    model.removeRows(0, model.rowCount());
+    model.submitAll();
+
+    for (QVariant object : QJsonDocument::fromJson(data).toVariant().toList()) {
+        QVariantMap modeData = object.toMap();
+
+        record = model.record();
+
+        record.clearValues();
+
+        QJsonDocument submodes = QJsonDocument(modeData.value("submodes").toJsonArray());
+
+        record.setValue("name", modeData.value("name").toString());
+        record.setValue("rprt", modeData.value("rprt").toString());
+        record.setValue("dxcc", modeData.value("dxcc").toString());
+        record.setValue("submodes", QString(submodes.toJson(QJsonDocument::Compact)));
+        record.setValue("enabled", true);
+
+        model.insertRecord(-1, record);
+    }
+
+    model.submitAll();
+
+    qDebug() << model.lastError();
+
+    return true;
+
+}
+

@@ -49,7 +49,7 @@ public slots:
     void changeMode(QString mode);
     void changePower(double power);
     void tuneDx(QString callsign, double frequency);
-    void setDefaultRst();
+    void setDefaultReport();
 
 private:
     void queryDatabase(QString callsign);
@@ -61,6 +61,7 @@ private:
     Rig* rig;
     QString callsign;
     DxccEntity dxccEntity;
+    QString defaultReport;
     HamQTH callbook;
     QTimer* contactTimer;
     Ui::NewContactWidget *ui;

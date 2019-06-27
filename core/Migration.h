@@ -13,8 +13,12 @@ private:
     bool setVersion(int version);
 
     bool migrate1();
+    bool migrate2();
 
-    static const int latestVersion = 1;
+    bool updateBands();
+    bool updateModes();
+
+    static const int latestVersion = 2;
 };
 
 #endif // MIGRATION_H

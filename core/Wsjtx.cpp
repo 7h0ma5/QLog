@@ -108,7 +108,7 @@ void Wsjtx::insertContact(WsjtxLog log) {
     QSqlRecord record = model.record();
 
     double freq = (double)log.tx_freq/1e6;
-    Band band = Data::instance()->band(freq);
+    QString band = Data::band(freq);
 
     record.setValue("callsign", log.dx_call);
     record.setValue("rst_rcvd", log.rprt_rcvd);
@@ -116,7 +116,7 @@ void Wsjtx::insertContact(WsjtxLog log) {
     record.setValue("name", log.name);
     record.setValue("gridsquare", log.dx_grid);
     record.setValue("freq", freq);
-    record.setValue("band", band.name());
+    record.setValue("band", band);
     record.setValue("mode", log.mode);
 
     DxccEntity dxcc = Data::instance()->lookupDxcc(log.dx_call);

@@ -20,9 +20,12 @@ NewContactWidget::NewContactWidget(QWidget *parent) :
     QStringListModel* submodeModel = new QStringListModel(this);
     ui->submodeEdit->setModel(submodeModel);
 
-    QStringList modeList = Data::instance()->modeList();
-    QStringListModel* modeModel = new QStringListModel(modeList, this);
+    QSqlTableModel* modeModel = new QSqlTableModel();
+    modeModel->setTable("modes");
+    modeModel->setFilter("enabled = true");
     ui->modeEdit->setModel(modeModel);
+    ui->modeEdit->setModelColumn(modeModel->fieldIndex("name"));
+    modeModel->select();
 
     QStringList contestList = Data::instance()->contestList();
     contestList.prepend("");
@@ -82,7 +85,7 @@ void NewContactWidget::reloadSettings() {
     QString selectedRig = ui->rigEdit->currentText();
     QSettings settings;
     QStringList rigs = settings.value("station/rigs").toStringList();
-    QStringListModel* model = (QStringListModel*)ui->rigEdit->model();
+    QStringListModel* model = dynamic_cast<QStringListModel*>(ui->rigEdit->model());
     model->setStringList(rigs);
 
     if (!selectedRig.isEmpty()) {
@@ -120,13 +123,28 @@ void NewContactWidget::queryDxcc(QString callsign) {
          ui->cqEdit->setText(QString::number(dxccEntity.cqz));
          ui->ituEdit->setText(QString::number(dxccEntity.ituz));
          updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
-    }
+
+         QSqlQueryModel* queryModel = new QSqlQueryModel;
+         queryModel->setQuery(QString("SELECT contacts.band,\n"
+                              "count(CASE WHEN modes.dxcc = 'CW' THEN 1 END) as cw,\n"
+                              "count(CASE WHEN modes.dxcc = 'PHONE' THEN 1 END) as phone,\n"
+                              "count(CASE WHEN modes.dxcc = 'DIGITAL' THEN 1 END) as digital\n"
+                              "FROM contacts\n"
+                              "INNER JOIN modes ON (contacts.mode = modes.name)\n"
+                              "INNER JOIN bands ON (contacts.band = bands.name)\n"
+                              "WHERE contacts.dxcc = %1 AND bands.enabled = true\n"
+                              "GROUP BY contacts.band\n"
+                              "ORDER BY contacts.band").arg(dxccEntity.dxcc));
+
+         ui->tableView->setModel(queryModel);
+         ui->tableView->show();
+   }
 }
 
 void NewContactWidget::queryDatabase(QString callsign) {
     QSqlQuery query;
-    query.prepare("SELECT name, qth, grid FROM contacts "
-                  "WHERE callsign = :callsign ORDER BY date DESC LIMIT 1");
+    query.prepare("SELECT name, qth, gridsquare FROM contacts "
+                  "WHERE callsign = :callsign ORDER BY start_time DESC LIMIT 1");
     query.bindValue(":callsign", callsign);
     query.exec();
 
@@ -175,13 +193,13 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
 
 void NewContactWidget::frequencyChanged() {
     double freq = ui->frequencyEdit->value();
-    Band band = Data::instance()->band(freq);
+    QString band = Data::band(freq);
 
-    if (band.name().isEmpty()) {
+    if (band.isEmpty()) {
         ui->bandText->setText("OOB!");
     }
     else {
-        ui->bandText->setText(band.name());
+        ui->bandText->setText(band);
     }
 
     rig->setFrequency(freq);
@@ -191,19 +209,28 @@ void NewContactWidget::modeChanged() {
     QString modeName = ui->modeEdit->currentText();
     rig->setMode(modeName);
 
-    QStringListModel* model = (QStringListModel*)ui->submodeEdit->model();
-    Mode mode = Data::instance()->mode(modeName);
-    if (!mode.submodes().isEmpty()) {
-        QStringList submodes = mode.submodes();
-        submodes.prepend("");
-        model->setStringList(submodes);
+    QSqlTableModel* modeModel = dynamic_cast<QSqlTableModel*>(ui->modeEdit->model());
+    QSqlRecord record = modeModel->record(ui->modeEdit->currentIndex());
+    QString submodes = record.value("submodes").toString();
+
+    QStringList submodeList = QJsonDocument::fromJson(submodes.toUtf8()).toVariant().toStringList();
+    QStringListModel* model = dynamic_cast<QStringListModel*>(ui->submodeEdit->model());
+    model->setStringList(submodeList);
+
+    if (!submodeList.isEmpty()) {
+        submodeList.prepend("");
+        model->setStringList(submodeList);
+        ui->submodeEdit->setEnabled(true);
     }
     else {
         QStringList list;
         model->setStringList(list);
+        ui->submodeEdit->setEnabled(false);
     }
 
-    setDefaultRst();
+    defaultReport = record.value("rprt").toString();
+
+    setDefaultReport();
 }
 
 void NewContactWidget::gridChanged() {
@@ -228,7 +255,7 @@ void NewContactWidget::resetContact() {
     ui->ituEdit->clear();
 
     stopContactTimer();
-    setDefaultRst();
+    setDefaultReport();
 
     ui->callsignEdit->setStyleSheet("");
     ui->callsignEdit->setFocus();
@@ -380,17 +407,13 @@ void NewContactWidget::tuneDx(QString callsign, double frequency) {
     stopContactTimer();
 }
 
-void NewContactWidget::setDefaultRst() {
-    QString modeName = ui->modeEdit->currentText();
-    Mode mode = Data::instance()->mode(modeName);
-    QString defaultRst = mode.defaultRst();
-
-    if (defaultRst.isEmpty()) {
-        defaultRst = "599";
+void NewContactWidget::setDefaultReport() {
+    if (defaultReport.isEmpty()) {
+        defaultReport = "599";
     }
 
-    ui->rstRcvdEdit->setText(defaultRst);
-    ui->rstSentEdit->setText(defaultRst);
+    ui->rstRcvdEdit->setText(defaultReport);
+    ui->rstSentEdit->setText(defaultReport);
 }
 
 NewContactWidget::~NewContactWidget() {
