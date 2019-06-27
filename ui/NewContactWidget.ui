@@ -406,7 +406,7 @@
        </property>
        <property name="dateTime">
         <datetime>
-         <hour>19</hour>
+         <hour>18</hour>
          <minute>0</minute>
          <second>0</second>
          <year>1999</year>
@@ -887,6 +887,20 @@
       <string>Info</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="dxccLabel">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>DXCC</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="bandLabel">
         <property name="font">
@@ -909,46 +923,6 @@
           <height>0</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="dxccInfo">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="dxccLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>DXCC</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="bearingInfo">
         <property name="font">
          <font>
           <weight>75</weight>
@@ -987,6 +961,22 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="DxccTableWidget" name="dxccTableWidget"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="dxccInfo">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="distanceLabel">
         <property name="font">
@@ -1001,8 +991,28 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="bearingInfo">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
       <item row="4" column="0" colspan="2">
-       <widget class="DxccTableWidget" name="dxccTableWidget"/>
+       <widget class="QLabel" name="dxccStatus">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -35,6 +35,7 @@ public slots:
     void reloadSettings();
     void callsignChanged();
     void frequencyChanged();
+    void bandChanged();
     void modeChanged();
     void resetContact();
     void saveContact();
@@ -45,6 +46,7 @@ public slots:
     void stopContactTimer();
     void callsignResult(const QMap<QString, QString>& data);
     void updateCoordinates(double lat, double lon, CoordPrecision prec);
+    void updateDxccStatus();
     void changeFrequency(double freq);
     void changeMode(QString mode);
     void changePower(double power);

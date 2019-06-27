@@ -13,6 +13,7 @@ public:
     explicit Data(QObject *parent = nullptr);
     static Data* instance();
 
+    static DxccStatus dxccStatus(int dxcc, QString band, QString mode);
     static QString band(double freq);
 
     QStringList contestList() { return contests.values(); }

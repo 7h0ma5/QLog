@@ -3,6 +3,16 @@
 
 #include <QtCore>
 
+enum DxccStatus {
+    Unknown,
+    NewEntity,
+    NewBandMode,
+    NewBand,
+    NewMode,
+    NewSlot,
+    Worked
+};
+
 class DxccEntity {
 public:
     QString country;

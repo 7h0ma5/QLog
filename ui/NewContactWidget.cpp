@@ -123,9 +123,11 @@ void NewContactWidget::queryDxcc(QString callsign) {
         ui->ituEdit->setText(QString::number(dxccEntity.ituz));
         updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
         ui->dxccTableWidget->setDxcc(dxccEntity.dxcc);
+        updateDxccStatus();
     }
     else {
         ui->dxccTableWidget->clear();
+        ui->dxccStatus->clear();
     }
 }
 
@@ -186,11 +188,16 @@ void NewContactWidget::frequencyChanged() {
     if (band.isEmpty()) {
         ui->bandText->setText("OOB!");
     }
-    else {
+    else if (band != ui->bandText->text()) {
         ui->bandText->setText(band);
+        bandChanged();
     }
 
     rig->setFrequency(freq);
+}
+
+void NewContactWidget::bandChanged() {
+    updateDxccStatus();
 }
 
 void NewContactWidget::modeChanged() {
@@ -219,6 +226,7 @@ void NewContactWidget::modeChanged() {
     defaultReport = record.value("rprt").toString();
 
     setDefaultReport();
+    updateDxccStatus();
 }
 
 void NewContactWidget::gridChanged() {
@@ -242,6 +250,7 @@ void NewContactWidget::resetContact() {
     ui->cqEdit->clear();
     ui->ituEdit->clear();
     ui->dxccTableWidget->clear();
+    ui->dxccStatus->clear();
 
     stopContactTimer();
     setDefaultReport();
@@ -368,6 +377,29 @@ void NewContactWidget::updateCoordinates(double lat, double lon, CoordPrecision 
     coordPrec = prec;
 
     emit newTarget(lat, lon);
+}
+
+void NewContactWidget::updateDxccStatus() {
+    DxccStatus status = Data::dxccStatus(dxccEntity.dxcc, ui->bandText->text(), ui->modeEdit->currentText());
+    switch (status) {
+    case DxccStatus::NewEntity:
+        ui->dxccStatus->setText(tr("New Entity!"));
+        break;
+    case DxccStatus::NewBand:
+        ui->dxccStatus->setText(tr("New Band!"));
+        break;
+    case DxccStatus::NewMode:
+        ui->dxccStatus->setText(tr("New Mode!"));
+        break;
+    case DxccStatus::NewBandMode:
+        ui->dxccStatus->setText(tr("New Band & Mode!"));
+        break;
+    case DxccStatus::NewSlot:
+        ui->dxccStatus->setText(tr("New Slot!"));
+        break;
+    default:
+        ui->dxccStatus->clear();
+    }
 }
 
 void NewContactWidget::changeFrequency(double freq) {
