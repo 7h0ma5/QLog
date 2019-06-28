@@ -11,7 +11,7 @@ DbDialog::DbDialog(QWidget *parent) :
     QSettings settings;
 
     ui->hostnameEdit->setText(settings.value("db/hostname", "localhost").toString());
-    ui->portEdit->setValue(settings.value("db/port", 3306).toInt());
+    ui->portEdit->setValue(settings.value("db/port", 5432).toInt());
     ui->dbnameEdit->setText(settings.value("db/dbname", "qlog").toString());
     ui->usernameEdit->setText(settings.value("db/username").toString());
     ui->passwordEdit->setText(settings.value("db/password").toString());
