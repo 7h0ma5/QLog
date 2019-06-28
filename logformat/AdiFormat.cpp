@@ -24,17 +24,17 @@ void AdiFormat::exportContact(QSqlRecord& record) {
     writeField("rst_sent", record.value("rst_sent").toString());
     writeField("name", record.value("name").toString());
     writeField("qth", record.value("qth").toString());
-    writeField("gridsquare", record.value("gridsquare").toString().toUpper());
+    writeField("gridsquare", record.value("gridsquare").toString());
     writeField("cqz", record.value("cqz").toString());
     writeField("ituz", record.value("ituz").toString());
     writeField("freq", record.value("freq").toString(), "N");
-    writeField("band", record.value("band").toString().toLower());
-    writeField("mode", record.value("mode").toString().toUpper());
-    writeField("submode", record.value("submode").toString().toUpper());
-    writeField("cont", record.value("cont").toString().toUpper());
+    writeField("band", record.value("band").toString());
+    writeField("mode", record.value("mode").toString());
+    writeField("submode", record.value("submode").toString());
+    writeField("cont", record.value("cont").toString());
     writeField("dxcc", record.value("dxcc").toString());
     writeField("country", record.value("country").toString());
-    writeField("pfx", record.value("pfx").toString().toUpper());
+    writeField("pfx", record.value("pfx").toString());
 
     QJsonObject fields = QJsonDocument::fromJson(record.value("fields").toByteArray()).object();
 
@@ -199,14 +199,14 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("rst_sent", contact.take("rst_sent"));
     record.setValue("name", contact.take("name"));
     record.setValue("qth", contact.take("qth"));
-    record.setValue("gridsquare", contact.take("gridsquare"));
+    record.setValue("gridsquare", contact.take("gridsquare").toString().toUpper());
     record.setValue("cqz", contact.take("cqz"));
     record.setValue("ituz", contact.take("ituz"));
     record.setValue("freq", contact.take("freq"));
-    record.setValue("band", contact.take("band"));
-    record.setValue("mode", contact.take("mode"));
-    record.setValue("submode", contact.take("submode"));
-    record.setValue("cont", contact.take("cont"));
+    record.setValue("band", contact.take("band").toString().toLower());
+    record.setValue("mode", contact.take("mode").toString().toUpper());
+    record.setValue("submode", contact.take("submode").toString().toUpper());
+    record.setValue("cont", contact.take("cont").toString().toUpper());
     record.setValue("dxcc", contact.take("dxcc"));
     record.setValue("country", contact.take("country"));
     record.setValue("pfx", contact.take("pfx"));
