@@ -24,17 +24,17 @@ void AdiFormat::exportContact(QSqlRecord& record) {
     writeField("rst_sent", record.value("rst_sent").toString());
     writeField("name", record.value("name").toString());
     writeField("qth", record.value("qth").toString());
-    writeField("gridsquare", record.value("gridsquare").toString());
+    writeField("gridsquare", record.value("gridsquare").toString().toUpper());
     writeField("cqz", record.value("cqz").toString());
     writeField("ituz", record.value("ituz").toString());
     writeField("freq", record.value("freq").toString(), "N");
-    writeField("band", record.value("band").toString());
-    writeField("mode", record.value("mode").toString());
-    writeField("submode", record.value("submode").toString());
-    writeField("cont", record.value("cont").toString());
+    writeField("band", record.value("band").toString().toLower());
+    writeField("mode", record.value("mode").toString().toUpper());
+    writeField("submode", record.value("submode").toString().toUpper());
+    writeField("cont", record.value("cont").toString().toUpper());
     writeField("dxcc", record.value("dxcc").toString());
     writeField("country", record.value("country").toString());
-    writeField("pfx", record.value("pfx").toString());
+    writeField("pfx", record.value("pfx").toString().toUpper());
 
     QJsonObject fields = QJsonDocument::fromJson(record.value("fields").toByteArray()).object();
 
