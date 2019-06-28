@@ -4,9 +4,22 @@
 #include <QWidget>
 #include <QtNetwork>
 
+#include "data/Data.h"
+
 namespace Ui {
 class DxWidget;
 }
+
+struct Spot {
+    QTime time;
+    QString callsign;
+    double freq;
+    QString band;
+    QString spotter;
+    QString comment;
+    DxccEntity dxcc;
+    DxccStatus status;
+};
 
 class DxTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -17,13 +30,13 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    void addEntry(QStringList entry);
+    void addEntry(Spot entry);
     QString getCallsign(const QModelIndex& index);
-    QString getFrequency(const QModelIndex& index);
+    double getFrequency(const QModelIndex& index);
     void clear();
 
 private:
-    QList<QStringList> dxData;
+    QList<Spot> dxData;
 };
 
 class DxWidget : public QWidget {

@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QColor>
 #include <QSettings>
 #include "DxWidget.h"
 #include "ui_DxWidget.h"
@@ -14,9 +15,43 @@ int DxTableModel::columnCount(const QModelIndex&) const {
 
 QVariant DxTableModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
-        QStringList row = dxData.at(index.row());
-        return row.at(index.column());
+        Spot spot = dxData.at(index.row());
+        switch (index.column()) {
+        case 0:
+            return spot.time.toString();
+        case 1:
+            return spot.callsign;
+        case 2:
+            return spot.freq;
+        case 3:
+            return spot.spotter;
+        case 4:
+            return spot.comment;
+        case 5:
+            return spot.dxcc.country;
+        default:
+            return QVariant();
+        }
     }
+    else if (index.column() == 1 && role == Qt::BackgroundRole) {
+        Spot spot = dxData.at(index.row());
+        switch (spot.status) {
+        case DxccStatus::NewEntity:
+            return QColor(Qt::red);
+        default:
+            return QVariant();
+        }
+    }
+    else if (index.column() == 1 && role == Qt::TextColorRole) {
+        Spot spot = dxData.at(index.row());
+        switch (spot.status) {
+        case DxccStatus::NewEntity:
+            return QColor(Qt::white);
+        default:
+            return QVariant();
+        }
+    }
+
     return QVariant();
 }
 
@@ -34,18 +69,18 @@ QVariant DxTableModel::headerData(int section, Qt::Orientation orientation, int 
     }
 }
 
-void DxTableModel::addEntry(QStringList entry) {
+void DxTableModel::addEntry(Spot entry) {
     beginInsertRows(QModelIndex(), dxData.count(), dxData.count());
     dxData.append(entry);
     endInsertRows();
 }
 
 QString DxTableModel::getCallsign(const QModelIndex& index) {
-    return dxData.at(index.row()).at(1);
+    return dxData.at(index.row()).callsign;
 }
 
-QString DxTableModel::getFrequency(const QModelIndex& index) {
-    return dxData.at(index.row()).at(2);
+double DxTableModel::getFrequency(const QModelIndex& index) {
+    return dxData.at(index.row()).freq;
 }
 
 void DxTableModel::clear() {
@@ -158,10 +193,17 @@ void DxWidget::receive() {
             DxccEntity dxcc = Data::instance()->lookupDxcc(call);
             QString country = dxcc.country;
 
-            QStringList entry;
-            entry << time << call << freq << spotter << comment << country;
+            Spot spot;
+            spot.time = QTime::currentTime();
+            spot.callsign = call;
+            spot.freq = freq.toDouble() / 1000;
+            spot.band = Data::band(spot.freq);
+            spot.spotter = spotter;
+            spot.comment = comment;
+            spot.dxcc = dxcc;
+            spot.status = Data::dxccStatus(spot.dxcc.dxcc, spot.band, "");
 
-            dxTableModel->addEntry(entry);
+            dxTableModel->addEntry(spot);
             ui->dxTable->repaint();
         }
 
@@ -192,8 +234,8 @@ void DxWidget::rawModeChanged() {
 
 void DxWidget::entryDoubleClicked(QModelIndex index) {
     QString callsign = dxTableModel->getCallsign(index);
-    QString frequency = dxTableModel->getFrequency(index);
-    emit tuneDx(callsign, frequency.toDouble()/1000.0);
+    double frequency = dxTableModel->getFrequency(index);
+    emit tuneDx(callsign, frequency);
 }
 
 DxWidget::~DxWidget() {
