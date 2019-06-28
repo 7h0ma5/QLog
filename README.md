@@ -3,6 +3,8 @@
 QLog is an Amateur Radio logging application for Linux, Windows and Mac OS. It
 is based on the Qt 5 framework und uses PostgreSQL as database backend.
 
+![Screenshot](https://dl2ic.de/qlog.png)
+
 ## Features
 
 - ADIF import/export
