@@ -95,6 +95,7 @@ bool Migration::migrate(int toVersion) {
     switch (toVersion) {
     case 1: result = migrate1(); break;
     case 2: result = migrate2(); break;
+    case 3: result = migrate3(); break;
     }
 
     if (result && setVersion(toVersion) && db.commit()) {
@@ -158,8 +159,7 @@ bool Migration::migrate2() {
 
     result &= query.exec("CREATE TYPE dxcc_mode AS ENUM ('CW', 'PHONE', 'DIGITAL')");
 
-    result &= query.exec("CREATE TABLE IF NOT EXISTS modes\n"
-                         "(id SERIAL PRIMARY KEY,\n"
+    result &= query.exec("CREATE TABLE IF NOT EXISTS modes\n" "(id SERIAL PRIMARY KEY,\n"
                          "name VARCHAR(15) UNIQUE NOT NULL,"
                          "submodes JSON,"
                          "rprt VARCHAR(10),"
@@ -170,6 +170,40 @@ bool Migration::migrate2() {
 
     return result;
 }
+
+bool Migration::migrate3() {
+    QSqlQuery query;
+    bool result = true;
+
+    result &= query.exec("CREATE TABLE IF NOT EXISTS dxcc_entities\n"
+                         "(id SERIAL PRIMARY KEY,\n"
+                         "name VARCHAR(50) NOT NULL,"
+                         "prefix VARCHAR(10),"
+                         "cont VARCHAR(2),"
+                         "cqz INTEGER,"
+                         "ituz INTEGER,"
+                         "lat FLOAT,"
+                         "lon FLOAT,"
+                         "tz FLOAT"
+                         ")"
+                         );
+
+    result &= query.exec("CREATE TABLE IF NOT EXISTS dxcc_prefixes\n"
+                         "(id SERIAL PRIMARY KEY,\n"
+                         "prefix VARCHAR(25) UNIQUE NOT NULL,"
+                         "exact BOOLEAN,"
+                         "dxcc INTEGER REFERENCES dxcc_entities(id),"
+                         "cqz INTEGER,"
+                         "ituz INTEGER,"
+                         "cont VARCHAR(2),"
+                         "lat FLOAT,"
+                         "lon FLOAT"
+                         ")"
+                         );
+
+    return result;
+}
+
 
 bool Migration::updateBands() {
     QFile file(":/res/data/bands.json");

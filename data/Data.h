@@ -4,8 +4,6 @@
 #include <QtCore>
 #include "Dxcc.h"
 
-class Cty;
-
 class Data : public QObject
 {
     Q_OBJECT
@@ -30,7 +28,6 @@ private:
 
     QMap<QString, QString> contests;
     QMap<QString, QString> propagationModes;
-    Cty* cty;
 };
 
 #endif // DATA_H

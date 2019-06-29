@@ -1,10 +1,9 @@
 #include <QJsonDocument>
 #include <QSqlQuery>
-#include "core/Cty.h"
+#include <QSqlError>
 #include "Data.h"
 
 Data::Data(QObject *parent) : QObject(parent) {
-    cty = new Cty();
     loadContests();
     loadPropagationModes();
 }
@@ -13,7 +12,6 @@ Data* Data::instance() {
     static Data instance;
     return &instance;
 }
-
 
 DxccStatus Data::dxccStatus(int dxcc, QString band, QString mode) {
     QSqlQuery query;
@@ -103,5 +101,49 @@ void Data::loadPropagationModes() {
 }
 
 DxccEntity Data::lookupDxcc(QString callsign) {
-    return cty->lookup(callsign);
+    QSqlQuery query;
+    query.prepare(
+                "SELECT\n"
+                "    dxcc_entities.id,\n"
+                "    dxcc_entities.name,\n"
+                "    dxcc_entities.prefix,\n"
+                "    dxcc_entities.cont,\n"
+                "    CASE\n"
+                "        WHEN (dxcc_prefixes.cqz != 0)\n"
+                "        THEN dxcc_prefixes.cqz\n"
+                "        ELSE dxcc_entities.cqz\n"
+                "    END AS cqz,\n"
+                "    CASE\n"
+                "        WHEN (dxcc_prefixes.ituz != 0)\n"
+                "        THEN dxcc_prefixes.ituz\n"
+                "        ELSE dxcc_entities.ituz\n"
+                "    END AS ituz\n,"
+                "    dxcc_entities.lat,\n"
+                "    dxcc_entities.lon,\n"
+                "    dxcc_entities.tz\n"
+                "FROM dxcc_prefixes\n"
+                "INNER JOIN dxcc_entities ON (dxcc_prefixes.dxcc = dxcc_entities.id)\n"
+                "WHERE (dxcc_prefixes.prefix = :callsign and dxcc_prefixes.exact = true)\n"
+                "    OR (dxcc_prefixes.exact = false and :callsign LIKE dxcc_prefixes.prefix || '%')\n"
+                "ORDER BY dxcc_prefixes.prefix\n"
+                "DESC LIMIT 1\n"
+    );
+
+    query.bindValue(":callsign", callsign);
+    query.exec();
+
+    DxccEntity dxcc;
+    if (query.next()) {
+        qDebug() << "got a result!";
+        dxcc.dxcc = query.value(0).toInt();
+        dxcc.country = query.value(1).toString();
+        dxcc.prefix = query.value(2).toString();
+        dxcc.cont = query.value(3).toString();
+        dxcc.cqz = query.value(4).toInt();
+        dxcc.ituz = query.value(5).toInt();
+        dxcc.latlon[0] = query.value(6).toFloat();
+        dxcc.latlon[1] = query.value(7).toFloat();
+        dxcc.tz = query.value(8).toFloat();
+    }
+    return dxcc;
 }

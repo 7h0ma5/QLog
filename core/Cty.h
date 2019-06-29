@@ -15,20 +15,21 @@ public:
     Cty();
     ~Cty();
 
-    DxccEntity lookup(QString callsign);
+    void update();
 
 public slots:
+    void loadData();
     void processReply(QNetworkReply* reply);
+
+signals:
+    void progress(int count);
+    void finished(bool result);
 
 private:
     void download();
-    void loadData();
     void parseData(QTextStream& data);
 
     QNetworkAccessManager* nam;
-
-    QHash<qint32, DxccEntity> entities;
-    QHash<QString, DxccPrefix> prefixes;
 };
 
 #endif // CTY_H

@@ -8,16 +8,21 @@
 #include <QStringRef>
 #include <QDir>
 #include <QFile>
+#include <QSqlTableModel>
+#include <QSqlRecord>
 #include "Cty.h"
 
 #define CTY_URL "http://www.country-files.com/cty/cty.csv"
 
 Cty::Cty() {
+}
+
+void Cty::update() {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
 
     if (dir.exists("cty.csv")) {
         qDebug() << "use cached cty.csv at" << dir.path();
-        loadData();
+        QTimer::singleShot(0, this, &Cty::loadData);
     }
     else {
         download();
@@ -31,6 +36,8 @@ void Cty::loadData() {
     QTextStream stream(&file);
     parseData(stream);
     file.close();
+
+    emit finished(true);
 }
 
 void Cty::download() {
@@ -43,38 +50,6 @@ void Cty::download() {
     request.setRawHeader("User-Agent", "QLog/1.0 (Qt)");
     nam->get(request);
     qDebug() << "download cty.csv from" << url.toString();
-}
-
-DxccEntity Cty::lookup(QString callsign) {
-    for (int i = callsign.length(); i > 0; i--) {
-        QString substring = QStringRef(&callsign, 0, i).toString();
-
-        if (prefixes.contains(substring)) {
-            DxccPrefix prefix = prefixes[substring];
-
-            if (prefix.exact && prefix.prefix != callsign) {
-                continue;
-            }
-
-            DxccEntity result = entities[prefix.dxcc];
-            if (prefix.cqz) result.cqz = prefix.cqz;
-            if (prefix.ituz) result.ituz = prefix.ituz;
-
-            return result;
-        }
-    }
-    /*
-    for (int i = callsign.length(); i > 0; i--) {
-        QStringRef substring(&callsign, 0, i);
-        if (dxccMap.contains(substring.toString())) {
-            return dxccMap[substring.toString()];
-        }
-    }
-    */
-
-    DxccEntity result;
-    result.dxcc = 0;
-    return result;
 }
 
 void Cty::processReply(QNetworkReply* reply) {
@@ -92,21 +67,41 @@ void Cty::processReply(QNetworkReply* reply) {
         file.flush();
         file.close();
 
+        delete reply;
+        delete nam;
+
+        nam = nullptr;
+
         loadData();
     }
     else {
         qDebug() << "failed to download cty.csv";
-    }
 
-    delete reply;
-    delete nam;
+        delete reply;
+        delete nam;
+
+        nam = nullptr;
+
+        emit finished(false);
+    }
 
 }
 
 void Cty::parseData(QTextStream& data) {
-    qDebug() << "parse data";
+    qDebug() << "Parse cty.csv data";
     QRegExp prefixSeperator("[\\s;]");
     QRegExp prefixFormat("(=?)([A-Z0-9/]+)(?:\\((\\d+)\\))?(?:\\[(\\d+)\\])?$");
+
+    QSqlTableModel entityTableModel;
+    entityTableModel.setTable("dxcc_entities");
+    QSqlRecord entityRecord = entityTableModel.record();
+
+    QSqlTableModel prefixTableModel;
+    prefixTableModel.setTable("dxcc_prefixes");
+    prefixTableModel.removeColumn(prefixTableModel.fieldIndex("id"));
+    QSqlRecord prefixRecord = prefixTableModel.record();
+
+    int count = 0;
 
     while (!data.atEnd()) {
         QString line = data.readLine();
@@ -117,44 +112,47 @@ void Cty::parseData(QTextStream& data) {
             continue;
         }
 
-        DxccEntity dxcc;
-        dxcc.prefix = fields.at(0);
-        dxcc.country = fields.at(1);
-        dxcc.dxcc = fields.at(2).toInt();
-        dxcc.cont = fields.at(3);
-        dxcc.cqz = fields.at(4).toInt();
-        dxcc.ituz = fields.at(5).toInt();
-        dxcc.latlon[0] = fields.at(6).toFloat();
-        dxcc.latlon[1] = -fields.at(7).toFloat();
-        dxcc.tz = fields.at(8).toFloat();
+        int dxcc_id = fields.at(2).toInt();
 
-        if (entities.contains(dxcc.dxcc)) {
-            qDebug() << "ENTITY COLLISION" << dxcc.country;
-        }
-
-        entities.insert(dxcc.dxcc, dxcc);
+        entityRecord.clearValues();
+        entityRecord.setValue("id", dxcc_id);
+        entityRecord.setValue("prefix", fields.at(0));
+        entityRecord.setValue("name", fields.at(1));
+        entityRecord.setValue("cont", fields.at(3));
+        entityRecord.setValue("cqz", fields.at(4));
+        entityRecord.setValue("ituz", fields.at(5));
+        entityRecord.setValue("lat", fields.at(6).toFloat());
+        entityRecord.setValue("lon", -fields.at(7).toFloat());
+        entityRecord.setValue("tz", fields.at(8).toFloat());
+        entityTableModel.insertRecord(-1, entityRecord);
+        entityTableModel.submitAll();
 
         QStringList prefixList = fields.at(9).split(prefixSeperator, QString::SkipEmptyParts);
         for (QString prefix : prefixList) {
             if (prefixFormat.exactMatch(prefix)) {
-                DxccPrefix pfx;
-                pfx.dxcc = dxcc.dxcc;
-                pfx.exact = !prefixFormat.cap(1).isEmpty();
-                pfx.prefix = prefixFormat.cap(2);
-                pfx.cqz = prefixFormat.cap(3).toInt();
-                pfx.ituz = prefixFormat.cap(4).toInt();
+                prefixRecord.clearValues();
+                prefixRecord.setValue("dxcc", dxcc_id);
+                prefixRecord.setValue("exact", !prefixFormat.cap(1).isEmpty());
+                prefixRecord.setValue("prefix", prefixFormat.cap(2));
+                prefixRecord.setValue("cqz", prefixFormat.cap(3).toInt());
+                prefixRecord.setValue("ituz", prefixFormat.cap(4).toInt());
 
-                if (prefixes.contains(pfx.prefix)) {
-                    qDebug() << "PREFIX COLLISION" << pfx.prefix;
-                }
-
-                prefixes.insert(pfx.prefix, pfx);
+                prefixTableModel.insertRecord(-1, prefixRecord);
             }
             else  {
                 qDebug() << "Failed to match " << prefix;
             }
         }
+
+        prefixTableModel.submitAll();
+
+        emit progress(count);
+        QCoreApplication::processEvents();
+
+        count++;
     }
+
+    qDebug() << "DXCC update finished:" << count << "entities loaded.";
 }
 
 Cty::~Cty() {
