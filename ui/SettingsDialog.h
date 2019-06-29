@@ -7,6 +7,8 @@ namespace Ui {
 class SettingsDialog;
 }
 
+class QSqlTableModel;
+
 class SettingsDialog : public QDialog {
     Q_OBJECT
 
@@ -23,6 +25,8 @@ private:
     void readSettings();
     void writeSettings();
 
+    QSqlTableModel* modeTableModel;
+    QSqlTableModel* bandTableModel;
     Ui::SettingsDialog *ui;
 };
 

@@ -1,5 +1,6 @@
 #include <QSettings>
 #include <QStringListModel>
+#include <QSqlTableModel>
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 #include "models/RigTypeModel.h"
@@ -15,6 +16,37 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     QStringListModel* rigModel = new QStringListModel();
     ui->rigListView->setModel(rigModel);
+
+    modeTableModel = new QSqlTableModel(this);
+    modeTableModel->setTable("modes");
+    modeTableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
+    modeTableModel->setSort(1, Qt::DescendingOrder);
+    modeTableModel->setHeaderData(1, Qt::Horizontal, tr("Name"));
+    modeTableModel->setHeaderData(3, Qt::Horizontal, tr("Report"));
+    modeTableModel->setHeaderData(4, Qt::Horizontal, tr("DXCC"));
+    modeTableModel->setHeaderData(5, Qt::Horizontal, tr("Enabled"));
+    ui->modeTableView->setModel(modeTableModel);
+
+    ui->modeTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->modeTableView->hideColumn(0);
+    ui->modeTableView->hideColumn(2);
+
+    modeTableModel->select();
+
+    bandTableModel = new QSqlTableModel(this);
+    bandTableModel->setTable("bands");
+    bandTableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
+    bandTableModel->setSort(2, Qt::AscendingOrder);
+    bandTableModel->setHeaderData(1, Qt::Horizontal, tr("Name"));
+    bandTableModel->setHeaderData(2, Qt::Horizontal, tr("Start"));
+    bandTableModel->setHeaderData(3, Qt::Horizontal, tr("End"));
+    bandTableModel->setHeaderData(4, Qt::Horizontal, tr("Enabled"));
+    ui->bandTableView->setModel(bandTableModel);
+
+    ui->bandTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->bandTableView->hideColumn(0);
+
+    bandTableModel->select();
 
     readSettings();
 }
@@ -84,5 +116,7 @@ void SettingsDialog::writeSettings() {
 }
 
 SettingsDialog::~SettingsDialog() {
+    delete modeTableModel;
+    delete bandTableModel;
     delete ui;
 }
