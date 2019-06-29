@@ -33,7 +33,6 @@ void Wsjtx::readPendingDatagrams() {
 
         switch (mtype) {
         case 1: {
-            qDebug() << "status received";
             QByteArray id, mode, tx_mode, sub_mode, report, dx_call, dx_grid, de_call, de_grid;
             WsjtxStatus status;
 
@@ -100,7 +99,6 @@ void Wsjtx::readPendingDatagrams() {
 }
 
 void Wsjtx::insertContact(WsjtxLog log) {
-    qDebug() << "insert log";
     QSqlTableModel model;
     model.setTable("contacts");
     model.removeColumn(model.fieldIndex("id"));

@@ -13,9 +13,47 @@ int WsjtxTableModel::columnCount(const QModelIndex&) const {
 
 QVariant WsjtxTableModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
-        QStringList row = wsjtxData.at(index.row());
-        return row.at(index.column());
+        WsjtxEntry entry = wsjtxData.at(index.row());
+        switch (index.column()) {
+        case 0: return QString::number(entry.decode.snr);
+        case 1: return entry.callsign;
+        case 2: return entry.grid;
+        case 3: return entry.dxcc.country;
+        default: return QVariant();
+        }
     }
+    else if (index.column() == 1 && role == Qt::BackgroundRole) {
+        WsjtxEntry entry = wsjtxData.at(index.row());
+        switch (entry.status) {
+        case DxccStatus::NewEntity:
+            return QColor(Qt::red);
+        case DxccStatus::NewBand:
+        case DxccStatus::NewMode:
+        case DxccStatus::NewBandMode:
+            return QColor(Qt::blue);
+        case DxccStatus::NewSlot:
+            return QColor(Qt::green);
+
+        default:
+            return QVariant();
+        }
+    }
+    else if (index.column() == 1 && role == Qt::TextColorRole) {
+        WsjtxEntry entry = wsjtxData.at(index.row());
+        switch (entry.status) {
+        case DxccStatus::NewEntity:
+            return QColor(Qt::white);
+        case DxccStatus::NewBand:
+        case DxccStatus::NewMode:
+        case DxccStatus::NewBandMode:
+            return QColor(Qt::white);
+        case DxccStatus::NewSlot:
+            return QColor(Qt::black);
+        default:
+            return QVariant();
+        }
+    }
+
     return QVariant();
 }
 
@@ -31,7 +69,7 @@ QVariant WsjtxTableModel::headerData(int section, Qt::Orientation orientation, i
     }
 }
 
-void WsjtxTableModel::addEntry(QStringList entry) {
+void WsjtxTableModel::addEntry(WsjtxEntry entry) {
     beginInsertRows(QModelIndex(), wsjtxData.count(), wsjtxData.count());
     wsjtxData.append(entry);
     endInsertRows();
@@ -54,31 +92,29 @@ WsjtxWidget::WsjtxWidget(QWidget *parent) :
 }
 
 void WsjtxWidget::decodeReceived(WsjtxDecode decode) {
-    /*
-    QTableWidgetItem *newItem = new QTableWidgetItem(decode.message);
-    ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
-    ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, newItem);
-    qDebug() << "Decode received";
-    */
-
-    QStringList entry;
-
     if (decode.message.startsWith("CQ")) {
         QRegExp cqRegExp("^CQ (DX )?([A-Z0-9\/]+) ?([A-Z]{2}[0-9]{2})?");
         if (cqRegExp.exactMatch(decode.message)) {
-            QString callsign = cqRegExp.cap(2);
-            QString grid = cqRegExp.cap(3);
-            DxccEntity dxcc = Data::instance()->lookupDxcc(callsign);
-
-            entry << QString::number(decode.snr) << callsign << grid << dxcc.country;
+            WsjtxEntry entry;
+            entry.decode = decode;
+            entry.callsign = cqRegExp.cap(2);
+            entry.grid = cqRegExp.cap(3);
+            entry.dxcc = Data::instance()->lookupDxcc(entry.callsign);
+            entry.status = Data::instance()->dxccStatus(entry.dxcc.dxcc, band, status.mode);
             wsjtxTableModel->addEntry(entry);
             ui->tableView->repaint();
         }
     }
 }
 
-void WsjtxWidget::statusReceived(WsjtxStatus status) {
-    ui->freqLabel->setText(QString("%1").arg(status.dial_freq));
+void WsjtxWidget::statusReceived(WsjtxStatus newStatus) {
+    if (this->status.dial_freq != newStatus.dial_freq) {
+        band = Data::instance()->band(newStatus.dial_freq/1e6);
+        ui->freqLabel->setText(QString("%1 MHz").arg(newStatus.dial_freq/1e6));
+    }
+
+    status = newStatus;
+
     ui->modeLabel->setText(status.mode);
 
     if (status.decoding) {

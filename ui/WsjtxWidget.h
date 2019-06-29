@@ -4,10 +4,19 @@
 #include <QWidget>
 #include <QAbstractTableModel>
 #include "core/Wsjtx.h"
+#include "data/Data.h"
 
 namespace Ui {
 class WsjtxWidget;
 }
+
+struct WsjtxEntry {
+    WsjtxDecode decode;
+    DxccEntity dxcc;
+    DxccStatus status;
+    QString callsign;
+    QString grid;
+};
 
 class WsjtxTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -18,11 +27,11 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    void addEntry(QStringList entry);
+    void addEntry(WsjtxEntry entry);
     void clear();
 
 private:
-    QList<QStringList> wsjtxData;
+    QList<WsjtxEntry> wsjtxData;
 };
 
 class WsjtxWidget : public QWidget
@@ -39,6 +48,8 @@ public slots:
 
 private:
     WsjtxTableModel* wsjtxTableModel;
+    WsjtxStatus status;
+    QString band;
     Ui::WsjtxWidget *ui;
 };
 

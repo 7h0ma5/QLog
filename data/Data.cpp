@@ -134,7 +134,6 @@ DxccEntity Data::lookupDxcc(QString callsign) {
 
     DxccEntity dxcc;
     if (query.next()) {
-        qDebug() << "got a result!";
         dxcc.dxcc = query.value(0).toInt();
         dxcc.country = query.value(1).toString();
         dxcc.prefix = query.value(2).toString();
