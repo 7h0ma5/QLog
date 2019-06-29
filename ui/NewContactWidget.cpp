@@ -1,5 +1,6 @@
 #include <QtSql/QtSql>
 #include <QShortcut>
+#include <QDesktopServices>
 #include <QDebug>
 #include "core/Rig.h"
 #include "core/utils.h"
@@ -435,6 +436,10 @@ void NewContactWidget::setDefaultReport() {
 
     ui->rstRcvdEdit->setText(defaultReport);
     ui->rstSentEdit->setText(defaultReport);
+}
+
+void NewContactWidget::qrz() {
+    QDesktopServices::openUrl(QString("https://www.qrz.com/lookup/%1").arg(callsign));
 }
 
 NewContactWidget::~NewContactWidget() {

@@ -357,6 +357,33 @@
      <property name="verticalSpacing">
       <number>0</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="timeOnLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Time On</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="7">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="1" column="4">
       <widget class="QTimeEdit" name="timeOffEdit">
        <property name="focusPolicy">
@@ -370,26 +397,20 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="6">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="2">
-      <widget class="QTimeEdit" name="timeOnEdit">
+     <item row="1" column="1">
+      <widget class="QDateEdit" name="dateEdit">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="displayFormat">
-        <string notr="true">hh:mm:ss</string>
+       <property name="dateTime">
+        <datetime>
+         <hour>17</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>1999</year>
+         <month>12</month>
+         <day>29</day>
+        </datetime>
        </property>
        <property name="calendarPopup">
         <bool>true</bool>
@@ -399,20 +420,13 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QDateEdit" name="dateEdit">
+     <item row="1" column="2">
+      <widget class="QTimeEdit" name="timeOnEdit">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="dateTime">
-        <datetime>
-         <hour>18</hour>
-         <minute>0</minute>
-         <second>0</second>
-         <year>1999</year>
-         <month>12</month>
-         <day>29</day>
-        </datetime>
+       <property name="displayFormat">
+        <string notr="true">hh:mm:ss</string>
        </property>
        <property name="calendarPopup">
         <bool>true</bool>
@@ -436,34 +450,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="dateLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Date</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="timeOnLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Time On</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="5">
       <widget class="QPushButton" name="stopContactTimerButton">
        <property name="enabled">
@@ -481,6 +467,20 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="dateLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Date</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="3">
       <widget class="QPushButton" name="updateTimeButton">
        <property name="text">
@@ -489,6 +489,13 @@
        <property name="icon">
         <iconset>
          <normaloff>:/res/icons/clock-new.png</normaloff>:/res/icons/clock-new.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QPushButton" name="qrzButton">
+       <property name="text">
+        <string>QRZ?</string>
        </property>
       </widget>
      </item>
@@ -1203,6 +1210,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>qrzButton</sender>
+   <signal>clicked()</signal>
+   <receiver>NewContactWidget</receiver>
+   <slot>qrz()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>saveContact()</slot>
@@ -1213,5 +1236,6 @@
   <slot>frequencyChanged()</slot>
   <slot>modeChanged()</slot>
   <slot>updateTime()</slot>
+  <slot>qrz()</slot>
  </slots>
 </ui>

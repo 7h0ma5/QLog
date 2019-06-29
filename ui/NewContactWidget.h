@@ -52,6 +52,7 @@ public slots:
     void changePower(double power);
     void tuneDx(QString callsign, double frequency);
     void setDefaultReport();
+    void qrz();
 
 private:
     void queryDatabase(QString callsign);
