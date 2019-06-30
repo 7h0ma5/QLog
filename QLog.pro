@@ -130,9 +130,4 @@ unix {
   INSTALLS += target desktop icon
 }
 
-win32: LIBS += -L$$PWD/../lib/ -lhamlib-2
-else:unix: LIBS += -L$/usr/lib/ -lhamlib
-
-win32: INCLUDEPATH += $$PWD/../include/
-
-win32: DEPENDPATH += $$PWD/../include/
+LIBS += -lhamlib
