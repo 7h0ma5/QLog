@@ -126,6 +126,14 @@ void Wsjtx::insertContact(WsjtxLog log) {
         record.setValue("dxcc", dxcc.dxcc);
     }
 
+    QVariantMap fields;
+    if (!log.tx_pwr.isEmpty()) fields.insert("tx_pwr", log.tx_pwr);
+    if (!log.op_call.isEmpty()) fields.insert("operator", log.op_call);
+    if (!log.my_grid.isEmpty()) fields.insert("my_gridsquare", log.my_grid);
+    if (!log.my_call.isEmpty()) fields.insert("station_callsign", log.my_call);
+
+    QJsonDocument doc = QJsonDocument::fromVariant(QVariant(fields));
+    record.setValue("fields", QString(doc.toJson()));
 
     record.setValue("start_time", log.time_on);
     record.setValue("end_time", log.time_off);

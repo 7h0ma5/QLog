@@ -313,6 +313,10 @@ void NewContactWidget::saveContact() {
         fields.insert("my_gridsquare", settings.value("station/grid").toString());
     }
 
+    if (!settings.value("station/callsign").toString().isEmpty()) {
+        fields.insert("station_callsign", settings.value("station/callsign").toString());
+    }
+
     if (!settings.value("station/operator").toString().isEmpty()) {
         fields.insert("operator", settings.value("station/operator").toString());
     }
