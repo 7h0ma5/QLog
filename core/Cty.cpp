@@ -111,6 +111,9 @@ void Cty::parseData(QTextStream& data) {
             qDebug() << "Invalid line in cty.csv";
             continue;
         }
+        else if (fields.at(0).startsWith("*")) {
+            continue;
+        }
 
         int dxcc_id = fields.at(2).toInt();
 
