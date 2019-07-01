@@ -78,7 +78,7 @@ void LogFormat::runImport() {
         if (!this->importNext(record)) break;
 
         if (dateRangeSet()) {
-            if (!inDateRange(record.value("date").toDate())) {
+            if (!inDateRange(record.value("start_time").toDateTime().date())) {
                 continue;
             }
         }
@@ -155,10 +155,6 @@ int LogFormat::runExport() {
 
 bool LogFormat::dateRangeSet() {
     return !startDate.isNull() && !endDate.isNull();
-}
-
-bool LogFormat::inDateRange(QString date) {
-    return inDateRange(QDate::fromString(date, Qt::ISODate));
 }
 
 bool LogFormat::inDateRange(QDate date) {
