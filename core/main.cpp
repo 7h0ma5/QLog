@@ -9,7 +9,6 @@
 #include "Migration.h"
 #include "ui/DbDialog.h"
 #include "ui/MainWindow.h"
-#include "Cty.h"
 #include "Rig.h"
 
 static void loadStylesheet(QApplication* app) {
@@ -67,19 +66,6 @@ static bool migrateDatabase() {
     return m.run();
 }
 
-static bool updateDxcc() {
-    QProgressDialog progress("Updating DXCC entities...", nullptr, 0, 346);
-    progress.show();
-
-    Cty cty;
-
-    QObject::connect(&cty, &Cty::progress, &progress, &QProgressDialog::setValue);
-    QObject::connect(&cty, &Cty::finished, &progress, &QProgressDialog::done);
-
-    cty.update();
-    return progress.exec();
-}
-
 static void startRigThread() {
     QThread* rigThread = new QThread;
     Rig* rig = Rig::instance();
@@ -113,11 +99,6 @@ int main(int argc, char* argv[]) {
         QMessageBox::critical(nullptr, QMessageBox::tr("QLog Error"),
                               QMessageBox::tr("Database migration failed."));
         return 1;
-    }
-
-    if (!updateDxcc()) {
-        QMessageBox::warning(nullptr, QMessageBox::tr("QLog Warning"),
-                              QMessageBox::tr("DXCC update failed."));
     }
 
     startRigThread();

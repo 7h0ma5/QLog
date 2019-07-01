@@ -16,8 +16,11 @@ private:
 
     bool runSqlFile(QString filename);
 
+    int tableRows(QString name);
+
     bool updateBands();
     bool updateModes();
+    bool updateDxcc();
 
     static const int latestVersion = 3;
 };

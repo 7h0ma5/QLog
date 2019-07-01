@@ -1,7 +1,9 @@
 #include <QProgressDialog>
+#include <QMessageBox>
 #include <QtSql>
 #include <QDebug>
 #include "core/Migration.h"
+#include "core/Cty.h"
 
 /**
  * Migrate the database to the latest schema version.
@@ -22,21 +24,33 @@ bool Migration::run() {
         return false;
     }
 
-    while (true) {
-        currentVersion = getVersion();
+    QProgressDialog progress("Migrating the database...", nullptr, currentVersion, latestVersion);
+    progress.show();
 
-        if (currentVersion < latestVersion) {
-            bool res = migrate(currentVersion+1);
-            if (!res || getVersion() == currentVersion) {
-                qCritical() << "migration failed";
-                return false;
-            }
+    while ((currentVersion = getVersion()) < latestVersion) {
+        bool res = migrate(currentVersion+1);
+        if (!res || getVersion() == currentVersion) {
+            progress.close();
+            return false;
         }
-        else break;
+        progress.setValue(currentVersion);
     }
 
-    updateBands();
-    updateModes();
+    progress.close();
+
+    if (!tableRows("bands")) {
+        qDebug() << "Updating band table";
+        updateBands();
+    }
+
+    if (!tableRows("modes")) {
+        qDebug() << "Updating mode table";
+        updateModes();
+    }
+
+    if (!tableRows("dxcc_entities") || !tableRows("dxcc_prefixes")) {
+        updateDxcc();
+    }
 
     qDebug() << "Database migration successful";
 
@@ -50,12 +64,7 @@ int Migration::getVersion() {
     QSqlQuery query("SELECT version FROM schema_versions "
                     "ORDER BY version DESC LIMIT 1");
 
-    if (query.first()) {
-        return query.value(0).toInt();
-    }
-    else {
-        return 0;
-    }
+    return query.first() ? query.value(0).toInt() : 0;
 }
 
 /**
@@ -113,10 +122,33 @@ bool Migration::runSqlFile(QString filename) {
     return query.exec(sql);
 }
 
+int Migration::tableRows(QString name) {
+    QSqlQuery query(QString("SELECT count(*) FROM %1").arg(name));
+    return query.first() ? query.value(0).toInt() : 0;
+}
+
 bool Migration::updateBands() {
     return runSqlFile(":/res/sql/bands.sql");
 }
 
 bool Migration::updateModes() {
     return runSqlFile(":/res/sql/modes.sql");
+}
+
+bool Migration::updateDxcc() {
+    QProgressDialog progress("Updating DXCC entities...", nullptr, 0, 346);
+    progress.show();
+
+    Cty cty;
+
+    QObject::connect(&cty, &Cty::progress, &progress, &QProgressDialog::setValue);
+    QObject::connect(&cty, &Cty::finished, &progress, &QProgressDialog::done);
+
+    cty.update();
+    if (!progress.exec()) {
+        QMessageBox::warning(nullptr, QMessageBox::tr("QLog Warning"),
+                             QMessageBox::tr("DXCC update failed."));
+        return false;
+    }
+    return true;
 }
