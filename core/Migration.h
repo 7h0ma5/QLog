@@ -1,6 +1,8 @@
 #ifndef MIGRATION_H
 #define MIGRATION_H
 
+class QString;
+
 class Migration {
 public:
     Migration() {}
@@ -12,9 +14,7 @@ private:
     int getVersion();
     bool setVersion(int version);
 
-    bool migrate1();
-    bool migrate2();
-    bool migrate3();
+    bool runSqlFile(QString filename);
 
     bool updateBands();
     bool updateModes();
