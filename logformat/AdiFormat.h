@@ -7,6 +7,8 @@ class AdiFormat : public LogFormat {
 public:
     AdiFormat(QTextStream& stream) : LogFormat(stream) {}
 
+    bool readContact(QVariantMap& contact);
+
 private:
     enum ParserState {
         START,
@@ -23,7 +25,7 @@ private:
 
     void writeField(QString name, QString value, QString type="");
     void readField(QString& field, QString& value);
-    bool readContact(QMap<QString, QVariant>& contact);
+
     QTime parseTime(QString time);
 
     ParserState state = START;

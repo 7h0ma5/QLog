@@ -214,7 +214,7 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     QDate date_on = QDate::fromString(contact.take("qso_date").toString(), "yyyyMMdd");
     QDate date_off = QDate::fromString(contact.take("qso_date_off").toString(), "yyyyMMdd");
 
-    if (date_off.isNull() || date_off.isValid()) {
+    if (date_off.isNull() || !date_off.isValid()) {
         date_off = date_on;
     }
 

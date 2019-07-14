@@ -40,6 +40,8 @@ StatisticsWidget::StatisticsWidget(QWidget *parent) :
     axisY->setTickCount(10);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
+    axisY->applyNiceNumbers();
+    axisY->setLabelFormat("%d");
 
     chart->setTitle("Total QSOs");
     chart->setAnimationOptions(QChart::SeriesAnimations);

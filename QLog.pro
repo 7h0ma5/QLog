@@ -46,6 +46,7 @@ SOURCES += \
         models/BandModel.cpp \
         models/DxccTableModel.cpp \
         models/RigTypeModel.cpp \
+        ui/ClockWidget.cpp \
         ui/DbDialog.cpp \
         ui/DxWidget.cpp \
         ui/DxccTableWidget.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
         models/BandModel.h \
         models/DxccTableModel.h \
         models/RigTypeModel.h \
+        ui/ClockWidget.h \
         ui/DbDialog.h \
         ui/DxWidget.h \
         ui/DxccTableWidget.h \
@@ -91,6 +93,7 @@ HEADERS += \
         ui/WsjtxWidget.h
 
 FORMS += \
+        ui/ClockWidget.ui \
         ui/DbDialog.ui \
         ui/DxWidget.ui \
         ui/ExportDialog.ui \

@@ -4,6 +4,7 @@
 #include <QNetworkReply>
 #include <QSettings>
 #include "Lotw.h"
+#include "logformat/AdiFormat.h"
 
 #define ADIF_API "https://lotw.arrl.org/lotwuser/lotwreport.adi"
 
@@ -45,6 +46,15 @@ void Lotw::processReply(QNetworkReply* reply) {
         qDebug() << "LotW error" << reply->errorString();
         delete reply;
         return;
+    }
+
+    QTextStream stream(reply);
+    AdiFormat adi(stream);
+
+    QVariantMap contact;
+
+    while (adi.readContact(contact)) {
+        qDebug() << contact;
     }
 
     qDebug() << QString(reply->readAll());

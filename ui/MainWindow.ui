@@ -14,14 +14,11 @@
    <string>QLog</string>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::GroupedDragging</set>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="LogbookWidget" name="logbookWidget" native="true"/>
-    </item>
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="NewContactWidget" name="newContactWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -36,6 +33,9 @@
        </size>
       </property>
      </widget>
+    </item>
+    <item>
+     <widget class="LogbookWidget" name="logbookWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -96,51 +96,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dxDockWidget">
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>DX Cluster</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="DxWidget" name="dxWidget" native="true"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="mapDockWidget">
-   <property name="windowTitle">
-    <string>Map</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
-    <layout class="QGridLayout" name="gridLayout_5">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="MapWidget" name="mapWidget" native="true"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>Toolbar</string>
@@ -169,24 +124,45 @@
    <addaction name="actionDXClusterWindow"/>
    <addaction name="actionMapWindow"/>
   </widget>
-  <widget class="QDockWidget" name="wsjtxDockWidget">
+  <widget class="QDockWidget" name="clockDockWidget">
    <property name="windowTitle">
-    <string>Wsjtx</string>
+    <string>Clock</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <widget class="WsjtxWidget" name="wsjtxWidget" native="true"/>
-     </item>
-    </layout>
-   </widget>
+   <widget class="ClockWidget" name="clockWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="mapDockWidget">
+   <property name="windowTitle">
+    <string>Map</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="MapWidget" name="mapWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="dxDockWidget">
+   <property name="windowTitle">
+    <string>DX Cluster</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="DxWidget" name="dxWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="wsjtxDockWidget">
+   <property name="windowTitle">
+    <string>WSJTX</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="WsjtxWidget" name="wsjtxWidget"/>
   </widget>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="document-new">
+    <iconset theme="document-close">
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
@@ -355,6 +331,12 @@
    <header>ui/WsjtxWidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>ClockWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/ClockWidget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -439,22 +421,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>newContactWidget</sender>
-   <signal>newTarget(double,double)</signal>
-   <receiver>mapWidget</receiver>
-   <slot>setTarget(double,double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>408</x>
-     <y>622</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>398</x>
-     <y>228</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionNewContact</sender>
    <signal>triggered()</signal>
    <receiver>newContactWidget</receiver>
@@ -483,54 +449,6 @@
     <hint type="destinationlabel">
      <x>408</x>
      <y>622</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dxWidget</sender>
-   <signal>tuneDx(QString,double)</signal>
-   <receiver>newContactWidget</receiver>
-   <slot>tuneDx(QString,double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>398</x>
-     <y>228</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>408</x>
-     <y>622</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionMapWindow</sender>
-   <signal>triggered()</signal>
-   <receiver>mapDockWidget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>657</x>
-     <y>150</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionDXClusterWindow</sender>
-   <signal>triggered()</signal>
-   <receiver>dxDockWidget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>150</y>
     </hint>
    </hints>
   </connection>
@@ -595,22 +513,6 @@
     <hint type="destinationlabel">
      <x>446</x>
      <y>264</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionWsjtx</sender>
-   <signal>triggered()</signal>
-   <receiver>wsjtxDockWidget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>845</x>
-     <y>430</y>
     </hint>
    </hints>
   </connection>
