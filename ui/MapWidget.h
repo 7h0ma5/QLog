@@ -13,7 +13,7 @@ class MapWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MapWidget(QWidget* parent = 0);
+    explicit MapWidget(QWidget* parent = nullptr);
     ~MapWidget();
 
 public slots:
@@ -35,8 +35,11 @@ private:
     QPoint radToPoint(double lat, double lon);
     QPoint coordToPoint(double lat, double lon);
 
+    int sunSize = 20;
+
     QGraphicsPixmapItem* nightOverlay;
     QList<QGraphicsItem*> items;
+    QGraphicsEllipseItem* sunItem;
     QGraphicsScene* scene;
     Ui::MapWidget* ui;
 };

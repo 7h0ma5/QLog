@@ -24,6 +24,12 @@ MapWidget::MapWidget(QWidget *parent) :
 
     nightOverlay = new QGraphicsPixmapItem();
     scene->addItem(nightOverlay);
+
+    sunItem = scene->addEllipse(0, 0, sunSize, sunSize,
+                                QPen(QColor(235, 219, 52)),
+                                QBrush(QColor(235, 219, 52),
+                                        Qt::SolidPattern));
+
     redrawNightOverlay();
 
     QTimer* timer = new QTimer(this);
@@ -89,53 +95,54 @@ void MapWidget::redrawNightOverlay() {
     int daysInYear = QDate::isLeapYear(current.date().year()) ? 366 : 365;
     int longestDay = QDate(current.date().year(), 6, 21).dayOfYear();
 
-    double tilt = 23.5 * cos(2.0*M_PI*((double)(dayOfYear-longestDay)/daysInYear));
+    double yearProgress = static_cast<double>(dayOfYear-longestDay) / static_cast<double>(daysInYear);
+    double tilt = 23.5 * cos(2.0 * M_PI * yearProgress);
 
-    double sunX = cos(2*M_PI*(secondOfDay/86400.0));
-    double sunY = -sin(2*M_PI*(secondOfDay/86400.0));
-    double sunZ = tan(2*M_PI*(tilt/360.0));
+    double sunX = cos(2 * M_PI * (secondOfDay / 86400.0));
+    double sunY = -sin(2 * M_PI * (secondOfDay / 86400.0));
+    double sunZ = tan(2 * M_PI * (tilt / 360.0));
 
-    QVector3D sun(sunX, sunY, sunZ);
+    QVector3D sun(static_cast<float>(sunX), static_cast<float>(sunY), static_cast<float>(sunZ));
     sun.normalize();
 
     // <plot sun position>
     double theta = acos(sunZ);
     double phi = atan(sunY/sunX);
-    int lon = phi/M_PI * 180 - 180;
-    int lat = 90 - theta/M_PI * 180;
-    drawPoint(coordToPoint(lat, lon));
+    double lon = phi/M_PI * 180.0;
+    double lat = 90 - theta / M_PI * 180.0;
+    sunItem->setPos(coordToPoint(lat, lon) - QPoint(sunSize / 2, sunSize / 2));
     // </plot sun position>
 
-    int maxX = scene->width();
-    int maxY = scene->height();
+    int maxX = static_cast<int>(scene->width());
+    int maxY = static_cast<int>(scene->height());
 
     QImage overlay(maxX, maxY, QImage::Format_ARGB32);
     uchar* buffer = overlay.bits();
 
     for (int y = 0; y < maxY; y++) {
-        double theta = M_PI*((double)y/(maxY-1));
+        double theta = M_PI * (static_cast<double>(y) / (static_cast<double>(maxY) - 1.0));
         double posZ = cos(theta);
         double sinTheta = sin(theta);
 
         for (int x = 0; x < maxX; x++) {
-            double phi = 2*M_PI*((double)x/(maxX-1)) - M_PI;
+            double phi = 2 * M_PI * (static_cast<double>(x) / (static_cast<double>(maxX) - 1.0)) - M_PI;
 
-            double posX = sinTheta*cos(phi);
-            double posY = sinTheta*sin(phi);
+            double posX = sinTheta * cos(phi);
+            double posY = sinTheta * sin(phi);
 
-            QVector3D pos(posX, posY, posZ);
+            QVector3D pos(static_cast<float>(posX), static_cast<float>(posY), static_cast<float>(posZ));
             pos.normalize();
 
             buffer[0] = 0;
             buffer[1] = 0;
             buffer[2] = 0;
 
-            double ill = QVector3D::dotProduct(sun, pos);
-            if (ill <= -0.1) {
+            float ill = QVector3D::dotProduct(sun, pos);
+            if (ill <= -0.1f) {
                 buffer[3] = 255;
             }
-            else if (ill < 0.1) {
-                buffer[3] = 255-(ill+0.1)*5*255;
+            else if (ill < 0.1f) {
+                buffer[3] = 255 - static_cast<uchar>((ill + 0.1f) * 5.0f * 255.0f);
             }
             else {
                 buffer[3] = 0;
@@ -145,7 +152,6 @@ void MapWidget::redrawNightOverlay() {
     }
 
     QImage night(":/res/map/nasaearthlights.jpg");
-    night.convertToFormat(QImage::Format_ARGB32);
 
     QPainter painter;
     painter.begin(&overlay);
@@ -157,24 +163,24 @@ void MapWidget::redrawNightOverlay() {
 }
 
 void MapWidget::pointToRad(QPoint point, double& lat, double& lon) {
-    lat = M_PI/2 - (double)point.y()/(scene->height()-1)*M_PI;
-    lon = 2*M_PI*((double)point.x()/(scene->width()-1)) - M_PI;
+    lat = M_PI / 2.0 - static_cast<double>(point.y()) / (scene->height() - 1.0) * M_PI;
+    lon = 2 * M_PI *(static_cast<double>(point.x()) / (scene->width() - 1.0)) - M_PI;
 }
 
 void MapWidget::pointToCoord(QPoint point, double& lat, double& lon) {
-    lat = 90 - (point.y()/scene->height())*180;
-    lon = 360*(point.x()/scene->width()) - 180;
+    lat = 90.0 - (point.y() / scene->height()) * 180.0;
+    lon = 360.0 * (point.x() / scene->width()) - 180.0;
 }
 
 QPoint MapWidget::radToPoint(double lat, double lon) {
-    int x = (lon+M_PI)/(2*M_PI)*scene->width();
-    int y = scene->height()/2 - (2*lat/M_PI)*(scene->height()/2);
+    int x = static_cast<int>((lon + M_PI) / (2.0 * M_PI) * scene->width());
+    int y = static_cast<int>(scene->height() / 2.0 - (2.0 * lat / M_PI) * (scene->height() / 2.0));
     return QPoint(x, y);
 }
 
 QPoint MapWidget::coordToPoint(double lat, double lon) {
-    int x = (lon+180)/360*scene->width();
-    int y = scene->height()/2 - (lat/90)*(scene->height()/2);
+    int x = static_cast<int>((lon + 180.0) / 360.0 * scene->width());
+    int y = static_cast<int>(scene->height() / 2.0 - (lat / 90.0) * (scene->height() / 2.0));
     return QPoint(x, y);
 }
 
