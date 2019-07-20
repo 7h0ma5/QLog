@@ -30,6 +30,10 @@ MapWidget::MapWidget(QWidget *parent) :
                                 QBrush(QColor(235, 219, 52),
                                         Qt::SolidPattern));
 
+    terminatorItem = scene->addPath(QPainterPath(), QPen(QColor(100, 100, 100), 2),
+                                    QBrush(QColor(0, 0, 0),
+                                        Qt::SolidPattern));
+
     redrawNightOverlay();
 
     QTimer* timer = new QTimer(this);
@@ -108,9 +112,9 @@ void MapWidget::redrawNightOverlay() {
     // <plot sun position>
     double theta = acos(sunZ);
     double phi = atan(sunY/sunX);
-    double lon = phi/M_PI * 180.0;
-    double lat = 90 - theta / M_PI * 180.0;
-    sunItem->setPos(coordToPoint(lat, lon) - QPoint(sunSize / 2, sunSize / 2));
+    double sunLon = phi/M_PI * 180.0;
+    double sunLat = 90 - theta / M_PI * 180.0;
+    sunItem->setPos(coordToPoint(sunLat, sunLon) - QPoint(sunSize / 2, sunSize / 2));
     // </plot sun position>
 
     int maxX = static_cast<int>(scene->width());
@@ -151,6 +155,7 @@ void MapWidget::redrawNightOverlay() {
         }
     }
 
+
     QImage night(":/res/map/nasaearthlights.jpg");
 
     QPainter painter;
@@ -158,6 +163,29 @@ void MapWidget::redrawNightOverlay() {
     painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
     painter.drawImage(0, 0, night);
     painter.end();
+
+    QPainterPath path;
+
+    for (double phi = -M_PI; phi < M_PI; phi += 0.02) {
+        double B = asin(cos(sunLat * M_PI / 180.0) * sin(phi));
+        double x = -cos(sunLon * M_PI / 180.0) * sin(sunLat * M_PI / 180.0) * sin(phi) - sin(sunLon * M_PI / 180.0) * cos(phi);
+        double y = -sin(sunLon * M_PI / 180.0) * sin(sunLat * M_PI / 180.0) * sin(phi) + cos(sunLon * M_PI / 180.0) * cos(phi);
+        double L = atan2(y, x);
+
+        QPoint p = radToPoint(B, L);
+
+        if (path.elementCount() == 0) {
+
+        }
+        else if (p.x() >= path.elementAt(path.elementCount() - 1).x) {
+            path.lineTo(p);
+        }
+
+        path.moveTo(p);
+    }
+
+    path.closeSubpath();
+    terminatorItem->setPath(path);
 
     nightOverlay->setPixmap(QPixmap::fromImage(overlay));
 }

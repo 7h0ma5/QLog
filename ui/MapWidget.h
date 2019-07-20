@@ -40,6 +40,7 @@ private:
     QGraphicsPixmapItem* nightOverlay;
     QList<QGraphicsItem*> items;
     QGraphicsEllipseItem* sunItem;
+    QGraphicsPathItem* terminatorItem;
     QGraphicsScene* scene;
     Ui::MapWidget* ui;
 };
