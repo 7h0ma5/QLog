@@ -159,9 +159,9 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     ui->contactTable->hideColumn(18);
     ui->contactTable->hideColumn(19);
 
-    model->select();
-
     ui->bandFilter->setModel(new BandModel(true));
+
+    updateTable();
 }
 
 void LogbookWidget::callsignFilterChanged() {
@@ -173,7 +173,7 @@ void LogbookWidget::callsignFilterChanged() {
     else {
         model->setFilter(nullptr);
     }
-    qDebug() << "Callsign filter changed";
+    updateTable();
 }
 
 void LogbookWidget::bandFilterChanged() {
@@ -184,7 +184,7 @@ void LogbookWidget::bandFilterChanged() {
     else {
         model->setFilter(nullptr);
     }
-    qDebug() << "Band filter changed";
+    updateTable();
 }
 
 void LogbookWidget::deleteContact() {
@@ -198,11 +198,12 @@ void LogbookWidget::deleteContact() {
         model->removeRow(index.row());
     }
     ui->contactTable->clearSelection();
-    model->select();
+    updateTable();
 }
 
 void LogbookWidget::updateTable() {
     model->select();
+    ui->countLabel->setText(tr("%n contacts", "", model->rowCount()));
 }
 
 LogbookWidget::~LogbookWidget() {

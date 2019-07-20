@@ -76,6 +76,13 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QLabel" name="countLabel">
+         <property name="text">
+          <string>0 contacts</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -105,7 +112,8 @@
   </layout>
   <action name="deleteContact">
    <property name="icon">
-    <iconset theme="edit-delete"/>
+    <iconset theme="edit-delete">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Delete</string>

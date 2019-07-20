@@ -13,7 +13,7 @@ class LogbookWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit LogbookWidget(QWidget *parent = 0);
+    explicit LogbookWidget(QWidget *parent = nullptr);
     ~LogbookWidget();
 
 public slots:
