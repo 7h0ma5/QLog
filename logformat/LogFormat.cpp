@@ -62,6 +62,10 @@ void LogFormat::setDateRange(QDate start, QDate end) {
     this->endDate = end;
 }
 
+void LogFormat::setUpdateDxcc(bool updateDxcc) {
+    this->updateDxcc = updateDxcc;
+}
+
 void LogFormat::runImport() {
     this->importStart();
 
@@ -83,27 +87,25 @@ void LogFormat::runImport() {
             }
         }
 
-        if (defaults) {
-            foreach (QString key, defaults->keys()) {
-                if (record.value(key).isNull()) {
-                    record.setValue(key, defaults->value(key));
-                }
-            }
-        }
-
         DxccEntity entity = Data::instance()->lookupDxcc(record.value("callsign").toString());
 
-        if (entity.dxcc) {
-            record.setValue("country", entity.country);
+        if ((record.value("dxcc").isNull() || updateDxcc) && entity.dxcc) {
             record.setValue("dxcc", entity.dxcc);
+            record.setValue("country", entity.country);
+        }
+
+        if (record.value("cont").isNull() && entity.dxcc) {
             record.setValue("cont", entity.cont);
         }
+
         if (record.value("ituz").isNull() && entity.dxcc) {
             record.setValue("ituz", QString::number(entity.ituz));
         }
+
         if (record.value("cqz").isNull() && entity.dxcc) {
             record.setValue("cqz", QString::number(entity.cqz));
         }
+
         if (record.value("band").isNull() && !record.value("frequency").isNull()) {
             double freq = record.value("frequency").toDouble();
             record.setValue("band", freqToBand(freq));

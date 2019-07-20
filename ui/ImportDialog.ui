@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>343</width>
-    <height>378</height>
+    <height>444</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -60,12 +60,34 @@
          <string>Browse</string>
         </property>
         <property name="icon">
-         <iconset theme="folder-open"/>
+         <iconset theme="folder-open">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
+       </property>
+       <property name="centerButtons">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_2">
@@ -201,25 +223,20 @@
      </layout>
     </widget>
    </item>
-   <item row="7" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
-       </property>
-       <property name="centerButtons">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
-    <widget class="QProgressBar" name="progressBar">
-     <property name="value">
-      <number>24</number>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Options</string>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="updateDxccCheckBox">
+        <property name="text">
+         <string>Update DXCC entities</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

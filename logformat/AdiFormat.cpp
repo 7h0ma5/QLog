@@ -238,6 +238,14 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("start_time", start_time);
     record.setValue("end_time", end_time);
 
+    if (defaults) {
+        foreach (QString key, defaults->keys()) {
+            if (contact.value(key).isNull()) {
+                contact.insert(key, defaults->value(key));
+            }
+        }
+    }
+
     QJsonDocument doc = QJsonDocument::fromVariant(QVariant(contact));
     record.setValue("fields", QString(doc.toJson()));
 

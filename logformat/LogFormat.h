@@ -28,6 +28,7 @@ public:
     int runExport();
     void setDefaults(QMap<QString, QString>& defaults);
     void setDateRange(QDate start, QDate end);
+    void setUpdateDxcc(bool updateDxcc);
 
 signals:
     void progress(qint64 value);
@@ -49,6 +50,7 @@ private:
     bool dateRangeSet();
     bool inDateRange(QDate date);
     QDate startDate, endDate;
+    bool updateDxcc = false;
 };
 
 #endif // LOGFORMAT_H

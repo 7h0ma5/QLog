@@ -67,6 +67,7 @@ void ImportDialog::runImport() {
 
     LogFormat* format = LogFormat::open(ui->typeSelect->currentText(), in);
     format->setDefaults(defaults);
+    format->setUpdateDxcc(ui->updateDxccCheckBox->isChecked());
 
     if (!format) {
         qCritical() << "unknown log format";
