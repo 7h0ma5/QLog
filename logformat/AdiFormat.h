@@ -9,6 +9,10 @@ public:
 
     bool readContact(QVariantMap& contact);
 
+    bool importNext(QSqlRecord& contact);
+    void exportContact(QSqlRecord& record);
+    void exportStart();
+
 private:
     enum ParserState {
         START,
@@ -18,10 +22,6 @@ private:
         DATA_TYPE,
         VALUE
     };
-
-    bool importNext(QSqlRecord& contact);
-    void exportContact(QSqlRecord& record);
-    void exportStart();
 
     void writeField(QString name, QString value, QString type="");
     void readField(QString& field, QString& value);

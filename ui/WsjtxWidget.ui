@@ -14,34 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="1">
-    <widget class="QLabel" name="modeLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="freqLabel">
-     <property name="text">
-      <string>0.000 MHz</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="3">
+   <item row="1" column="0" colspan="5">
     <widget class="QTableView" name="tableView">
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -60,8 +33,76 @@
      </attribute>
     </widget>
    </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="freqLabel">
+     <property name="text">
+      <string>0.000 MHz</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QPushButton" name="haltTxButton">
+     <property name="text">
+      <string>Halt TX</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="modeLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="4">
+    <widget class="QCheckBox" name="autoCallCheckBox">
+     <property name="text">
+      <string>Auto Call</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="txStatus">
+     <property name="text">
+      <string>Monitoring</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>tableView</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>WsjtxWidget</receiver>
+   <slot>startReply(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>startReply(QModelIndex)</slot>
+ </slots>
 </ui>

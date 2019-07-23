@@ -8,7 +8,7 @@ int WsjtxTableModel::rowCount(const QModelIndex&) const {
 }
 
 int WsjtxTableModel::columnCount(const QModelIndex&) const {
-    return 4;
+    return 5;
 }
 
 QVariant WsjtxTableModel::data(const QModelIndex& index, int role) const {
@@ -19,6 +19,21 @@ QVariant WsjtxTableModel::data(const QModelIndex& index, int role) const {
         case 1: return entry.callsign;
         case 2: return entry.grid;
         case 3: return entry.dxcc.country;
+        case 4:
+            switch (entry.status) {
+            case DxccStatus::NewEntity:
+                return tr("New Entity");
+            case DxccStatus::NewBand:
+                return tr("New Band");
+            case DxccStatus::NewMode:
+                return tr("New Mode");
+            case DxccStatus::NewBandMode:
+                return tr("New Band & Mode");
+            case DxccStatus::NewSlot:
+                return tr("New Slot");
+            default:
+                return QVariant();
+            }
         default: return QVariant();
         }
     }
@@ -53,7 +68,6 @@ QVariant WsjtxTableModel::data(const QModelIndex& index, int role) const {
             return QVariant();
         }
     }
-
     return QVariant();
 }
 
@@ -65,6 +79,7 @@ QVariant WsjtxTableModel::headerData(int section, Qt::Orientation orientation, i
     case 1: return tr("Callsign");
     case 2: return tr("Grid");
     case 3: return tr("Country");
+    case 4: return tr("DXCC Status");
     default: return QVariant();
     }
 }
@@ -73,6 +88,11 @@ void WsjtxTableModel::addEntry(WsjtxEntry entry) {
     beginInsertRows(QModelIndex(), wsjtxData.count(), wsjtxData.count());
     wsjtxData.append(entry);
     endInsertRows();
+}
+
+
+WsjtxEntry WsjtxTableModel::entry(const QModelIndex& index) {
+    return wsjtxData.at(index.row());
 }
 
 void WsjtxTableModel::clear() {
@@ -113,13 +133,46 @@ void WsjtxWidget::statusReceived(WsjtxStatus newStatus) {
         ui->freqLabel->setText(QString("%1 MHz").arg(newStatus.dial_freq/1e6));
     }
 
+    if (status.decoding != newStatus.decoding) {
+        if (newStatus.decoding) {
+            wsjtxTableModel->clear();
+        }
+        else {
+            wsjtxTableModel->sort(1, Qt::DescendingOrder);
+            if (ui->autoCallCheckBox->isChecked() && !status.tx_enabled) {
+                WsjtxEntry best;
+                best.status = DxccStatus::Worked;
+
+                for (int i = 0; i < wsjtxTableModel->rowCount(); i++) {
+                    WsjtxEntry entry = wsjtxTableModel->entry(wsjtxTableModel->index(i, 0));
+                    if (entry.status < best.status && entry.decode.snr >= -10) {
+                        best = entry;
+                    }
+                }
+
+                if (!best.callsign.isEmpty()) {
+                    emit reply(best.decode);
+                }
+            }
+        }
+    }
+
+    if (status.transmitting) {
+        ui->txStatus->setText(tr("Transmitting"));
+    }
+    else {
+        ui->txStatus->setText(tr("Monitoring"));
+    }
+
     status = newStatus;
 
     ui->modeLabel->setText(status.mode);
+}
 
-    if (status.decoding) {
-        wsjtxTableModel->clear();
-    }
+
+void WsjtxWidget::startReply(QModelIndex index) {
+    WsjtxEntry entry = wsjtxTableModel->entry(index);
+    emit reply(entry.decode);
 }
 
 WsjtxWidget::~WsjtxWidget()

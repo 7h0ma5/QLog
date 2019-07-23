@@ -4,13 +4,13 @@
 #include <QtCore>
 
 enum DxccStatus {
-    Unknown,
-    NewEntity,
-    NewBandMode,
-    NewBand,
-    NewMode,
-    NewSlot,
-    Worked
+    NewEntity = 0b1,
+    NewBandMode = 0b110,
+    NewBand = 0b010,
+    NewMode = 0b100,
+    NewSlot = 0b1000,
+    Worked = 0b10000,
+    Unknown = 0b100000
 };
 
 class DxccEntity {

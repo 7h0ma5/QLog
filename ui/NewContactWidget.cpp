@@ -337,7 +337,7 @@ void NewContactWidget::saveContact() {
     }
 
     resetContact();
-    emit contactAdded();
+    emit contactAdded(record);
 }
 
 void NewContactWidget::startContactTimer() {

@@ -1,5 +1,6 @@
 #include <QSettings>
 #include <QFileDialog>
+#include <QSystemTrayIcon>
 #include <QMessageBox>
 #include <QLabel>
 #include "MainWindow.h"
@@ -12,6 +13,7 @@
 #include "core/Lotw.h"
 #include "core/Rig.h"
 #include "core/Wsjtx.h"
+#include "core/ClubLog.h"
 #include "data/Data.h"
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -32,6 +34,16 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->statusBar->addWidget(new QLabel(op, ui->statusBar));
     ui->statusBar->addWidget(new QLabel(grid, ui->statusBar));
 
+/*
+    QMenu* trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(ui->actionQuit);
+
+    QSystemTrayIcon* trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->show();
+    trayIcon->showMessage("Hello", "This is a test", QIcon());
+*/
+
     Fldigi* fldigi = new Fldigi(this);
     connect(fldigi, SIGNAL(contactAdded()), ui->logbookWidget, SLOT(updateTable()));
 
@@ -39,6 +51,13 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(wsjtx, &Wsjtx::statusReceived, ui->wsjtxWidget, &WsjtxWidget::statusReceived);
     connect(wsjtx, &Wsjtx::decodeReceived, ui->wsjtxWidget, &WsjtxWidget::decodeReceived);
     connect(wsjtx, &Wsjtx::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
+    connect(ui->wsjtxWidget, &WsjtxWidget::reply, wsjtx, &Wsjtx::startReply);
+
+    ClubLog* clublog = new ClubLog(this);
+    connect(wsjtx, &Wsjtx::contactAdded, clublog, &ClubLog::uploadContact);
+
+    connect(ui->newContactWidget, &NewContactWidget::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
+    connect(ui->newContactWidget, &NewContactWidget::contactAdded, clublog, &ClubLog::uploadContact);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {

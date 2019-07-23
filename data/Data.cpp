@@ -14,14 +14,22 @@ Data* Data::instance() {
 }
 
 DxccStatus Data::dxccStatus(int dxcc, QString band, QString mode) {
+    QString filter;
+
+    QSettings settings;
+    QVariant start = settings.value("dxcc/start");
+    if (!start.isNull()) {
+        filter = QString("AND start_time >= '%1'").arg(start.toDate().toString("yyyy-MM-dd"));
+    }
+
     QSqlQuery query;
-    query.prepare("SELECT (SELECT contacts.callsign FROM contacts WHERE dxcc = :dxcc ORDER BY start_time ASC LIMIT 1) as entity,"
-                  "(SELECT contacts.callsign FROM contacts WHERE dxcc = :dxcc AND band = :band ORDER BY start_time ASC LIMIT 1) as band,"
+    query.prepare("SELECT (SELECT contacts.callsign FROM contacts WHERE dxcc = :dxcc " + filter + " ORDER BY start_time ASC LIMIT 1) as entity,"
+                  "(SELECT contacts.callsign FROM contacts WHERE dxcc = :dxcc AND band = :band " + filter + " ORDER BY start_time ASC LIMIT 1) as band,"
                   "(SELECT contacts.callsign FROM contacts INNER JOIN modes ON (modes.name = contacts.mode)"
-                  "        WHERE contacts.dxcc = :dxcc AND modes.dxcc = (SELECT modes.dxcc FROM modes WHERE modes.name = :mode LIMIT 1)"
+                  "        WHERE contacts.dxcc = :dxcc AND modes.dxcc = (SELECT modes.dxcc FROM modes WHERE modes.name = :mode LIMIT 1) " + filter +
                   "        ORDER BY start_time ASC LIMIT 1) as mode,"
                   "(SELECT contacts.callsign FROM contacts INNER JOIN modes ON (modes.name = contacts.mode)"
-                  "        WHERE contacts.dxcc = :dxcc AND modes.dxcc = (SELECT modes.dxcc FROM modes WHERE modes.name = :mode LIMIT 1)"
+                  "        WHERE contacts.dxcc = :dxcc AND modes.dxcc = (SELECT modes.dxcc FROM modes WHERE modes.name = :mode LIMIT 1) " + filter +
                   "        AND band = :band ORDER BY start_time ASC LIMIT 1) as slot;");
 
     query.bindValue(":dxcc", dxcc);

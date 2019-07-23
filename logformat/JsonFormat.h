@@ -9,12 +9,12 @@ class JsonFormat : public LogFormat {
 public:
     JsonFormat(QTextStream& stream) : LogFormat(stream) {}
 
-private:
     bool importNext(QSqlRecord& contact);
     void exportContact(QSqlRecord& record);
     void exportEnd();
 
-    QJsonArray data;
+private:
+   QJsonArray data;
 };
 
 #endif // JSONFORMAT_H

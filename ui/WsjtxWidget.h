@@ -28,6 +28,7 @@ public:
     QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     void addEntry(WsjtxEntry entry);
+    WsjtxEntry entry(const QModelIndex& index);
     void clear();
 
 private:
@@ -42,9 +43,13 @@ public:
     explicit WsjtxWidget(QWidget *parent = nullptr);
     ~WsjtxWidget();
 
+signals:
+    void reply(WsjtxDecode);
+
 public slots:
     void decodeReceived(WsjtxDecode);
     void statusReceived(WsjtxStatus);
+    void startReply(QModelIndex index);
 
 private:
     WsjtxTableModel* wsjtxTableModel;

@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <QHostAddress>
+#include <QSqlRecord>
 
 class Data;
 class QUdpSocket;
@@ -46,9 +48,10 @@ public:
 signals:
     void statusReceived(WsjtxStatus);
     void decodeReceived(WsjtxDecode);
-    void contactAdded();
+    void contactAdded(QSqlRecord);
 
 public slots:
+    void startReply(WsjtxDecode);
 
 private slots:
     void readPendingDatagrams();
@@ -56,6 +59,8 @@ private slots:
 
 private:
     QUdpSocket* socket;
+    QHostAddress wsjtxAddress;
+    quint16 wsjtxPort;
 };
 
 #endif // WSJTX_H

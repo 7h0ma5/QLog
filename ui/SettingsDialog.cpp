@@ -90,6 +90,19 @@ void SettingsDialog::readSettings() {
 
     ui->lotwUsernameEdit->setText(settings.value("lotw/username").toString());
     ui->lotwPasswordEdit->setText(settings.value("lotw/password").toString());
+
+    ui->clublogEmailEdit->setText(settings.value("clublog/email").toString());
+    ui->clublogCallsignEdit->setText(settings.value("clublog/callsign").toString());
+    ui->clublogPasswordEdit->setText(settings.value("clublog/password").toString());
+
+    if (!settings.value("dxcc/start").isNull()) {
+       ui->dxccStartDateCheckBox->setCheckState(Qt::Checked);
+       ui->dxccStartDate->setDate(settings.value("dxcc/start").toDate());
+    }
+    else {
+        ui->dxccStartDateCheckBox->setCheckState(Qt::Unchecked);
+        ui->dxccStartDate->setDate(QDate::currentDate());
+    }
 }
 
 void SettingsDialog::writeSettings() {
@@ -113,6 +126,17 @@ void SettingsDialog::writeSettings() {
 
     settings.setValue("lotw/username", ui->lotwUsernameEdit->text());
     settings.setValue("lotw/password", ui->lotwPasswordEdit->text());
+
+    settings.setValue("clublog/email", ui->clublogEmailEdit->text());
+    settings.setValue("clublog/callsign", ui->clublogCallsignEdit->text());
+    settings.setValue("clublog/password", ui->clublogPasswordEdit->text());
+
+    if (ui->dxccStartDateCheckBox->isChecked()) {
+        settings.setValue("dxcc/start", ui->dxccStartDate->date());
+    }
+    else {
+        settings.setValue("dxcc/start", QVariant());
+    }
 }
 
 SettingsDialog::~SettingsDialog() {

@@ -1,6 +1,8 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QVBoxLayout>
+#include <QDate>
+#include <QSettings>
 #include "models/DxccTableModel.h"
 #include "DxccTableWidget.h"
 
@@ -23,6 +25,14 @@ void DxccTableWidget::clear() {
 
 void DxccTableWidget::setDxcc(int dxcc) {
     if (dxcc)  {
+        QString filter;
+
+        QSettings settings;
+        QVariant start = settings.value("dxcc/start");
+        if (!start.isNull()) {
+            filter = QString("AND contacts.start_time >= '%1'").arg(start.toDate().toString("yyyy-MM-dd"));
+        }
+
         dxccTableModel->setQuery(QString(
                              "SELECT bands.name,\n"
                              "count(CASE WHEN modes.dxcc = 'CW' THEN 1 END) as cw,\n"
@@ -31,7 +41,7 @@ void DxccTableWidget::setDxcc(int dxcc) {
                              "FROM contacts\n"
                              "INNER JOIN modes ON (contacts.dxcc = %1 AND contacts.mode = modes.name)\n"
                              "RIGHT JOIN bands ON (contacts.band = bands.name)\n"
-                             "WHERE bands.enabled = true\n"
+                             "WHERE bands.enabled = true " + filter + "\n"
                              "GROUP BY bands.name, bands.start_freq\n"
                              "ORDER BY bands.start_freq").arg(dxcc));
 

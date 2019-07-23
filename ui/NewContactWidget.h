@@ -2,6 +2,7 @@
 #define NEWCONTACTWIDGET_H
 
 #include <QWidget>
+#include <QSqlRecord>
 #include "core/HamQTH.h"
 #include "core/Cty.h"
 #include "data/Data.h"
@@ -28,7 +29,7 @@ public:
     ~NewContactWidget();
 
 signals:
-    void contactAdded();
+    void contactAdded(QSqlRecord record);
     void newTarget(double lat, double lon);
 
 public slots:

@@ -30,11 +30,6 @@ public:
     void setDateRange(QDate start, QDate end);
     void setUpdateDxcc(bool updateDxcc);
 
-signals:
-    void progress(qint64 value);
-    void finished(int count);
-
-protected:
     virtual void importStart() {}
     virtual void importEnd() {}
     virtual bool importNext(QSqlRecord&) { return false; }
@@ -43,6 +38,11 @@ protected:
     virtual void exportEnd() {}
     virtual void exportContact(QSqlRecord&) {}
 
+signals:
+    void progress(qint64 value);
+    void finished(int count);
+
+protected:
     QTextStream& stream;
     QMap<QString, QString>* defaults;
 

@@ -19,6 +19,10 @@ Wsjtx::Wsjtx(QObject *parent) : QObject(parent)
 void Wsjtx::readPendingDatagrams() {
     while (socket->hasPendingDatagrams()) {
         QNetworkDatagram datagram = socket->receiveDatagram();
+
+        wsjtxAddress = datagram.senderAddress();
+        wsjtxPort = datagram.senderPort();
+
         QDataStream stream(datagram.data());
 
         quint32 magic, schema, mtype;
@@ -105,7 +109,7 @@ void Wsjtx::insertContact(WsjtxLog log) {
 
     QSqlRecord record = model.record();
 
-    double freq = (double)log.tx_freq/1e6;
+    double freq = static_cast<double>(log.tx_freq)/1e6;
     QString band = Data::band(freq);
 
     record.setValue("callsign", log.dx_call);
@@ -149,6 +153,24 @@ void Wsjtx::insertContact(WsjtxLog log) {
         return;
     }
 
-    emit contactAdded();
+    emit contactAdded(record);
 }
 
+void Wsjtx::startReply(WsjtxDecode decode) {
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::ReadWrite);
+    stream << static_cast<quint32>(0xadbccbda);
+    stream << static_cast<quint32>(3);
+    stream << static_cast<quint32>(4);
+    stream << decode.id.toUtf8();
+    stream << decode.time;
+    stream << decode.snr;
+    stream << decode.dt;
+    stream << decode.df;
+    stream << decode.mode.toUtf8();
+    stream << decode.message.toUtf8();
+    stream << decode.low_confidence;
+    stream << static_cast<quint8>(0);
+
+    socket->writeDatagram(data, wsjtxAddress, wsjtxPort);
+}

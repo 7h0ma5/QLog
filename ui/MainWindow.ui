@@ -405,22 +405,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>newContactWidget</sender>
-   <signal>contactAdded()</signal>
-   <receiver>logbookWidget</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>408</x>
-     <y>622</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>195</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionNewContact</sender>
    <signal>triggered()</signal>
    <receiver>newContactWidget</receiver>
@@ -529,6 +513,54 @@
     <hint type="destinationlabel">
      <x>446</x>
      <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDXClusterWindow</sender>
+   <signal>triggered()</signal>
+   <receiver>dxDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMapWindow</sender>
+   <signal>triggered()</signal>
+   <receiver>mapDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWsjtx</sender>
+   <signal>triggered()</signal>
+   <receiver>wsjtxDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>845</x>
+     <y>452</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>452</y>
     </hint>
    </hints>
   </connection>

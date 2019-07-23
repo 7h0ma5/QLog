@@ -28,6 +28,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        core/ClubLog.cpp \
         core/Cty.cpp \
         core/Fldigi.cpp \
         core/HamQTH.cpp \
@@ -61,6 +62,7 @@ SOURCES += \
         ui/WsjtxWidget.cpp
 
 HEADERS += \
+        core/ClubLog.h \
         core/Cty.h \
         core/Fldigi.h \
         core/HamQTH.h \
