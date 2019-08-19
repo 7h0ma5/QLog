@@ -1,3 +1,4 @@
+#include <hamlib/rig.h>
 #include "RigTypeModel.h"
 
 RigTypeModel::RigTypeModel(QObject* parent)

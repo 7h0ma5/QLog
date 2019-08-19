@@ -21,6 +21,7 @@ signals:
 
 private slots:
     void rigConnect();
+    void rotConnect();
     void showSettings();
     void showStatistics();
     void importLog();

@@ -139,7 +139,7 @@ void WsjtxWidget::statusReceived(WsjtxStatus newStatus) {
         }
         else {
             wsjtxTableModel->sort(1, Qt::DescendingOrder);
-            if (ui->autoCallCheckBox->isChecked() && !status.tx_enabled) {
+            if (ui->autoCallCheckBox->isChecked() && !status.tx_enabled && !status.transmitting) {
                 WsjtxEntry best;
                 best.status = DxccStatus::Worked;
 
@@ -151,6 +151,7 @@ void WsjtxWidget::statusReceived(WsjtxStatus newStatus) {
                 }
 
                 if (!best.callsign.isEmpty()) {
+                    ui->autoCallCheckBox->setCheckState(Qt::Unchecked);
                     emit reply(best.decode);
                 }
             }

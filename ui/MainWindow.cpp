@@ -12,6 +12,7 @@
 #include "core/Fldigi.h"
 #include "core/Lotw.h"
 #include "core/Rig.h"
+#include "core/Rotator.h"
 #include "core/Wsjtx.h"
 #include "core/ClubLog.h"
 #include "data/Data.h"
@@ -72,6 +73,10 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 
 void MainWindow::rigConnect() {
     Rig::instance()->open();
+}
+
+void MainWindow::rotConnect() {
+    Rotator::instance()->open();
 }
 
 void MainWindow::showSettings() {

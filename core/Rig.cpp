@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <cstring>
+#include <hamlib/rig.h>
 #include "Rig.h"
 
 Rig* Rig::instance() {
@@ -72,9 +73,9 @@ void Rig::update() {
 
 void Rig::open() {
     QSettings settings;
-    int model = settings.value("hamlib/model").toInt();
-    int baudrate = settings.value("hamlib/baudrate").toInt();
-    QByteArray portStr = settings.value("hamlib/port").toByteArray();
+    int model = settings.value("hamlib/rig/model").toInt();
+    int baudrate = settings.value("hamlib/rig/baudrate").toInt();
+    QByteArray portStr = settings.value("hamlib/rig/port").toByteArray();
     const char* port = portStr.constData();
 
     qDebug() << portStr;

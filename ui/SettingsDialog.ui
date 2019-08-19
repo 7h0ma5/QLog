@@ -27,7 +27,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -129,55 +129,103 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
-        <layout class="QFormLayout" name="formLayout_2">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Rig</string>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="hamlibModelLabel">
-           <property name="text">
-            <string>Model</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="hamlibBaudLabel">
-           <property name="text">
-            <string>Baudrate</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="hamlibBaudEdit">
-           <property name="minimum">
-            <number>75</number>
-           </property>
-           <property name="maximum">
-            <number>115200</number>
-           </property>
-           <property name="value">
-            <number>1200</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="hamlibPortLabel">
-           <property name="text">
-            <string>Port</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="hamlibPortEdit">
-           <property name="text">
-            <string>/dev/tty1</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="hamlibModelSelect"/>
-         </item>
-        </layout>
+         <layout class="QFormLayout" name="formLayout_7">
+          <item row="1" column="0">
+           <widget class="QLabel" name="rigModelLabel">
+            <property name="text">
+             <string>Model</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="rigModelSelect"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="rigPortEdit">
+            <property name="text">
+             <string>/dev/tty1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="rigPortLabel">
+            <property name="text">
+             <string>Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="rigBaudLabel">
+            <property name="text">
+             <string>Baudrate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="rigBaudEdit">
+            <property name="minimum">
+             <number>9600</number>
+            </property>
+            <property name="maximum">
+             <number>115200</number>
+            </property>
+            <property name="value">
+             <number>9600</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Rotator</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="rotModelLabel">
+            <property name="text">
+             <string>Model</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="rotModelSelect"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="rotPortLabel">
+            <property name="text">
+             <string>Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="rotBaudLabel">
+            <property name="text">
+             <string>Baudrate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="rotBaudEdit">
+            <property name="minimum">
+             <number>9600</number>
+            </property>
+            <property name="maximum">
+             <number>115200</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="rotPortEdit"/>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>

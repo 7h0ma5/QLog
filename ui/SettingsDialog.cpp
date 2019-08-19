@@ -4,6 +4,7 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 #include "models/RigTypeModel.h"
+#include "models/RotTypeModel.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -12,7 +13,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     RigTypeModel* rigTypeModel = new RigTypeModel(this);
-    ui->hamlibModelSelect->setModel(rigTypeModel);
+    ui->rigModelSelect->setModel(rigTypeModel);
+
+    RotTypeModel* rotTypeModel = new RotTypeModel(this);
+    ui->rotModelSelect->setModel(rotTypeModel);
 
     QStringListModel* rigModel = new QStringListModel();
     ui->rigListView->setModel(rigModel);
@@ -81,9 +85,13 @@ void SettingsDialog::readSettings() {
     QStringList rigs = settings.value("station/rigs").toStringList();
     ((QStringListModel*)ui->rigListView->model())->setStringList(rigs);
 
-    ui->hamlibModelSelect->setCurrentIndex(settings.value("hamlib/modelrow").toInt());
-    ui->hamlibPortEdit->setText(settings.value("hamlib/port").toString());
-    ui->hamlibBaudEdit->setValue(settings.value("hamlib/baudrate").toInt());
+    ui->rigModelSelect->setCurrentIndex(settings.value("hamlib/rig/modelrow").toInt());
+    ui->rigPortEdit->setText(settings.value("hamlib/rig/port").toString());
+    ui->rigBaudEdit->setValue(settings.value("hamlib/rig/baudrate").toInt());
+
+    ui->rotModelSelect->setCurrentIndex(settings.value("hamlib/rot/modelrow").toInt());
+    ui->rotPortEdit->setText(settings.value("hamlib/rot/port").toString());
+    ui->rotBaudEdit->setValue(settings.value("hamlib/rot/baudrate").toInt());
 
     ui->hamQthUsernameEdit->setText(settings.value("hamqth/username").toString());
     ui->hamQthPasswordEdit->setText(settings.value("hamqth/password").toString());
@@ -114,12 +122,19 @@ void SettingsDialog::writeSettings() {
     QStringList rigs = ((QStringListModel*)ui->rigListView->model())->stringList();
     settings.setValue("station/rigs", rigs);
 
-    int row = ui->hamlibModelSelect->currentIndex();
-    QModelIndex index = ui->hamlibModelSelect->model()->index(row, 0);
-    settings.setValue("hamlib/model", index.internalId());
-    settings.setValue("hamlib/modelrow", row);
-    settings.setValue("hamlib/port", ui->hamlibPortEdit->text());
-    settings.setValue("hamlib/baudrate", ui->hamlibBaudEdit->value());
+    int rig_row = ui->rigModelSelect->currentIndex();
+    QModelIndex rig_index = ui->rigModelSelect->model()->index(rig_row, 0);
+    settings.setValue("hamlib/rig/model", rig_index.internalId());
+    settings.setValue("hamlib/rig/modelrow", rig_row);
+    settings.setValue("hamlib/rig/port", ui->rigPortEdit->text());
+    settings.setValue("hamlib/rig/baudrate", ui->rigBaudEdit->value());
+
+    int rot_row = ui->rotModelSelect->currentIndex();
+    QModelIndex rot_index = ui->rotModelSelect->model()->index(rot_row, 0);
+    settings.setValue("hamlib/rot/model", rot_index.internalId());
+    settings.setValue("hamlib/rot/modelrow", rot_row);
+    settings.setValue("hamlib/rot/port", ui->rotPortEdit->text());
+    settings.setValue("hamlib/rot/baudrate", ui->rotBaudEdit->value());
 
     settings.setValue("hamqth/username", ui->hamQthUsernameEdit->text());
     settings.setValue("hamqth/password", ui->hamQthPasswordEdit->text());

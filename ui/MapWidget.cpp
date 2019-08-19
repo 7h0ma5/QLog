@@ -4,19 +4,18 @@
 #include <QDebug>
 #include <QPainter>
 #include <QVector3D>
+#include <QSettings>
 #include <cmath>
 #include "core/utils.h"
 #include "MapWidget.h"
 #include "ui_MapWidget.h"
 
 MapWidget::MapWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::MapWidget)
+    QGraphicsView(parent)
 {
-    ui->setupUi(this);
     scene = new QGraphicsScene(this);
-    ui->mapView->setScene(scene);
-    ui->mapView->setStyleSheet("background-color: transparent;");
+    this->setScene(scene);
+    this->setStyleSheet("background-color: transparent;");
 
     QPixmap pix(":/res/map/nasabluemarble.jpg");
     scene->addPixmap(pix);
@@ -34,7 +33,18 @@ MapWidget::MapWidget(QWidget *parent) :
                                     QBrush(QColor(0, 0, 0),
                                         Qt::SolidPattern));
 
+    this->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
     redrawNightOverlay();
+
+    QSettings settings;
+    QString grid = settings.value("station/grid").toString();
+
+    double lat, lon;
+    gridToCoord(grid, lat, lon);
+
+    drawPoint(coordToPoint(lat, lon));
+
 
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(redraw()));
@@ -146,7 +156,9 @@ void MapWidget::redrawNightOverlay() {
                 buffer[3] = 255;
             }
             else if (ill < 0.1f) {
-                buffer[3] = 255 - static_cast<uchar>((ill + 0.1f) * 5.0f * 255.0f);
+                double illd = 1.0 - (static_cast<double>(ill) + 0.1) * 5.0;
+                illd = pow(illd, 8);
+                buffer[3] = static_cast<uchar>(255.0 * illd);
             }
             else {
                 buffer[3] = 0;
@@ -163,29 +175,6 @@ void MapWidget::redrawNightOverlay() {
     painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
     painter.drawImage(0, 0, night);
     painter.end();
-
-    QPainterPath path;
-
-    for (double phi = -M_PI; phi < M_PI; phi += 0.02) {
-        double B = asin(cos(sunLat * M_PI / 180.0) * sin(phi));
-        double x = -cos(sunLon * M_PI / 180.0) * sin(sunLat * M_PI / 180.0) * sin(phi) - sin(sunLon * M_PI / 180.0) * cos(phi);
-        double y = -sin(sunLon * M_PI / 180.0) * sin(sunLat * M_PI / 180.0) * sin(phi) + cos(sunLon * M_PI / 180.0) * cos(phi);
-        double L = atan2(y, x);
-
-        QPoint p = radToPoint(B, L);
-
-        if (path.elementCount() == 0) {
-
-        }
-        else if (p.x() >= path.elementAt(path.elementCount() - 1).x) {
-            path.lineTo(p);
-        }
-
-        path.moveTo(p);
-    }
-
-    path.closeSubpath();
-    terminatorItem->setPath(path);
 
     nightOverlay->setPixmap(QPixmap::fromImage(overlay));
 }
@@ -234,16 +223,15 @@ void MapWidget::setTarget(double lat, double lon) {
 }
 
 void MapWidget::showEvent(QShowEvent* event) {
-    ui->mapView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     QWidget::showEvent(event);
 }
 
 void MapWidget::resizeEvent(QResizeEvent* event) {
-    ui->mapView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     QWidget::resizeEvent(event);
 }
 
 MapWidget::~MapWidget()
 {
-    delete ui;
 }

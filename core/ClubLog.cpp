@@ -54,4 +54,9 @@ void ClubLog::processReply(QNetworkReply* reply) {
         delete reply;
         return;
     }
+    else {
+        qDebug() << "ClubLog update sent.";
+        delete reply;
+        return;
+    }
 }

@@ -354,9 +354,10 @@ void NewContactWidget::stopContactTimer() {
 }
 
 void NewContactWidget::updateTime() {
-    ui->dateEdit->setDate(QDate::currentDate());
-    ui->timeOnEdit->setTime(QDateTime::currentDateTimeUtc().time());
-    ui->timeOffEdit->setTime(QDateTime::currentDateTimeUtc().time());
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    ui->dateEdit->setDate(now.date());
+    ui->timeOnEdit->setTime(now.time());
+    ui->timeOffEdit->setTime(now.time());
     startContactTimer();
 }
 

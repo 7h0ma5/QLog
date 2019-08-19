@@ -71,9 +71,10 @@
    </widget>
    <widget class="QMenu" name="menuRig">
     <property name="title">
-     <string>Rig</string>
+     <string>Station</string>
     </property>
-    <addaction name="actionConnect"/>
+    <addaction name="actionConnectRig"/>
+    <addaction name="actionConnectRotator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -88,6 +89,7 @@
     <addaction name="actionDXClusterWindow"/>
     <addaction name="actionMapWindow"/>
     <addaction name="actionWsjtx"/>
+    <addaction name="actionRotator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLogbook"/>
@@ -160,6 +162,15 @@
    </attribute>
    <widget class="WsjtxWidget" name="wsjtxWidget"/>
   </widget>
+  <widget class="QDockWidget" name="rotatorDockWidget">
+   <property name="windowTitle">
+    <string>Rotator</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="RotatorWidget" name="rotatorWidget"/>
+  </widget>
   <action name="actionQuit">
    <property name="icon">
     <iconset theme="document-close">
@@ -214,13 +225,13 @@
     <string>Export</string>
    </property>
   </action>
-  <action name="actionConnect">
+  <action name="actionConnectRig">
    <property name="icon">
     <iconset theme="standard-connector">
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Connect</string>
+    <string>Connect Rig</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -281,6 +292,20 @@
     <string>Update LotW</string>
    </property>
   </action>
+  <action name="actionConnectRotator">
+   <property name="icon">
+    <iconset theme="standard-connector">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Connect Rotator</string>
+   </property>
+  </action>
+  <action name="actionRotator">
+   <property name="text">
+    <string>Rotator</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -317,15 +342,6 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>MapWidget</class>
-   <extends>QWidget</extends>
-   <header>ui/MapWidget.h</header>
-   <container>1</container>
-   <slots>
-    <slot>setTarget(double,double)</slot>
-   </slots>
-  </customwidget>
-  <customwidget>
    <class>WsjtxWidget</class>
    <extends>QWidget</extends>
    <header>ui/WsjtxWidget.h</header>
@@ -335,6 +351,18 @@
    <class>ClockWidget</class>
    <extends>QWidget</extends>
    <header>ui/ClockWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MapWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/MapWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RotatorWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/RotatorWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -469,7 +497,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionConnect</sender>
+   <sender>actionConnectRig</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>rigConnect()</slot>
@@ -555,12 +583,44 @@
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>845</x>
-     <y>452</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>845</x>
      <y>452</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnectRotator</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rotConnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>446</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRotator</sender>
+   <signal>triggered()</signal>
+   <receiver>rotatorDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>407</y>
     </hint>
    </hints>
   </connection>
@@ -576,5 +636,6 @@
   <slot>rigConnect()</slot>
   <slot>showStatistics()</slot>
   <slot>updateLotw()</slot>
+  <slot>rotConnect()</slot>
  </slots>
 </ui>

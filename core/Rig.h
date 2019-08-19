@@ -2,7 +2,8 @@
 #define RIG_H
 
 #include <QtCore>
-#include <hamlib/rig.h>
+
+struct rig;
 
 class Rig : public QObject {
     Q_OBJECT
@@ -30,7 +31,7 @@ private:
     Rig(Rig const&);
     void operator=(Rig const&);
 
-    RIG* rig;
+    struct rig* rig;
     int freq;
     unsigned int power;
     QString mode;

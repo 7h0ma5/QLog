@@ -2,13 +2,14 @@
 #define MAPWIDGET_H
 
 #include <QWidget>
+#include <QGraphicsView>
 #include <QGraphicsScene>
 
 namespace Ui {
 class MapWidget;
 }
 
-class MapWidget : public QWidget
+class MapWidget : public QGraphicsView
 {
     Q_OBJECT
 
@@ -42,7 +43,6 @@ private:
     QGraphicsEllipseItem* sunItem;
     QGraphicsPathItem* terminatorItem;
     QGraphicsScene* scene;
-    Ui::MapWidget* ui;
 };
 
 #endif // MAPWIDGET_H

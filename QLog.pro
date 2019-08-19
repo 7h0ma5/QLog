@@ -35,6 +35,7 @@ SOURCES += \
         core/Lotw.cpp \
         core/Migration.cpp \
         core/Rig.cpp \
+        core/Rotator.cpp \
         core/Wsjtx.cpp \
         core/main.cpp \
         core/utils.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
         models/BandModel.cpp \
         models/DxccTableModel.cpp \
         models/RigTypeModel.cpp \
+        models/RotTypeModel.cpp \
         ui/ClockWidget.cpp \
         ui/DbDialog.cpp \
         ui/DxWidget.cpp \
@@ -57,6 +59,7 @@ SOURCES += \
         ui/MainWindow.cpp \
         ui/MapWidget.cpp \
         ui/NewContactWidget.cpp \
+        ui/RotatorWidget.cpp \
         ui/SettingsDialog.cpp \
         ui/StatisticsWidget.cpp \
         ui/WsjtxWidget.cpp
@@ -69,6 +72,7 @@ HEADERS += \
         core/Lotw.h \
         core/Migration.h \
         core/Rig.h \
+        core/Rotator.h \
         core/Wsjtx.h \
         core/utils.h \
         data/Data.h \
@@ -80,6 +84,7 @@ HEADERS += \
         models/BandModel.h \
         models/DxccTableModel.h \
         models/RigTypeModel.h \
+        models/RotTypeModel.h \
         ui/ClockWidget.h \
         ui/DbDialog.h \
         ui/DxWidget.h \
@@ -90,6 +95,7 @@ HEADERS += \
         ui/MainWindow.h \
         ui/MapWidget.h \
         ui/NewContactWidget.h \
+        ui/RotatorWidget.h \
         ui/SettingsDialog.h \
         ui/StatisticsWidget.h \
         ui/WsjtxWidget.h
@@ -102,8 +108,8 @@ FORMS += \
         ui/ImportDialog.ui \
         ui/LogbookWidget.ui \
         ui/MainWindow.ui \
-        ui/MapWidget.ui \
         ui/NewContactWidget.ui \
+        ui/RotatorWidget.ui \
         ui/SettingsDialog.ui \
         ui/StatisticsWidget.ui \
         ui/WsjtxWidget.ui

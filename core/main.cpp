@@ -10,6 +10,7 @@
 #include "ui/DbDialog.h"
 #include "ui/MainWindow.h"
 #include "Rig.h"
+#include "Rotator.h"
 
 static void loadStylesheet(QApplication* app) {
     QFile style(":/res/stylesheet.css");
@@ -74,6 +75,14 @@ static void startRigThread() {
     rigThread->start();
 }
 
+static void startRotThread() {
+    QThread* rotThread = new QThread;
+    Rotator* rot = Rotator::instance();
+    rot->moveToThread(rotThread);
+    QObject::connect(rotThread, SIGNAL(started()), rot, SLOT(start()));
+    rotThread->start();
+}
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
@@ -102,6 +111,7 @@ int main(int argc, char* argv[]) {
     }
 
     startRigThread();
+    startRotThread();
 
     MainWindow w;
     QIcon icon(":/res/qlog.png");

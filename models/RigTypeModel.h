@@ -3,7 +3,6 @@
 
 #include <QAbstractListModel>
 #include <QStringList>
-#include <hamlib/rig.h>
 
 class RigTypeModel : public QAbstractListModel {
     Q_OBJECT

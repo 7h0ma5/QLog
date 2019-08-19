@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RotatorWidget</class>
+ <widget class="QWidget" name="RotatorWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>266</width>
+    <height>257</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGraphicsView" name="compassView">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="renderHints">
+      <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QSpinBox" name="gotoSpinBox"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="gotoButton">
+       <property name="text">
+        <string>Goto</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>gotoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>RotatorWidget</receiver>
+   <slot>gotoPosition()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>132</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>gotoPosition()</slot>
+ </slots>
+</ui>
