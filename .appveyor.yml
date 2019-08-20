@@ -1,5 +1,5 @@
 install:
-  - set QTDIR="C:\Qt\5.12.2\mingw73_64"
+  - set QTDIR="C:\Qt\5.13.0\mingw73_64"
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_64\bin;%PATH%
   - set HAMLIBDIR="hamlib-w64-3.3"
   - set POSTGRESQLDIR="C:\Program Files\PostgreSQL\10"

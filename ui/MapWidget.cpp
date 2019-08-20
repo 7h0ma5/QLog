@@ -8,7 +8,6 @@
 #include <cmath>
 #include "core/utils.h"
 #include "MapWidget.h"
-#include "ui_MapWidget.h"
 
 MapWidget::MapWidget(QWidget *parent) :
     QGraphicsView(parent)
