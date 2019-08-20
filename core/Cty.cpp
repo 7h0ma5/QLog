@@ -15,6 +15,9 @@
 #define CTY_URL "http://www.country-files.com/cty/cty.csv"
 
 Cty::Cty() {
+    nam = new QNetworkAccessManager(this);
+    connect(nam, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(processReply(QNetworkReply*)));
 }
 
 void Cty::update() {
@@ -41,10 +44,6 @@ void Cty::loadData() {
 }
 
 void Cty::download() {
-    nam = new QNetworkAccessManager(this);
-    connect(nam, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(processReply(QNetworkReply*)));
-
     QUrl url(CTY_URL);
     QNetworkRequest request(url);
     request.setRawHeader("User-Agent", "QLog/1.0 (Qt)");
@@ -68,9 +67,6 @@ void Cty::processReply(QNetworkReply* reply) {
         file.close();
 
         delete reply;
-        delete nam;
-
-        nam = nullptr;
 
         loadData();
     }
@@ -78,9 +74,6 @@ void Cty::processReply(QNetworkReply* reply) {
         qDebug() << "failed to download cty.csv";
 
         delete reply;
-        delete nam;
-
-        nam = nullptr;
 
         emit finished(false);
     }
@@ -159,5 +152,5 @@ void Cty::parseData(QTextStream& data) {
 }
 
 Cty::~Cty() {
-
+    delete nam;
 }

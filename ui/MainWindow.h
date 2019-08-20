@@ -7,6 +7,9 @@ namespace Ui {
 class MainWindow;
 }
 
+class Conditions;
+class QLabel;
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -28,9 +31,12 @@ private slots:
     void exportLog();
     void updateLotw();
     void showAbout();
+    void conditionsUpdated();
 
 private:
     Ui::MainWindow* ui;
+    Conditions* conditions;
+    QLabel* conditionsLabel;
 };
 
 #endif // MAINWINDOW_H

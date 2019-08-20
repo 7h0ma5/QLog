@@ -15,6 +15,7 @@
 #include "core/Rotator.h"
 #include "core/Wsjtx.h"
 #include "core/ClubLog.h"
+#include "core/Conditions.h"
 #include "data/Data.h"
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -32,8 +33,11 @@ MainWindow::MainWindow(QWidget* parent) :
     QString op = settings.value("station/callsign", "NOCALL").toString();
     QString grid  = settings.value("station/grid", "NO GRID").toString();
 
+    conditionsLabel = new QLabel("", ui->statusBar);
+
     ui->statusBar->addWidget(new QLabel(op, ui->statusBar));
     ui->statusBar->addWidget(new QLabel(grid, ui->statusBar));
+    ui->statusBar->addWidget(conditionsLabel);
 
 /*
     QMenu* trayIconMenu = new QMenu(this);
@@ -59,6 +63,10 @@ MainWindow::MainWindow(QWidget* parent) :
 
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, clublog, &ClubLog::uploadContact);
+
+    conditions = new Conditions(this);
+    connect(conditions, &Conditions::conditionsUpdated, this, &MainWindow::conditionsUpdated);
+    conditions->update();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -120,6 +128,10 @@ void MainWindow::showAbout() {
     aboutText = aboutText.arg(version);
 
     QMessageBox::about(this, "About", aboutText);
+}
+
+void MainWindow::conditionsUpdated() {
+    conditionsLabel->setText(QString("Solar Flux: %1").arg(conditions->flux));
 }
 
 MainWindow::~MainWindow() {

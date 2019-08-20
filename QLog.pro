@@ -29,6 +29,7 @@ CONFIG += c++11
 
 SOURCES += \
         core/ClubLog.cpp \
+        core/Conditions.cpp \
         core/Cty.cpp \
         core/Fldigi.cpp \
         core/HamQTH.cpp \
@@ -66,6 +67,7 @@ SOURCES += \
 
 HEADERS += \
         core/ClubLog.h \
+        core/Conditions.h \
         core/Cty.h \
         core/Fldigi.h \
         core/HamQTH.h \
