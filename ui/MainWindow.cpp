@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(wsjtx, &Wsjtx::contactAdded, clublog, &ClubLog::uploadContact);
 
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
+    connect(ui->newContactWidget, &NewContactWidget::newTarget, ui->mapWidget, &MapWidget::setTarget);
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, clublog, &ClubLog::uploadContact);
 
     conditions = new Conditions(this);

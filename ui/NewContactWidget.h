@@ -38,6 +38,7 @@ public slots:
     void frequencyChanged();
     void bandChanged();
     void modeChanged();
+    void updateBand(double freq);
     void resetContact();
     void saveContact();
     void gridChanged();

@@ -35,15 +35,7 @@ MapWidget::MapWidget(QWidget *parent) :
     this->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     redrawNightOverlay();
-
-    QSettings settings;
-    QString grid = settings.value("station/grid").toString();
-
-    double lat, lon;
-    gridToCoord(grid, lat, lon);
-
-    drawPoint(coordToPoint(lat, lon));
-
+    clear();
 
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(redraw()));
@@ -57,6 +49,14 @@ void MapWidget::clear() {
         scene->removeItem(item);
         i.remove();
     }
+
+    QSettings settings;
+    QString grid = settings.value("station/grid").toString();
+
+    double lat, lon;
+    gridToCoord(grid, lat, lon);
+
+    drawPoint(coordToPoint(lat, lon));
 }
 
 void MapWidget::redraw() {

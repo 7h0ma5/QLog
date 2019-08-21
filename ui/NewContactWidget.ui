@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>970</width>
-    <height>372</height>
+    <height>425</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,308 +20,12 @@
    <string notr="true">Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_10">
-   <item row="0" column="1" rowspan="4" colspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Info</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="dxccLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>DXCC</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="bandLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Band</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="distanceInfo">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="bearingLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Bearing</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="bandText">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true">80m</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="DxccTableWidget" name="dxccTableWidget"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="dxccInfo">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="distanceLabel">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Distance</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="bearingInfo">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QLabel" name="dxccStatus">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="verticalSpacing">
-      <number>0</number>
-     </property>
-     <item row="1" column="3">
-      <widget class="QLineEdit" name="cqEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="maxLength">
-        <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="cqLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>CQ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLineEdit" name="ituEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="maxLength">
-        <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="gridEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maxLength">
-        <number>12</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="ituLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>ITU</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="nameEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maxLength">
-        <number>50</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="nameLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="gridLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Grid Locator</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="qthLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>QTH</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="qthEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maxLength">
-        <number>75</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_6">
      <property name="verticalSpacing">
       <number>0</number>
      </property>
-     <item row="0" column="3">
+     <item row="0" column="6">
       <widget class="QLabel" name="frequencyLabel">
        <property name="font">
         <font>
@@ -335,8 +39,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="callsignLabel">
+     <item row="0" column="2">
+      <widget class="QLabel" name="rstRcvdLabel">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -345,25 +49,11 @@
         </font>
        </property>
        <property name="text">
-        <string>Callsign</string>
+        <string>RST RX</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="modeLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Mode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
+     <item row="1" column="6">
       <widget class="QDoubleSpinBox" name="frequencyEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -388,52 +78,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="5">
-      <widget class="QComboBox" name="submodeEdit"/>
-     </item>
-     <item row="0" column="5">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Submode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="callsignEdit">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="maxLength">
-        <number>25</number>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="4">
       <widget class="QComboBox" name="modeEdit"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="rstSentLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>RST TX</string>
-       </property>
-      </widget>
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="rstSentEdit">
@@ -462,8 +108,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="rstRcvdLabel">
+     <item row="0" column="4">
+      <widget class="QLabel" name="modeLabel">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -472,7 +118,58 @@
         </font>
        </property>
        <property name="text">
-        <string>RST RX</string>
+        <string>Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QComboBox" name="submodeEdit"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="rstSentLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>RST TX</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="callsignLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Callsign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="callsignEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="maxLength">
+        <number>25</number>
        </property>
       </widget>
      </item>
@@ -500,6 +197,26 @@
        </property>
        <property name="maxLength">
         <number>25</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Submode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="7">
+      <widget class="QLabel" name="bandText">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string notr="true">80m</string>
        </property>
       </widget>
      </item>
@@ -570,12 +287,15 @@
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="updateTimeButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/res/icons/clock-new.png</normaloff>:/res/icons/clock-new.png</iconset>
+        <iconset resource="../res/icons/icons.qrc">
+         <normaloff>:/icons/baseline-play_arrow-24px.svg</normaloff>:/icons/baseline-play_arrow-24px.svg</iconset>
        </property>
       </widget>
      </item>
@@ -598,16 +318,6 @@
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
-       <property name="dateTime">
-        <datetime>
-         <hour>13</hour>
-         <minute>0</minute>
-         <second>0</second>
-         <year>1999</year>
-         <month>12</month>
-         <day>29</day>
-        </datetime>
-       </property>
        <property name="calendarPopup">
         <bool>true</bool>
        </property>
@@ -628,8 +338,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/res/icons/clock-stop.png</normaloff>:/res/icons/clock-stop.png</iconset>
+        <iconset resource="../res/icons/icons.qrc">
+         <normaloff>:/icons/baseline-stop-24px.svg</normaloff>:/icons/baseline-stop-24px.svg</iconset>
        </property>
       </widget>
      </item>
@@ -659,8 +369,15 @@
      </item>
      <item row="1" column="5">
       <widget class="QPushButton" name="qrzButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
-        <string>QRZ?</string>
+        <string>QRZ</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../res/icons/icons.qrc">
+         <normaloff>:/icons/baseline-search-24px.svg</normaloff>:/icons/baseline-search-24px.svg</iconset>
        </property>
       </widget>
      </item>
@@ -679,66 +396,428 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="gridLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Locator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="nameEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maxLength">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="qthLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>QTH</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="qthEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maxLength">
+        <number>75</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="gridEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>12</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="nameLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Comment</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLineEdit" name="commentEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1" rowspan="5" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Info</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0">
+       <widget class="QLabel" name="distanceInfo">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="dxccInfo">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="bearingInfo">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="dxccStatus">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3">
     <widget class="QTabWidget" name="tabWidget_2">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab_6">
       <attribute name="title">
-       <string>Info</string>
+       <string>Location</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_12">
-       <item row="2" column="1">
-        <spacer name="spacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="contLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="text">
+          <string>Cont</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="cqLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>CQ</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="ituLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>ITU</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="cqEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
           <size>
-           <width>0</width>
-           <height>0</height>
+           <width>50</width>
+           <height>16777215</height>
           </size>
          </property>
-        </spacer>
+         <property name="maxLength">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="ituEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maxLength">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="contEdit">
+         <item>
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AF</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AS</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>EU</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>NA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>OC</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SA</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="iotaEdit"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="iotaLabel">
+         <property name="text">
+          <string>IOTA</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>DXCC</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="DxccTableWidget" name="dxccTableWidget"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="widget">
+      <attribute name="title">
+       <string>Contact</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Age</string>
+         </property>
+        </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="commentEdit">
+        <widget class="QLineEdit" name="lineEdit">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>E-Mail</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="propagationModeEdit"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_8">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>Comment</string>
+          <string>URL</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Propagation Mode</string>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEdit_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
         </widget>
        </item>
@@ -825,47 +904,49 @@
        <string>QSL</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_13">
-       <item row="1" column="4">
-        <widget class="QCheckBox" name="checkBox_2">
-         <property name="text">
-          <string>Direct</string>
-         </property>
+       <item row="0" column="4">
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>No</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Yes</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Requested</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Queued</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Invalid</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="1" column="7">
-        <widget class="QCheckBox" name="checkBox_3">
-         <property name="text">
-          <string>LoTW</string>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
-       <item row="1" column="6">
-        <widget class="QCheckBox" name="checkBox_4">
-         <property name="text">
-          <string>eQSL</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4" colspan="4">
-        <widget class="QLineEdit" name="qslViaEdit">
-         <property name="maxLength">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="qslViaLabel">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>QSL via</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -878,25 +959,67 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="5">
-        <widget class="QCheckBox" name="checkBox">
+       <item row="0" column="6">
+        <widget class="QComboBox" name="comboBox_2">
+         <item>
+          <property name="text">
+           <string>No</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Yes</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Requested</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Invalid</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Verified</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="qslViaLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
-          <string>Bureau</string>
+          <string>QSL via</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="8">
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="5">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Rcvd</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Sent</string>
          </property>
-        </spacer>
+        </widget>
+       </item>
+       <item row="1" column="4" colspan="3">
+        <widget class="QLineEdit" name="qslViaEdit">
+         <property name="maxLength">
+          <number>25</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1005,7 +1128,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Sat</string>
+       <string>Propagation</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
@@ -1028,6 +1151,16 @@
        <item row="1" column="1">
         <widget class="QComboBox" name="comboBox_5"/>
        </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Propagation Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="propagationModeEdit"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -1042,30 +1175,37 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>lineEdit_2</tabstop>
+  <tabstop>callsignEdit</tabstop>
+  <tabstop>rstSentEdit</tabstop>
+  <tabstop>rstRcvdEdit</tabstop>
   <tabstop>nameEdit</tabstop>
   <tabstop>qthEdit</tabstop>
   <tabstop>gridEdit</tabstop>
-  <tabstop>cqEdit</tabstop>
-  <tabstop>ituEdit</tabstop>
-  <tabstop>frequencyEdit</tabstop>
+  <tabstop>commentEdit</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>updateTimeButton</tabstop>
+  <tabstop>qrzButton</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>resetButton</tabstop>
   <tabstop>modeEdit</tabstop>
   <tabstop>submodeEdit</tabstop>
-  <tabstop>updateTimeButton</tabstop>
-  <tabstop>tabWidget_2</tabstop>
-  <tabstop>propagationModeEdit</tabstop>
+  <tabstop>frequencyEdit</tabstop>
+  <tabstop>dxccTableWidget</tabstop>
   <tabstop>rigEdit</tabstop>
   <tabstop>powerEdit</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>comboBox_2</tabstop>
   <tabstop>qslViaEdit</tabstop>
-  <tabstop>checkBox_2</tabstop>
-  <tabstop>checkBox</tabstop>
-  <tabstop>checkBox_4</tabstop>
-  <tabstop>checkBox_3</tabstop>
   <tabstop>contestEdit</tabstop>
   <tabstop>lineEdit_3</tabstop>
-  <tabstop>callsignEdit</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>comboBox_4</tabstop>
+  <tabstop>comboBox_5</tabstop>
+  <tabstop>propagationModeEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../res/icons/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>callsignEdit</sender>

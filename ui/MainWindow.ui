@@ -19,6 +19,9 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="LogbookWidget" name="logbookWidget" native="true"/>
+    </item>
+    <item>
      <widget class="NewContactWidget" name="newContactWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -33,9 +36,6 @@
        </size>
       </property>
      </widget>
-    </item>
-    <item>
-     <widget class="LogbookWidget" name="logbookWidget" native="true"/>
     </item>
    </layout>
   </widget>

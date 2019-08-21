@@ -124,6 +124,7 @@ void NewContactWidget::queryDxcc(QString callsign) {
         ui->ituEdit->setText(QString::number(dxccEntity.ituz));
         updateCoordinates(dxccEntity.latlon[0], dxccEntity.latlon[1], COORD_DXCC);
         ui->dxccTableWidget->setDxcc(dxccEntity.dxcc);
+        ui->contEdit->setCurrentText(dxccEntity.cont);
         updateDxccStatus();
     }
     else {
@@ -184,16 +185,7 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
 
 void NewContactWidget::frequencyChanged() {
     double freq = ui->frequencyEdit->value();
-    QString band = Data::band(freq);
-
-    if (band.isEmpty()) {
-        ui->bandText->setText("OOB!");
-    }
-    else if (band != ui->bandText->text()) {
-        ui->bandText->setText(band);
-        bandChanged();
-    }
-
+    updateBand(freq);
     rig->setFrequency(freq);
 }
 
@@ -230,6 +222,19 @@ void NewContactWidget::modeChanged() {
     updateDxccStatus();
 }
 
+
+void NewContactWidget::updateBand(double freq) {
+    QString band = Data::band(freq);
+
+    if (band.isEmpty()) {
+        ui->bandText->setText("OOB!");
+    }
+    else if (band != ui->bandText->text()) {
+        ui->bandText->setText(band);
+        bandChanged();
+    }
+}
+
 void NewContactWidget::gridChanged() {
     double lat, lon;
     bool valid = gridToCoord(ui->gridEdit->text(), lat, lon);
@@ -250,6 +255,7 @@ void NewContactWidget::resetContact() {
     ui->qslViaEdit->clear();
     ui->cqEdit->clear();
     ui->ituEdit->clear();
+    ui->contEdit->setCurrentText("");
     ui->dxccTableWidget->clear();
     ui->dxccStatus->clear();
 
@@ -289,7 +295,7 @@ void NewContactWidget::saveContact() {
     record.setValue("ituz", ui->ituEdit->text().toInt());
     record.setValue("dxcc", dxccEntity.dxcc);
     record.setValue("country", dxccEntity.country);
-    record.setValue("cont", dxccEntity.cont);
+    record.setValue("cont", ui->contEdit->currentText());
 
     QMap<QString, QVariant> fields;
 
@@ -411,6 +417,7 @@ void NewContactWidget::updateDxccStatus() {
 void NewContactWidget::changeFrequency(double freq) {
     ui->frequencyEdit->blockSignals(true);
     ui->frequencyEdit->setValue(freq);
+    updateBand(freq);
     ui->frequencyEdit->blockSignals(false);
 }
 
