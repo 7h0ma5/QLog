@@ -53,6 +53,7 @@ NewContactWidget::NewContactWidget(QWidget *parent) :
     connect(&callbook, &HamQTH::callsignResult, this, &NewContactWidget::callsignResult);
 
     new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(resetContact()), nullptr, Qt::ApplicationShortcut);
+    new QShortcut(QKeySequence(Qt::ALT + Qt::Key_W), this, SLOT(resetContact()), nullptr, Qt::ApplicationShortcut);
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(saveContact()), nullptr, Qt::ApplicationShortcut);
     new QShortcut(QKeySequence(Qt::Key_F9), this, SLOT(stopContactTimer()), nullptr, Qt::ApplicationShortcut);
 
@@ -258,6 +259,9 @@ void NewContactWidget::resetContact() {
     ui->contEdit->setCurrentText("");
     ui->dxccTableWidget->clear();
     ui->dxccStatus->clear();
+    ui->ageEdit->clear();
+    ui->emailEdit->clear();
+    ui->urlEdit->clear();
 
     stopContactTimer();
     setDefaultReport();
@@ -313,6 +317,18 @@ void NewContactWidget::saveContact() {
 
     if (!ui->rigEdit->currentText().isEmpty()) {
         fields.insert("my_rig", ui->rigEdit->currentText());
+    }
+
+    if (!ui->ageEdit->text().isEmpty()) {
+        fields.insert("age", ui->ageEdit->text());
+    }
+
+    if (!ui->emailEdit->text().isEmpty()) {
+        fields.insert("email", ui->emailEdit->text());
+    }
+
+    if (!ui->urlEdit->text().isEmpty()) {
+        fields.insert("web", ui->urlEdit->text());
     }
 
     if (!settings.value("station/grid").toString().isEmpty()) {

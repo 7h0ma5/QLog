@@ -50,6 +50,7 @@ INSERT INTO modes (name, rprt, dxcc, enabled, submodes) VALUES
         "JT9-10",
         "JT9-30"
 ]'),
+('FT4', '-1', 'DIGITAL', true, NULL),
 ('FT8', '-1', 'DIGITAL', true, NULL),
 ('HELL', NULL, 'DIGITAL', true, '[
         "FMHELL",
