@@ -29,31 +29,32 @@ RotatorWidget::RotatorWidget(QWidget *parent) :
     double lat, lon;
     gridToCoord(grid, lat, lon);
 
-    //double lambda0 = (lon / 180.0) * M_PI;
-    //double phi1 = (lat / 90.0) * (0.5 * M_PI);
-    double lambda0 = 0.2;
-    double phi1 = -0.8;
+    double lambda0 = (lon / 180.0) * (2.0 * M_PI);
+    double phi1 = - (lat / 90.0) * (0.5 * M_PI);
+    qDebug() << lambda0 << phi1;
+    //double lambda0 = 0.2;
+    //double phi1 = -0.8;
 
     for (int x = 0; x < map.width(); x++) {
-        double x2 = 2.0*M_PI*((double)x / map.width() - 0.5);
+        double x2 = 2.0 * M_PI * (static_cast<double>(x) / static_cast<double>(map.width()) - 0.5);
         for (int y = 0; y < map.height(); y++) {
-            //double r = sqrt(pow(2.0*(x - map.width()/2.0)/map.width(), 2.0) + pow(2.0*(y - map.height()/2.0)/map.height(), 2.0));
-            //double phi = atan2(x, y);
-
-            double y2 = 2.0*M_PI*((double)y / map.height() - 0.5);
+            double y2 = 2.0 * M_PI * (static_cast<double>(y) / static_cast<double>(map.height()) - 0.5);
             double c = sqrt(x2*x2 + y2*y2);
-            double phi = asin(cos(c)*sin(phi1) + (y2*sin(c)*cos(phi1))/c);
+            double phi = asin(cos(c) * sin(phi1) + y2 * sin(c) * cos(phi1) / c);
 
             if (c < M_PI) {
-                /*
-                double x2 = r * sin(phi) + 1.0;
-                double y2 = -phi * cos(phi) + 1.0;
-                */
-                double lambda = lambda0 + atan2(x2*sin(c), (c*cos(phi1)*cos(c) - y2*sin(phi1)*sin(c)));
+                double lambda = lambda0 + atan2(x2*sin(c), c*cos(phi1)*cos(c) - y2*sin(phi1)*sin(c));
 
                 double s = (lambda/(2*M_PI)) + 0.5;
                 double t = (phi/M_PI) + 0.5;
-                map.setPixelColor(x, y, source.pixelColor(s * source.width(), t * source.height()));
+
+                int x3 = static_cast<int>(s * static_cast<double>(source.width())) % source.width();
+                x3 = x3 < 0 ? x3 + source.width() : x3;
+
+                int y3 = static_cast<int>(t * static_cast<double>(source.height())) % source.height();
+                y3 = y3 < 0 ? y3 + source.width() : y3;
+
+                map.setPixelColor(x, y, source.pixelColor(x3, y3));
             }
             else {
                 map.setPixelColor(x, y, QColor(0, 0, 0, 0));
@@ -69,13 +70,13 @@ RotatorWidget::RotatorWidget(QWidget *parent) :
     compassScene->addEllipse(-100, -100, 200, 200, QPen(QColor(100, 100, 100), 2),
                                              QBrush(QColor(0, 0, 0), Qt::NoBrush));
 
-    compassScene->addEllipse(-5, -5, 10, 10, QPen(Qt::NoPen),
+    compassScene->addEllipse(-1, -1, 2, 2, QPen(Qt::NoPen),
                                              QBrush(QColor(0, 0, 0), Qt::SolidPattern));
 
     QPainterPath path;
-    path.lineTo(-2, 0);
+    path.lineTo(-1, 0);
     path.lineTo(0, -70);
-    path.lineTo(2, 0);
+    path.lineTo(1, 0);
     path.closeSubpath();
     compassNeedle = compassScene->addPath(path, QPen(Qt::NoPen),
                     QBrush(QColor(255, 255, 255), Qt::SolidPattern));
