@@ -143,9 +143,6 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     ui->contactTable->addAction(ui->deleteContact);
     //ui->contactTable->sortByColumn(1, Qt::DescendingOrder);
 
-    ui->contactTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->contactTable->horizontalHeader()->setSectionsMovable(true);
-
     ui->contactTable->setItemDelegateForColumn(1, new TimestampFormatDelegate(ui->contactTable));
     ui->contactTable->setItemDelegateForColumn(2, new TimestampFormatDelegate(ui->contactTable));
     ui->contactTable->setItemDelegateForColumn(3, new CallsignDelegate(ui->contactTable));
@@ -204,6 +201,7 @@ void LogbookWidget::deleteContact() {
 void LogbookWidget::updateTable() {
     model->select();
     ui->countLabel->setText(tr("%n contacts", "", model->rowCount()));
+    ui->contactTable->resizeColumnsToContents();
 }
 
 LogbookWidget::~LogbookWidget() {
