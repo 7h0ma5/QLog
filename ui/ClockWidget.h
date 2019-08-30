@@ -2,6 +2,7 @@
 #define CLOCKWIDGET_H
 
 #include <QWidget>
+#include <QTime>
 
 namespace Ui {
 class ClockWidget;
@@ -17,9 +18,13 @@ public:
 
 public slots:
     void updateClock();
+    void updateSun();
 
 private:
     Ui::ClockWidget *ui;
+
+    QTime sunrise;
+    QTime sunset;
 };
 
 #endif // CLOCKWIDGET_H
