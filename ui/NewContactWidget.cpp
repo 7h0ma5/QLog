@@ -153,6 +153,10 @@ void NewContactWidget::queryDatabase(QString callsign) {
 }
 
 void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
+    if (data.value("call") != callsign)  {
+        return;
+    }
+
     if (!data.value("name").isEmpty() && ui->nameEdit->text().isEmpty()) {
         ui->nameEdit->setText(data.value("name"));
     }
@@ -176,8 +180,6 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
     if (!data.value("ituz").isEmpty() && ui->ituEdit->text().isEmpty()) {
         ui->ituEdit->setText(data.value("ituz"));
     }
-
-    qDebug() << data;
 
     if (ui->callsignEdit->styleSheet().isEmpty()) {
         ui->callsignEdit->setStyleSheet("background-color: #bbddff;");

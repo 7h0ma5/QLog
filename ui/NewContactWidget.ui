@@ -1204,7 +1204,7 @@
  <connections>
   <connection>
    <sender>callsignEdit</sender>
-   <signal>editingFinished()</signal>
+   <signal>textChanged(QString)</signal>
    <receiver>NewContactWidget</receiver>
    <slot>callsignChanged()</slot>
    <hints>

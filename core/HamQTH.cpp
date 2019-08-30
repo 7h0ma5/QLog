@@ -72,6 +72,9 @@ void HamQTH::processReply(QNetworkReply* reply) {
         if (xml.name() == "session_id") {
             sessionId = xml.readElementText();
         }
+        else if (xml.name() == "callsign") {
+            data["call"] = xml.readElementText().toUpper();
+        }
         else if (xml.name() == "nick") {
             data["name"] = xml.readElementText();
         }
