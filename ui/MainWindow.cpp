@@ -132,7 +132,13 @@ void MainWindow::showAbout() {
 }
 
 void MainWindow::conditionsUpdated() {
-    conditionsLabel->setText(QString("Solar Flux: %1").arg(conditions->flux));
+    conditionsLabel->setTextFormat(Qt::RichText);
+    conditionsLabel->setText(
+                QString("<b>Flux:</b> %1 <b>K:</b> %2").arg(
+                    QString::number(conditions->flux),
+                    QString::number(conditions->k_index, 'g', 1)
+                )
+    );
 }
 
 MainWindow::~MainWindow() {

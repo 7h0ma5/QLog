@@ -22,6 +22,7 @@ public slots:
 
 public:
     int flux;
+    double k_index;
 
 private:
     QNetworkAccessManager* nam;
