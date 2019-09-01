@@ -1,0 +1,3 @@
+[submodule "res/flags"]
+	path = res/flags
+	url = https://github.com/7h0ma5/QLog-Flags.git

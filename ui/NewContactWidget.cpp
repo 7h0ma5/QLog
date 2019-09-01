@@ -111,9 +111,12 @@ void NewContactWidget::callsignChanged() {
     }
     else {
         startContactTimer();
-        queryDatabase(callsign);
         queryDxcc(callsign);
-        callbook.queryCallsign(callsign);
+
+        if (callsign.length() >= 3) {
+            queryDatabase(callsign);
+            callbook.queryCallsign(callsign);
+        }
     }
 }
 
@@ -127,8 +130,16 @@ void NewContactWidget::queryDxcc(QString callsign) {
         ui->dxccTableWidget->setDxcc(dxccEntity.dxcc);
         ui->contEdit->setCurrentText(dxccEntity.cont);
         updateDxccStatus();
+        if (!dxccEntity.flag.isEmpty()) {
+            QPixmap flag(QString(":/flags/64/%1.png").arg(dxccEntity.flag));
+            ui->flagView->setPixmap(flag);
+        }
+        else {
+            ui->flagView->setPixmap(QPixmap());
+        }
     }
     else {
+        ui->flagView->setPixmap(QPixmap());
         ui->dxccTableWidget->clear();
         ui->dxccStatus->clear();
     }
@@ -261,6 +272,7 @@ void NewContactWidget::resetContact() {
     ui->contEdit->setCurrentText("");
     ui->dxccTableWidget->clear();
     ui->dxccStatus->clear();
+    ui->flagView->setPixmap(QPixmap());
     ui->ageEdit->clear();
     ui->emailEdit->clear();
     ui->urlEdit->clear();
@@ -390,7 +402,7 @@ void NewContactWidget::updateTimeOff() {
 }
 
 void NewContactWidget::updateCoordinates(double lat, double lon, CoordPrecision prec) {
-    if (prec <= coordPrec) return;
+    if (prec < coordPrec) return;
 
     QSettings settings;
     QString myGrid = settings.value("station/grid").toString();
@@ -410,6 +422,11 @@ void NewContactWidget::updateCoordinates(double lat, double lon, CoordPrecision 
 }
 
 void NewContactWidget::updateDxccStatus() {
+    if (callsign.isEmpty()) {
+        ui->dxccStatus->clear();
+        return;
+    }
+
     DxccStatus status = Data::dxccStatus(dxccEntity.dxcc, ui->bandText->text(), ui->modeEdit->currentText());
     switch (status) {
     case DxccStatus::NewEntity:

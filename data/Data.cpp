@@ -6,6 +6,7 @@
 Data::Data(QObject *parent) : QObject(parent) {
     loadContests();
     loadPropagationModes();
+    loadDxccFlags();
 }
 
 Data* Data::instance() {
@@ -108,6 +109,22 @@ void Data::loadPropagationModes() {
     }
 }
 
+
+void Data::loadDxccFlags() {
+    QFile file(":/res/data/dxcc.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray data = file.readAll();
+
+    for (QVariant object : QJsonDocument::fromJson(data).toVariant().toList()) {
+        QVariantMap dxccData = object.toMap();
+
+        int id = dxccData.value("id").toInt();
+        QString flag = dxccData.value("flag").toString();
+
+        flags.insert(id, flag);
+    }
+}
+
 DxccEntity Data::lookupDxcc(QString callsign) {
     QSqlQuery query;
     query.prepare(
@@ -148,9 +165,13 @@ DxccEntity Data::lookupDxcc(QString callsign) {
         dxcc.cont = query.value(3).toString();
         dxcc.cqz = query.value(4).toInt();
         dxcc.ituz = query.value(5).toInt();
-        dxcc.latlon[0] = query.value(6).toFloat();
-        dxcc.latlon[1] = query.value(7).toFloat();
+        dxcc.latlon[0] = query.value(6).toDouble();
+        dxcc.latlon[1] = query.value(7).toDouble();
         dxcc.tz = query.value(8).toFloat();
+        dxcc.flag = flags.value(dxcc.dxcc);
+    }
+    else {
+        dxcc.dxcc = 0;
     }
     return dxcc;
 }

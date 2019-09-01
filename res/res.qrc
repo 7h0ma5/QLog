@@ -4,8 +4,6 @@
         <file>map/nasaearthlights.jpg</file>
         <file>stylesheet.css</file>
         <file>qlog.png</file>
-        <file>data/bands.json</file>
-        <file>data/modes.json</file>
         <file>data/dxcc.json</file>
         <file>data/legacy_modes.json</file>
         <file>data/contests.json</file>

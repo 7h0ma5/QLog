@@ -21,8 +21,9 @@ public:
     QString cont;
     qint32 cqz;
     qint32 ituz;
-    float latlon[2];
+    double latlon[2];
     float tz;
+    QString flag;
 };
 
 struct DxccPrefix {
@@ -33,7 +34,7 @@ public:
     qint32 cqz;
     qint32 ituz;
     QString cont;
-    float latlon[2];
+    double latlon[2];
 };
 
 #endif // DXCC_H

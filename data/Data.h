@@ -25,7 +25,9 @@ public slots:
 private:
     void loadContests();
     void loadPropagationModes();
+    void loadDxccFlags();
 
+    QMap<int, QString> flags;
     QMap<QString, QString> contests;
     QMap<QString, QString> propagationModes;
 };
