@@ -5,6 +5,8 @@ install:
   - set POSTGRESQLDIR="C:\Program Files\PostgreSQL\10"
   - ps: Start-FileDownload 'https://github.com/Hamlib/Hamlib/releases/download/3.3/hamlib-w64-3.3.zip'
   - 7z x hamlib-w64-3.3.zip
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - git submodule update --init --recursive
 before_build:
   - qmake INCLUDEPATH+="%HAMLIBDIR%/include" LIBS+="-L%HAMLIBDIR%/lib/gcc" -config release QLog.pro
 build_script:
