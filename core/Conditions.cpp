@@ -20,7 +20,7 @@ Conditions::Conditions(QObject *parent) : QObject(parent)
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Conditions::update);
-    timer->start(30*60*1000);
+    timer->start(15*60*1000);
 }
 
 void Conditions::update() {

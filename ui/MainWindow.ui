@@ -90,6 +90,7 @@
     <addaction name="actionMapWindow"/>
     <addaction name="actionWsjtx"/>
     <addaction name="actionRotator"/>
+    <addaction name="actionBandmap"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLogbook"/>
@@ -170,6 +171,15 @@
     <number>2</number>
    </attribute>
    <widget class="RotatorWidget" name="rotatorWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="bandmapDockWidget">
+   <property name="windowTitle">
+    <string>Bandmap</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="BandmapWidget" name="bandmapWidget"/>
   </widget>
   <action name="actionQuit">
    <property name="icon">
@@ -306,6 +316,11 @@
     <string>Rotator</string>
    </property>
   </action>
+  <action name="actionBandmap">
+   <property name="text">
+    <string>Bandmap</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -363,6 +378,12 @@
    <class>RotatorWidget</class>
    <extends>QWidget</extends>
    <header>ui/RotatorWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BandmapWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/BandmapWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -621,6 +642,22 @@
     <hint type="destinationlabel">
      <x>845</x>
      <y>407</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBandmap</sender>
+   <signal>triggered()</signal>
+   <receiver>bandmapDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>482</y>
     </hint>
    </hints>
   </connection>

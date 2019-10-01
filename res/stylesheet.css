@@ -1,3 +1,7 @@
 QLineEdit#callsignEdit {
         text-transform: uppercase;
 }
+
+QLabel.kindex-0, QLabel.kindex-1, QLabel.kindex-2, QLabel.kindex-3 {
+        color: #0000ff;
+}

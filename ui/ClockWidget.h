@@ -8,6 +8,8 @@ namespace Ui {
 class ClockWidget;
 }
 
+class QGraphicsScene;
+
 class ClockWidget : public QWidget
 {
     Q_OBJECT
@@ -19,9 +21,12 @@ public:
 public slots:
     void updateClock();
     void updateSun();
+    void updateSunGraph();
 
 private:
     Ui::ClockWidget *ui;
+
+    QGraphicsScene* sunScene;
 
     QTime sunrise;
     QTime sunset;

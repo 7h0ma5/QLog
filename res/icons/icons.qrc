@@ -4,5 +4,7 @@
         <file>baseline-pause-24px.svg</file>
         <file>baseline-search-24px.svg</file>
         <file>baseline-stop-24px.svg</file>
+        <file>skip_next-24px.svg</file>
+        <file>skip_previous-24px.svg</file>
     </qresource>
 </RCC>

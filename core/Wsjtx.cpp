@@ -68,6 +68,8 @@ void Wsjtx::readPendingDatagrams() {
             decode.mode = QString(mode);
             decode.message = QString(message);
 
+            qDebug() << decode.id << decode.message;
+
             emit decodeReceived(decode);
             break;
         }

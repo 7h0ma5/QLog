@@ -64,6 +64,9 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, ui->logbookWidget, &LogbookWidget::updateTable);
     connect(ui->newContactWidget, &NewContactWidget::newTarget, ui->mapWidget, &MapWidget::setTarget);
     connect(ui->newContactWidget, &NewContactWidget::contactAdded, clublog, &ClubLog::uploadContact);
+    connect(ui->newContactWidget, &NewContactWidget::filterCallsign, ui->logbookWidget, &LogbookWidget::filterCallsign);
+
+    connect(ui->dxWidget, &DxWidget::newSpot, ui->bandmapWidget, &BandmapWidget::addSpot);
 
     conditions = new Conditions(this);
     connect(conditions, &Conditions::conditionsUpdated, this, &MainWindow::conditionsUpdated);
@@ -132,11 +135,23 @@ void MainWindow::showAbout() {
 }
 
 void MainWindow::conditionsUpdated() {
+    QString kcolor;
+    if (conditions->k_index < 3.5) {
+        kcolor = "green";
+    }
+    else if (conditions->k_index < 4.5) {
+        kcolor = "orange";
+    }
+    else {
+        kcolor = "red";
+    }
+
     conditionsLabel->setTextFormat(Qt::RichText);
     conditionsLabel->setText(
-                QString("<b>Flux:</b> %1 <b>K:</b> %2").arg(
+                QString("SFI <b>%1</B> K <b style='color: %2'>%3</b>").arg(
                     QString::number(conditions->flux),
-                    QString::number(conditions->k_index, 'g', 1)
+                    kcolor,
+                    QString::number(conditions->k_index, 'g', 2)
                 )
     );
 }

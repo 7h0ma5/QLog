@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1006</width>
-    <height>425</height>
+    <height>438</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -227,23 +227,7 @@
      <property name="verticalSpacing">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QTimeEdit" name="timeOnEdit">
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="displayFormat">
-        <string notr="true">hh:mm:ss</string>
-       </property>
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
-       <property name="timeSpec">
-        <enum>Qt::UTC</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="7">
+     <item row="1" column="8">
       <widget class="QPushButton" name="saveButton">
        <property name="text">
         <string>Save</string>
@@ -257,49 +241,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="dateLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Date</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="timeOnLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Time On</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="updateTimeButton">
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../res/icons/icons.qrc">
-         <normaloff>:/icons/baseline-play_arrow-24px.svg</normaloff>:/icons/baseline-play_arrow-24px.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QLabel" name="timeOffLabel">
        <property name="font">
         <font>
@@ -326,8 +268,38 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="stopContactTimerButton">
+     <item row="0" column="0">
+      <widget class="QLabel" name="dateLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Date</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QTimeEdit" name="timeOnEdit">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="displayFormat">
+        <string notr="true">hh:mm:ss</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::UTC</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QPushButton" name="stopTimerButton">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -343,18 +315,34 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="8">
-      <widget class="QPushButton" name="resetButton">
+     <item row="1" column="2">
+      <widget class="QPushButton" name="startTimerButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
-        <string>Reset</string>
+        <string/>
        </property>
        <property name="icon">
-        <iconset theme="document-revert">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset resource="../res/icons/icons.qrc">
+         <normaloff>:/icons/baseline-play_arrow-24px.svg</normaloff>:/icons/baseline-play_arrow-24px.svg</iconset>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
+     <item row="1" column="7">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="4">
       <widget class="QTimeEdit" name="timeOffEdit">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
@@ -367,7 +355,32 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="5">
+     <item row="0" column="1">
+      <widget class="QLabel" name="timeOnLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Time On</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="9">
+      <widget class="QPushButton" name="resetButton">
+       <property name="text">
+        <string>Reset</string>
+       </property>
+       <property name="icon">
+        <iconset theme="document-revert">
+         <normaloff>.</normaloff>.</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
       <widget class="QPushButton" name="qrzButton">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
@@ -381,18 +394,16 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="6">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="updateTimeButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
+       <property name="icon">
+        <iconset resource="../res/icons/icons.qrc">
+         <normaloff>:/icons/skip_next-24px.svg</normaloff>:/icons/skip_next-24px.svg</iconset>
        </property>
-      </spacer>
+      </widget>
      </item>
     </layout>
    </item>
@@ -1190,7 +1201,7 @@
   <tabstop>gridEdit</tabstop>
   <tabstop>commentEdit</tabstop>
   <tabstop>tabWidget_2</tabstop>
-  <tabstop>updateTimeButton</tabstop>
+  <tabstop>startTimerButton</tabstop>
   <tabstop>qrzButton</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>resetButton</tabstop>
@@ -1247,7 +1258,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>stopContactTimerButton</sender>
+   <sender>stopTimerButton</sender>
    <signal>clicked()</signal>
    <receiver>NewContactWidget</receiver>
    <slot>stopContactTimer()</slot>
@@ -1343,10 +1354,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>updateTimeButton</sender>
+   <sender>startTimerButton</sender>
    <signal>clicked()</signal>
    <receiver>NewContactWidget</receiver>
-   <slot>updateTime()</slot>
+   <slot>startContactTimer()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>193</x>
@@ -1374,6 +1385,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>updateTimeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>NewContactWidget</receiver>
+   <slot>updateTimeStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>249</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>502</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>saveContact()</slot>
@@ -1385,5 +1412,7 @@
   <slot>modeChanged()</slot>
   <slot>updateTime()</slot>
   <slot>qrz()</slot>
+  <slot>startContactTimer()</slot>
+  <slot>updateTimeStop()</slot>
  </slots>
 </ui>

@@ -15,7 +15,7 @@ int DxTableModel::columnCount(const QModelIndex&) const {
 
 QVariant DxTableModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
-        Spot spot = dxData.at(index.row());
+        DxSpot spot = dxData.at(index.row());
         switch (index.column()) {
         case 0:
             return spot.time.toString();
@@ -34,7 +34,7 @@ QVariant DxTableModel::data(const QModelIndex& index, int role) const {
         }
     }
     else if (index.column() == 1 && role == Qt::BackgroundRole) {
-        Spot spot = dxData.at(index.row());
+        DxSpot spot = dxData.at(index.row());
         switch (spot.status) {
         case DxccStatus::NewEntity:
             return QColor(Qt::red);
@@ -43,7 +43,7 @@ QVariant DxTableModel::data(const QModelIndex& index, int role) const {
         }
     }
     else if (index.column() == 1 && role == Qt::TextColorRole) {
-        Spot spot = dxData.at(index.row());
+        DxSpot spot = dxData.at(index.row());
         switch (spot.status) {
         case DxccStatus::NewEntity:
             return QColor(Qt::white);
@@ -69,7 +69,7 @@ QVariant DxTableModel::headerData(int section, Qt::Orientation orientation, int 
     }
 }
 
-void DxTableModel::addEntry(Spot entry) {
+void DxTableModel::addEntry(DxSpot entry) {
     beginInsertRows(QModelIndex(), dxData.count(), dxData.count());
     dxData.append(entry);
     endInsertRows();
@@ -193,7 +193,7 @@ void DxWidget::receive() {
             DxccEntity dxcc = Data::instance()->lookupDxcc(call);
             QString country = dxcc.country;
 
-            Spot spot;
+            DxSpot spot;
             spot.time = QTime::currentTime();
             spot.callsign = call;
             spot.freq = freq.toDouble() / 1000;
@@ -202,6 +202,8 @@ void DxWidget::receive() {
             spot.comment = comment;
             spot.dxcc = dxcc;
             spot.status = Data::dxccStatus(spot.dxcc.dxcc, spot.band, "");
+
+            emit newSpot(spot);
 
             dxTableModel->addEntry(spot);
             ui->dxTable->repaint();

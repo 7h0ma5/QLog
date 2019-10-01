@@ -50,6 +50,7 @@ SOURCES += \
         models/DxccTableModel.cpp \
         models/RigTypeModel.cpp \
         models/RotTypeModel.cpp \
+        ui/BandmapWidget.cpp \
         ui/ClockWidget.cpp \
         ui/DbDialog.cpp \
         ui/DxWidget.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
         core/Wsjtx.h \
         core/utils.h \
         data/Data.h \
+        data/DxSpot.h \
         data/Dxcc.h \
         logformat/AdiFormat.h \
         logformat/AdxFormat.h \
@@ -87,6 +89,7 @@ HEADERS += \
         models/DxccTableModel.h \
         models/RigTypeModel.h \
         models/RotTypeModel.h \
+        ui/BandmapWidget.h \
         ui/ClockWidget.h \
         ui/DbDialog.h \
         ui/DxWidget.h \
@@ -103,6 +106,7 @@ HEADERS += \
         ui/WsjtxWidget.h
 
 FORMS += \
+        ui/BandmapWidget.ui \
         ui/ClockWidget.ui \
         ui/DbDialog.ui \
         ui/DxWidget.ui \

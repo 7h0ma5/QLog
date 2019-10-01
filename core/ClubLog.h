@@ -17,6 +17,7 @@ signals:
 
 public slots:
     void uploadContact(QSqlRecord record);
+    void uploadAdif(QByteArray& data);
     void processReply(QNetworkReply* reply);
 
 private:

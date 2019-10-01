@@ -110,7 +110,7 @@
     </layout>
    </item>
   </layout>
-  <action name="deleteContact">
+  <action name="actionDeleteContact">
    <property name="icon">
     <iconset theme="edit-delete">
      <normaloff>.</normaloff>.</iconset>
@@ -122,11 +122,16 @@
     <string>Del</string>
    </property>
   </action>
+  <action name="actionUploadClublog">
+   <property name="text">
+    <string>Upload to Clublog</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>deleteContact</sender>
+   <sender>actionDeleteContact</sender>
    <signal>triggered()</signal>
    <receiver>LogbookWidget</receiver>
    <slot>deleteContact()</slot>
@@ -173,10 +178,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUploadClublog</sender>
+   <signal>triggered()</signal>
+   <receiver>LogbookWidget</receiver>
+   <slot>uploadClublog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteContact()</slot>
   <slot>callsignFilterChanged()</slot>
   <slot>bandFilterChanged()</slot>
+  <slot>uploadClublog()</slot>
  </slots>
 </ui>

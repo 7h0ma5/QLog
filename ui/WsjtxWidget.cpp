@@ -113,7 +113,7 @@ WsjtxWidget::WsjtxWidget(QWidget *parent) :
 
 void WsjtxWidget::decodeReceived(WsjtxDecode decode) {
     if (decode.message.startsWith("CQ")) {
-        QRegExp cqRegExp("^CQ (DX )?([A-Z0-9\/]+) ?([A-Z]{2}[0-9]{2})?");
+        QRegExp cqRegExp("^CQ (DX |TEST )?([A-Z0-9\/]+) ?([A-Z]{2}[0-9]{2})?");
         if (cqRegExp.exactMatch(decode.message)) {
             WsjtxEntry entry;
             entry.decode = decode;

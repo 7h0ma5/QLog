@@ -31,6 +31,7 @@ public:
 signals:
     void contactAdded(QSqlRecord record);
     void newTarget(double lat, double lon);
+    void filterCallsign(QString call);
 
 public slots:
     void reloadSettings();
@@ -44,6 +45,7 @@ public slots:
     void gridChanged();
     void updateTime();
     void updateTimeOff();
+    void updateTimeStop();
     void startContactTimer();
     void stopContactTimer();
     void callsignResult(const QMap<QString, QString>& data);

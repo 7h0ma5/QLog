@@ -157,9 +157,11 @@ void NewContactWidget::queryDatabase(QString callsign) {
         ui->qthEdit->setText(query.value(1).toString());
         ui->gridEdit->setText(query.value(2).toString());
         ui->callsignEdit->setStyleSheet("background-color: #99ff99;");
+        emit filterCallsign(callsign);
     }
     else {
         ui->callsignEdit->setStyleSheet("");
+        emit filterCallsign(QString());
     }
 }
 
@@ -284,6 +286,8 @@ void NewContactWidget::resetContact() {
     ui->callsignEdit->setFocus();
     callsign = QString();
     coordPrec = COORD_NONE;
+
+    emit filterCallsign(QString());
     emit newTarget(0, 0);
 }
 
@@ -377,6 +381,7 @@ void NewContactWidget::saveContact() {
 }
 
 void NewContactWidget::startContactTimer() {
+    updateTime();
     if (!contactTimer->isActive()) {
         contactTimer->start(1000);
     }
@@ -394,7 +399,11 @@ void NewContactWidget::updateTime() {
     ui->dateEdit->setDate(now.date());
     ui->timeOnEdit->setTime(now.time());
     ui->timeOffEdit->setTime(now.time());
-    startContactTimer();
+}
+
+void NewContactWidget::updateTimeStop() {
+    updateTime();
+    stopContactTimer();
 }
 
 void NewContactWidget::updateTimeOff() {

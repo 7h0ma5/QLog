@@ -5,21 +5,11 @@
 #include <QtNetwork>
 
 #include "data/Data.h"
+#include "data/DxSpot.h"
 
 namespace Ui {
 class DxWidget;
 }
-
-struct Spot {
-    QTime time;
-    QString callsign;
-    double freq;
-    QString band;
-    QString spotter;
-    QString comment;
-    DxccEntity dxcc;
-    DxccStatus status;
-};
 
 class DxTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -30,13 +20,13 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    void addEntry(Spot entry);
+    void addEntry(DxSpot entry);
     QString getCallsign(const QModelIndex& index);
     double getFrequency(const QModelIndex& index);
     void clear();
 
 private:
-    QList<Spot> dxData;
+    QList<DxSpot> dxData;
 };
 
 class DxWidget : public QWidget {
@@ -57,6 +47,7 @@ public slots:
 
 signals:
     void tuneDx(QString callsign, double freq);
+    void newSpot(DxSpot spot);
 
 private:
     DxTableModel* dxTableModel;

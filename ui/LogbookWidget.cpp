@@ -2,7 +2,9 @@
 #include <QMessageBox>
 #include <QDoubleSpinBox>
 #include <QStyledItemDelegate>
+#include "logformat/AdiFormat.h"
 #include "models/BandModel.h"
+#include "core/ClubLog.h"
 #include "LogbookWidget.h"
 #include "ui_LogbookWidget.h"
 
@@ -140,7 +142,8 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
 
     ui->contactTable->setModel(model);
 
-    ui->contactTable->addAction(ui->deleteContact);
+    ui->contactTable->addAction(ui->actionUploadClublog);
+    ui->contactTable->addAction(ui->actionDeleteContact);
     //ui->contactTable->sortByColumn(1, Qt::DescendingOrder);
 
     ui->contactTable->setItemDelegateForColumn(1, new TimestampFormatDelegate(ui->contactTable));
@@ -158,7 +161,13 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
 
     ui->bandFilter->setModel(new BandModel(true));
 
+    clublog = new ClubLog(this);
+
     updateTable();
+}
+
+void LogbookWidget::filterCallsign(QString call) {
+    ui->callsignFilter->setText(call);
 }
 
 void LogbookWidget::callsignFilterChanged() {
@@ -182,6 +191,22 @@ void LogbookWidget::bandFilterChanged() {
         model->setFilter(nullptr);
     }
     updateTable();
+}
+
+void LogbookWidget::uploadClublog() {
+    QByteArray data;
+    QTextStream stream(&data, QIODevice::ReadWrite);
+
+    AdiFormat adi(stream);
+
+    foreach (QModelIndex index, ui->contactTable->selectionModel()->selectedRows()) {
+        QSqlRecord record = model->record(index.row());
+        adi.exportContact(record);
+    }
+
+    stream.flush();
+
+    clublog->uploadAdif(data);
 }
 
 void LogbookWidget::deleteContact() {
