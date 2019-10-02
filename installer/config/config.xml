@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>QLog</Name>
+    <Version>1.0.0</Version>
+    <Title>QLog</Title>
+    <Publisher>DL2IC</Publisher>
+    <StartMenuDir>QLog</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/QLog</TargetDir>
+</Installer>

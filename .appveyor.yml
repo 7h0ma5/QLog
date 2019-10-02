@@ -1,9 +1,11 @@
 install:
   - set QTDIR="C:\Qt\5.13.0\mingw73_64"
-  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_64\bin;%PATH%
+  - set QTINSTALLERDIR="C:\Qt\Tools\QtInstallerFramework\3.1"
+  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_64\bin;%QTINSTALLERDIR%\bin;%PATH%
   - set HAMLIBDIR="hamlib-w64-3.3"
   - set POSTGRESQLDIR="C:\Program Files\PostgreSQL\10"
   - set OPENSSLDIR="C:\OpenSSL-v111-Win64"
+  - set PACKAGEDIR="installer\packages\de.dl2ic.qlog\data"
   - ps: Start-FileDownload 'https://github.com/Hamlib/Hamlib/releases/download/3.3/hamlib-w64-3.3.zip'
   - 7z x hamlib-w64-3.3.zip
   - cd %APPVEYOR_BUILD_FOLDER%
@@ -13,22 +15,22 @@ before_build:
 build_script:
   - mingw32-make
 after_build:
-  - windeployqt --release release/qlog.exe
-  - xcopy %OPENSSLDIR%\bin\libssl-1_1-x64.dll release\
-  - xcopy %OPENSSLDIR%\bin\libcrypto-1_1-x64.dll release\
-  - xcopy %OPENSSLDIR%\bin\capi.dll release\
-  - xcopy %OPENSSLDIR%\bin\dasync.dll release\
-  - xcopy %OPENSSLDIR%\bin\ossltest.dll release\
-  - xcopy %OPENSSLDIR%\bin\padlock.dll release\
-  - xcopy %HAMLIBDIR%\bin\libhamlib-2.dll release\
-  - xcopy %HAMLIBDIR%\bin\libusb-1.0.dll release\
-  - xcopy %POSTGRESQLDIR%\bin\libpq.dll release\
-  - xcopy %POSTGRESQLDIR%\bin\libeay32.dll release\
-  - xcopy %POSTGRESQLDIR%\bin\libiconv-2.dll release\
-  - xcopy %POSTGRESQLDIR%\bin\libintl-8.dll release\
-  - xcopy %POSTGRESQLDIR%\bin\ssleay32.dll release\
-  - rm release/*.o
-  - rm release/*.cpp
+  - xcopy release\qlog.exe %PACKAGEDIR%\
+  - windeployqt --release %PACKAGEDIR%\qlog.exe
+  - xcopy %OPENSSLDIR%\bin\libssl-1_1-x64.dll %PACKAGEDIR%\
+  - xcopy %OPENSSLDIR%\bin\libcrypto-1_1-x64.dll %PACKAGEDIR%\
+  - xcopy %OPENSSLDIR%\bin\capi.dll %PACKAGEDIR%\
+  - xcopy %OPENSSLDIR%\bin\dasync.dll %PACKAGEDIR%\
+  - xcopy %OPENSSLDIR%\bin\ossltest.dll %PACKAGEDIR%\
+  - xcopy %OPENSSLDIR%\bin\padlock.dll %PACKAGEDIR%\
+  - xcopy %HAMLIBDIR%\bin\libhamlib-2.dll %PACKAGEDIR%\
+  - xcopy %HAMLIBDIR%\bin\libusb-1.0.dll %PACKAGEDIR%\
+  - xcopy %POSTGRESQLDIR%\bin\libpq.dll %PACKAGEDIR%\
+  - xcopy %POSTGRESQLDIR%\bin\libeay32.dll %PACKAGEDIR%\
+  - xcopy %POSTGRESQLDIR%\bin\libiconv-2.dll %PACKAGEDIR%\
+  - xcopy %POSTGRESQLDIR%\bin\libintl-8.dll %PACKAGEDIR%\
+  - xcopy %POSTGRESQLDIR%\bin\ssleay32.dll %PACKAGEDIR%\
+  - binarycreator.exe -f -c installer\config\config.xml -p installer\packages qlog-installer.exe
 artifacts:
-  - path: release
-    type: zip
+  - name: installer
+    path: qlog-installer.exe
