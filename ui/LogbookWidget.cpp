@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <QDoubleSpinBox>
 #include <QStyledItemDelegate>
+#include <QDesktopServices>
 #include "logformat/AdiFormat.h"
 #include "models/BandModel.h"
 #include "core/ClubLog.h"
@@ -142,6 +143,8 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
 
     ui->contactTable->setModel(model);
 
+    ui->contactTable->addAction(ui->actionFilter);
+    ui->contactTable->addAction(ui->actionLookup);
     ui->contactTable->addAction(ui->actionUploadClublog);
     ui->contactTable->addAction(ui->actionDeleteContact);
     //ui->contactTable->sortByColumn(1, Qt::DescendingOrder);
@@ -166,6 +169,19 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     updateTable();
 }
 
+void LogbookWidget::filterSelectedCallsign() {
+    QModelIndex index = ui->contactTable->selectionModel()->selectedRows().first();
+    QSqlRecord record = model->record(index.row());
+    filterCallsign(record.value("callsign").toString());
+}
+
+void LogbookWidget::lookupSelectedCallsign() {
+    QModelIndex index = ui->contactTable->selectionModel()->selectedRows().first();
+    QSqlRecord record = model->record(index.row());
+    QString callsign = record.value("callsign").toString();
+    QDesktopServices::openUrl(QString("https://www.qrz.com/lookup/%1").arg(callsign));
+}
+
 void LogbookWidget::filterCallsign(QString call) {
     ui->callsignFilter->setText(call);
 }
@@ -173,8 +189,7 @@ void LogbookWidget::filterCallsign(QString call) {
 void LogbookWidget::callsignFilterChanged() {
     QString callsign = ui->callsignFilter->text();
     if (!callsign.isEmpty()) {
-        model->setFilter(QString("callsign LIKE '%%1%'").arg(ui->callsignFilter->text()));
-        qDebug() << model->filter();
+        model->setFilter(QString("callsign LIKE '%1%'").arg(ui->callsignFilter->text()));
     }
     else {
         model->setFilter(nullptr);

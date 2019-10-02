@@ -19,6 +19,8 @@ public:
 
 public slots:
     void filterCallsign(QString call);
+    void filterSelectedCallsign();
+    void lookupSelectedCallsign();
     void callsignFilterChanged();
     void bandFilterChanged();
     void updateTable();

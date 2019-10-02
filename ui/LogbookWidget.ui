@@ -123,12 +123,36 @@
    </property>
   </action>
   <action name="actionUploadClublog">
+   <property name="icon">
+    <iconset resource="../res/icons/icons.qrc">
+     <normaloff>:/icons/cloud_upload-24px.svg</normaloff>:/icons/cloud_upload-24px.svg</iconset>
+   </property>
    <property name="text">
     <string>Upload to Clublog</string>
    </property>
   </action>
+  <action name="actionLookup">
+   <property name="icon">
+    <iconset resource="../res/icons/icons.qrc">
+     <normaloff>:/icons/baseline-search-24px.svg</normaloff>:/icons/baseline-search-24px.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Lookup on QRZ</string>
+   </property>
+  </action>
+  <action name="actionFilter">
+   <property name="icon">
+    <iconset resource="../res/icons/icons.qrc">
+     <normaloff>:/icons/filter_list-24px.svg</normaloff>:/icons/filter_list-24px.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Filter Callsign</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/icons/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionDeleteContact</sender>
@@ -194,11 +218,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionFilter</sender>
+   <signal>triggered()</signal>
+   <receiver>LogbookWidget</receiver>
+   <slot>filterSelectedCallsign()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLookup</sender>
+   <signal>triggered()</signal>
+   <receiver>LogbookWidget</receiver>
+   <slot>lookupSelectedCallsign()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteContact()</slot>
   <slot>callsignFilterChanged()</slot>
   <slot>bandFilterChanged()</slot>
   <slot>uploadClublog()</slot>
+  <slot>filterSelectedCallsign()</slot>
+  <slot>lookupSelectedCallsign()</slot>
  </slots>
 </ui>

@@ -6,5 +6,8 @@
         <file>baseline-stop-24px.svg</file>
         <file>skip_next-24px.svg</file>
         <file>skip_previous-24px.svg</file>
+        <file>cloud_upload-24px.svg</file>
+        <file>cloud_download-24px.svg</file>
+        <file>filter_list-24px.svg</file>
     </qresource>
 </RCC>
