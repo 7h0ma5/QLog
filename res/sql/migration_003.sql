@@ -21,3 +21,6 @@ CREATE TABLE IF NOT EXISTS dxcc_prefixes (
         lat FLOAT,
         lon FLOAT
 );
+
+CREATE INDEX prefix_idx ON dxcc_prefixes(prefix);
+CREATE INDEX callsign_idx ON contacts(callsign);
