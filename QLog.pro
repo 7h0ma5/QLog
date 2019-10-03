@@ -133,6 +133,9 @@ OTHER_FILES += \
 
 TRANSLATIONS = i18n/qlog_de.ts
 
+RC_ICONS = res/qlog.ico
+ICON = res/qlog.icns
+
 unix {
   isEmpty(PREFIX) {
     PREFIX = /usr/local
