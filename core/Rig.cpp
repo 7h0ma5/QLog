@@ -45,7 +45,7 @@ void Rig::update() {
     rmode_t modeId;
     pbwidth_t pbwidth;
 
-    if (rig_get_mode(rig, RIG_VFO_A, &modeId, &pbwidth) == RIG_OK) {
+    if (rig_get_mode(rig, RIG_VFO_CURR, &modeId, &pbwidth) == RIG_OK) {
         QString new_mode = modeToString(modeId);
         if (new_mode != mode_rx)  {
             mode_rx = new_mode;
