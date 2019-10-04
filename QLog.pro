@@ -46,10 +46,10 @@ SOURCES += \
         logformat/AdxFormat.cpp \
         logformat/JsonFormat.cpp \
         logformat/LogFormat.cpp \
-        models/BandModel.cpp \
         models/DxccTableModel.cpp \
         models/RigTypeModel.cpp \
         models/RotTypeModel.cpp \
+        models/SqlListModel.cpp \
         ui/BandmapWidget.cpp \
         ui/ClockWidget.cpp \
         ui/DbDialog.cpp \
@@ -61,6 +61,7 @@ SOURCES += \
         ui/MainWindow.cpp \
         ui/MapWidget.cpp \
         ui/NewContactWidget.cpp \
+        ui/RigWidget.cpp \
         ui/RotatorWidget.cpp \
         ui/SettingsDialog.cpp \
         ui/StatisticsWidget.cpp \
@@ -85,10 +86,10 @@ HEADERS += \
         logformat/AdxFormat.h \
         logformat/JsonFormat.h \
         logformat/LogFormat.h \
-        models/BandModel.h \
         models/DxccTableModel.h \
         models/RigTypeModel.h \
         models/RotTypeModel.h \
+        models/SqlListModel.h \
         ui/BandmapWidget.h \
         ui/ClockWidget.h \
         ui/DbDialog.h \
@@ -100,6 +101,7 @@ HEADERS += \
         ui/MainWindow.h \
         ui/MapWidget.h \
         ui/NewContactWidget.h \
+        ui/RigWidget.h \
         ui/RotatorWidget.h \
         ui/SettingsDialog.h \
         ui/StatisticsWidget.h \
@@ -115,6 +117,7 @@ FORMS += \
         ui/LogbookWidget.ui \
         ui/MainWindow.ui \
         ui/NewContactWidget.ui \
+        ui/RigWidget.ui \
         ui/RotatorWidget.ui \
         ui/SettingsDialog.ui \
         ui/StatisticsWidget.ui \

@@ -4,7 +4,7 @@
 #include <QStyledItemDelegate>
 #include <QDesktopServices>
 #include "logformat/AdiFormat.h"
-#include "models/BandModel.h"
+#include "models/SqlListModel.h"
 #include "core/ClubLog.h"
 #include "LogbookWidget.h"
 #include "ui_LogbookWidget.h"
@@ -162,7 +162,8 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     ui->contactTable->hideColumn(18);
     ui->contactTable->hideColumn(19);
 
-    ui->bandFilter->setModel(new BandModel(true));
+    ui->bandFilter->setModel(new SqlListModel("SELECT name FROM bands", "Band"));
+    ui->countryFilter->setModel(new SqlListModel("SELECT name FROM dxcc_entities ORDER BY name", "Country"));
 
     clublog = new ClubLog(this);
 

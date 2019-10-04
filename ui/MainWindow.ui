@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>894</width>
-     <height>28</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -90,7 +90,9 @@
     <addaction name="actionMapWindow"/>
     <addaction name="actionWsjtx"/>
     <addaction name="actionRotator"/>
+    <addaction name="actionRig"/>
     <addaction name="actionBandmap"/>
+    <addaction name="actionClock"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLogbook"/>
@@ -180,6 +182,15 @@
     <number>2</number>
    </attribute>
    <widget class="BandmapWidget" name="bandmapWidget"/>
+  </widget>
+  <widget class="QDockWidget" name="rigDockWidget">
+   <property name="windowTitle">
+    <string>Rig</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="RigWidget" name="dockWidgetContents"/>
   </widget>
   <action name="actionQuit">
    <property name="icon">
@@ -321,6 +332,16 @@
     <string>Bandmap</string>
    </property>
   </action>
+  <action name="actionRig">
+   <property name="text">
+    <string>Rig</string>
+   </property>
+  </action>
+  <action name="actionClock">
+   <property name="text">
+    <string>Clock</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -384,6 +405,12 @@
    <class>BandmapWidget</class>
    <extends>QWidget</extends>
    <header>ui/BandmapWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RigWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/RigWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -658,6 +685,38 @@
     <hint type="destinationlabel">
      <x>845</x>
      <y>482</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRig</sender>
+   <signal>triggered()</signal>
+   <receiver>rigDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClock</sender>
+   <signal>triggered()</signal>
+   <receiver>clockDockWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>845</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>

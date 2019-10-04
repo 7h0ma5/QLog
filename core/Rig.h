@@ -32,9 +32,9 @@ private:
     void operator=(Rig const&);
 
     struct rig* rig;
-    int freq;
+    int freq_rx;
+    QString mode_rx;
     unsigned int power;
-    QString mode;
     QMutex rigLock;
 };
 

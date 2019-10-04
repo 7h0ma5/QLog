@@ -4,6 +4,17 @@
 #include <hamlib/rig.h>
 #include "Rig.h"
 
+static QString modeToString(rmode_t mode) {
+    switch (mode) {
+    case RIG_MODE_AM: return "AM";
+    case RIG_MODE_CW: return "CW";
+    case RIG_MODE_USB: return "USB";
+    case RIG_MODE_LSB: return "LSB";
+    case RIG_MODE_FM: return "FM";
+    default: return "";
+    }
+}
+
 Rig* Rig::instance() {
     static Rig instance;
     return &instance;
@@ -12,7 +23,7 @@ Rig* Rig::instance() {
 void Rig::start() {
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(1000);
+    timer->start(500);
 }
 
 void Rig::update() {
@@ -20,48 +31,32 @@ void Rig::update() {
 
     if (!rigLock.tryLock(200)) return;
 
-    freq_t rigFreq;
-    rig_get_freq(rig, RIG_VFO_CURR, &rigFreq);
+    freq_t vfo_freq;
 
-    if (rigFreq != freq) {
-        freq = rigFreq;
-        emit frequencyChanged(freq/1e6);
+    if (rig_get_freq(rig, RIG_VFO_CURR, &vfo_freq) == RIG_OK) {
+        int new_freq = static_cast<int>(vfo_freq);
+
+        if (new_freq != freq_rx) {
+            freq_rx = new_freq;
+            emit frequencyChanged(freq_rx/1e6);
+        }
     }
 
     rmode_t modeId;
     pbwidth_t pbwidth;
-    rig_get_mode(rig, RIG_VFO_CURR, &modeId, &pbwidth);
 
-    QString rigMode;
-    switch (modeId) {
-    case RIG_MODE_AM:
-        rigMode = "AM";
-        break;
-    case RIG_MODE_CW:
-        rigMode = "CW";
-        break;
-    case RIG_MODE_USB:
-    case RIG_MODE_LSB:
-        rigMode = "SSB";
-        break;
-    case RIG_MODE_FM:
-        rigMode = "FM";
-        break;
-    default:
-        rigMode = "";
-    }
-
-    if (rigMode != mode) {
-        mode = rigMode;
-        emit modeChanged(mode);
+    if (rig_get_mode(rig, RIG_VFO_A, &modeId, &pbwidth) == RIG_OK) {
+        QString new_mode = modeToString(modeId);
+        if (new_mode != mode_rx)  {
+            mode_rx = new_mode;
+            emit modeChanged(mode_rx);
+        }
     }
 
     value_t rigPowerLevel;
     unsigned int rigPower;
     rig_get_level(rig, RIG_VFO_CURR, RIG_LEVEL_RFPOWER, &rigPowerLevel);
-    rig_power2mW(rig, &rigPower, rigPowerLevel.f, rigFreq, modeId);
-
-    qDebug() << "power" << rigPowerLevel.f;
+    rig_power2mW(rig, &rigPower, rigPowerLevel.f, freq_rx, modeId);
 
     if (rigPower != power) {
         power = rigPower;
@@ -101,22 +96,25 @@ void Rig::open() {
 
 void Rig::setFrequency(double newFreq) {
     if (!rig) return;
-    freq = newFreq*1e6;
+    return;
 
     rigLock.lock();
-    rig_set_freq(rig, RIG_VFO_CURR, freq);
+    freq_rx = static_cast<int>(newFreq*1e6);
+    rig_set_freq(rig, RIG_VFO_CURR, freq_rx);
     rigLock.unlock();
 }
 
 void Rig::setMode(QString newMode) {
     if (!rig) return;
-    mode = newMode;
+    return;
+
     rigLock.lock();
+    mode_rx = newMode;
     if (newMode == "CW") {
         rig_set_mode(rig, RIG_VFO_CURR, RIG_MODE_CW, RIG_PASSBAND_NORMAL);
     }
     else if (newMode == "SSB") {
-        if (freq < 10) {
+        if (freq_rx < 10) {
             rig_set_mode(rig, RIG_VFO_CURR, RIG_MODE_LSB, RIG_PASSBAND_NORMAL);
         }
         else {
@@ -129,6 +127,7 @@ void Rig::setMode(QString newMode) {
     else if (newMode == "FM") {
         rig_set_mode(rig, RIG_VFO_CURR, RIG_MODE_FM, RIG_PASSBAND_NORMAL);
     }
+
     rigLock.unlock();
 }
 

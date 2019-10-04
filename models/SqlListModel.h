@@ -1,14 +1,14 @@
-#ifndef BANDMODEL_H
-#define BANDMODEL_H
+#ifndef SQLLISTMODEL_H
+#define SQLLISTMODEL_H
 
-#include <QAbstractListModel>
+#include <QSqlQueryModel>
 
-class BandModel : public QAbstractListModel
+class SqlListModel : public QSqlQueryModel
 {
     Q_OBJECT
 
 public:
-    explicit BandModel(bool allowEmpty = false, QObject *parent = nullptr);
+    explicit SqlListModel(QString query, QString placeholder, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -19,8 +19,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    bool allowEmpty;
-    QList<QVariant> bands;
+    QString placeholder;
 };
 
-#endif // BANDMODEL_H
+#endif // SQLLISTMODEL_H
