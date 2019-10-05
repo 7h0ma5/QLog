@@ -22,7 +22,7 @@ QVariant DxTableModel::data(const QModelIndex& index, int role) const {
         case 1:
             return spot.callsign;
         case 2:
-            return spot.freq;
+            return QString::number(spot.freq, 'f', 4);
         case 3:
             return spot.spotter;
         case 4:
@@ -197,7 +197,7 @@ void DxWidget::receive() {
             spot.time = QTime::currentTime();
             spot.callsign = call;
             spot.freq = freq.toDouble() / 1000;
-            spot.band = Data::band(spot.freq);
+            spot.band = Data::band(spot.freq).name;
             spot.spotter = spotter;
             spot.comment = comment;
             spot.dxcc = dxcc;

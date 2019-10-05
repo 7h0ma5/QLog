@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include "Dxcc.h"
+#include "Band.h"
 
 class Data : public QObject
 {
@@ -12,7 +13,7 @@ public:
     static Data* instance();
 
     static DxccStatus dxccStatus(int dxcc, QString band, QString mode);
-    static QString band(double freq);
+    static Band band(double freq);
 
     QStringList contestList() { return contests.values(); }
     QStringList propagationModesList() { return propagationModes.values(); }

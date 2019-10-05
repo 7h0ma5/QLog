@@ -65,17 +65,21 @@ DxccStatus Data::dxccStatus(int dxcc, QString band, QString mode) {
     }
 }
 
-QString Data::band(double freq) {
+Band Data::band(double freq) {
     QSqlQuery query;
-    query.prepare("SELECT name FROM bands WHERE :freq BETWEEN start_freq AND end_freq");
+    query.prepare("SELECT name, start_freq, end_freq FROM bands WHERE :freq BETWEEN start_freq AND end_freq");
     query.bindValue(0, freq);
     query.exec();
 
     if (query.next()) {
-        return query.value(0).toString();
+        Band band;
+        band.name = query.value(0).toString();
+        band.start = query.value(1).toDouble();
+        band.end = query.value(2).toDouble();
+        return band;
     }
     else {
-        return QString();
+        return Band();
     }
 }
 

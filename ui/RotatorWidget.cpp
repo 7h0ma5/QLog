@@ -31,7 +31,6 @@ RotatorWidget::RotatorWidget(QWidget *parent) :
 
     double lambda0 = (lon / 180.0) * (2.0 * M_PI);
     double phi1 = - (lat / 90.0) * (0.5 * M_PI);
-    qDebug() << lambda0 << phi1;
     //double lambda0 = 0.2;
     //double phi1 = -0.8;
 

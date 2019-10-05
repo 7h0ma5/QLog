@@ -112,7 +112,7 @@ void Wsjtx::insertContact(WsjtxLog log) {
     QSqlRecord record = model.record();
 
     double freq = static_cast<double>(log.tx_freq)/1e6;
-    QString band = Data::band(freq);
+    QString band = Data::band(freq).name;
 
     record.setValue("callsign", log.dx_call);
     record.setValue("rst_rcvd", log.rprt_rcvd);

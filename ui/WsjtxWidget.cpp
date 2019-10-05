@@ -129,7 +129,7 @@ void WsjtxWidget::decodeReceived(WsjtxDecode decode) {
 
 void WsjtxWidget::statusReceived(WsjtxStatus newStatus) {
     if (this->status.dial_freq != newStatus.dial_freq) {
-        band = Data::instance()->band(newStatus.dial_freq/1e6);
+        band = Data::instance()->band(newStatus.dial_freq/1e6).name;
         ui->freqLabel->setText(QString("%1 MHz").arg(newStatus.dial_freq/1e6));
     }
 

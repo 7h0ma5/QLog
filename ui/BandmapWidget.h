@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMap>
 #include "data/DxSpot.h"
+#include "data/Band.h"
 
 namespace Ui {
 class BandmapWidget;
@@ -21,13 +22,14 @@ public:
 
 public slots:
     void update();
+    void updateRxFrequency(double freq);
     void addSpot(DxSpot spot);
 
 private:
     Ui::BandmapWidget *ui;
 
     double rx_freq, tx_freq;
-    double start, end;
+    Band band;
     QGraphicsScene* bandmapScene;
     QMap<double, DxSpot> spots;
 };

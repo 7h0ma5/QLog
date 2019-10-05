@@ -240,13 +240,13 @@ void NewContactWidget::modeChanged() {
 
 
 void NewContactWidget::updateBand(double freq) {
-    QString band = Data::band(freq);
+    Band band = Data::band(freq);
 
-    if (band.isEmpty()) {
+    if (band.name.isEmpty()) {
         ui->bandText->setText("OOB!");
     }
-    else if (band != ui->bandText->text()) {
-        ui->bandText->setText(band);
+    else if (band.name != ui->bandText->text()) {
+        ui->bandText->setText(band.name);
         bandChanged();
     }
 }

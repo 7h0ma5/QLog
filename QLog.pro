@@ -79,6 +79,7 @@ HEADERS += \
         core/Rotator.h \
         core/Wsjtx.h \
         core/utils.h \
+        data/Band.h \
         data/Data.h \
         data/DxSpot.h \
         data/Dxcc.h \
