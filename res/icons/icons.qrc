@@ -9,5 +9,7 @@
         <file>cloud_upload-24px.svg</file>
         <file>cloud_download-24px.svg</file>
         <file>filter_list-24px.svg</file>
+        <file>zoom_out-24px.svg</file>
+        <file>zoom_in-24px.svg</file>
     </qresource>
 </RCC>

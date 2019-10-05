@@ -20,16 +20,30 @@ public:
     explicit BandmapWidget(QWidget *parent = nullptr);
     ~BandmapWidget();
 
+    enum BandmapZoom {
+        ZOOM_50HZ,
+        ZOOM_500HZ,
+        ZOOM_5KHZ,
+        ZOOM_50KHZ
+    };
+
 public slots:
     void update();
     void updateRxFrequency(double freq);
     void addSpot(DxSpot spot);
+    void clearSpots();
+    void zoomIn();
+    void zoomOut();
+
+private:
+    void removeDuplicates(DxSpot &spot);
 
 private:
     Ui::BandmapWidget *ui;
 
     double rx_freq, tx_freq;
     Band band;
+    BandmapZoom zoom;
     QGraphicsScene* bandmapScene;
     QMap<double, DxSpot> spots;
 };

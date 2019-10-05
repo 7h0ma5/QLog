@@ -12,6 +12,7 @@ BandmapWidget::BandmapWidget(QWidget *parent) :
     ui->setupUi(this);
 
     band = Data::band(14.100);
+    zoom = ZOOM_5KHZ;
 
     bandmapScene = new QGraphicsScene(this);
     bandmapScene->setSceneRect(-50, 0, 300, 1000);
@@ -28,7 +29,15 @@ void BandmapWidget::update() {
     bandmapScene->clear();
 
     // Draw Scale
-    double step = 0.001;
+    double step;
+    int digits;
+    switch (zoom) {
+    case ZOOM_50HZ: step = 0.00005; digits = 5; break;
+    case ZOOM_500HZ: step = 0.0005; digits = 4; break;
+    case ZOOM_5KHZ: step = 0.005; digits = 3; break;
+    case ZOOM_50KHZ: step = 0.05; digits = 2; break;
+    }
+
     int steps = static_cast<int>(round((band.end - band.start) / step));
     bandmapScene->setSceneRect(-50, -10, 250, steps*10 + 20);
     ui->graphicsView->setFixedSize(300, steps*10 + 30);
@@ -37,7 +46,7 @@ void BandmapWidget::update() {
         bandmapScene->addLine(0, i*10, (i % 5 == 0) ? 15 : 10, i*10);
 
         if (i % 5 == 0) {
-            QGraphicsTextItem* text = bandmapScene->addText(QString::number(band.start + step*i, 'f', 3));
+            QGraphicsTextItem* text = bandmapScene->addText(QString::number(band.start + step*i, 'f', digits));
             text->setPos(- (text->boundingRect().width()) - 10, i*10 - (text->boundingRect().height() / 2));
         }
     }
@@ -50,17 +59,60 @@ void BandmapWidget::update() {
     QMap<double, DxSpot>::const_iterator lower = spots.lowerBound(band.start);
     QMap<double, DxSpot>::const_iterator upper = spots.upperBound(band.end);
 
-    for (; lower != upper; lower++) {
-        double y = ((lower.key() - band.start) / step) * 10;
-        bandmapScene->addLine(17, y, 100, y);
+    double min_y = 0;
 
-        QGraphicsItem* text = bandmapScene->addText(lower.value().callsign);
-        text->setPos(100, y - (text->boundingRect().height() / 2));
+    for (; lower != upper; lower++) {
+        double freq_y = ((lower.key() - band.start) / step) * 10;
+        double text_y = std::max(min_y, freq_y);
+        bandmapScene->addLine(17, freq_y, 100, text_y);
+
+        QGraphicsTextItem* text = bandmapScene->addText(lower.value().callsign);
+        text->setPos(100, text_y - (text->boundingRect().height() / 2));
+
+        min_y = text_y + text->boundingRect().height() / 2;
+
+        if (lower.value().status == DxccStatus::NewEntity) {
+            text->setDefaultTextColor(Qt::red);
+        }
+    }
+}
+
+void BandmapWidget::removeDuplicates(DxSpot &spot) {
+    QMap<double, DxSpot>::iterator lower = spots.lowerBound(spot.freq - 0.005);
+    QMap<double, DxSpot>::iterator upper = spots.upperBound(spot.freq + 0.005);
+
+    for (; lower != upper;) {
+        if (lower.value().callsign == spot.callsign) {
+            spots.erase(lower++);
+        }
+        else {
+            ++lower;
+        }
     }
 }
 
 void BandmapWidget::addSpot(DxSpot spot) {
+    this->removeDuplicates(spot);
     spots.insert(spot.freq, spot);
+    update();
+}
+
+void BandmapWidget::clearSpots() {
+    spots.clear();
+    update();
+}
+
+void BandmapWidget::zoomIn() {
+    if (zoom > ZOOM_50HZ) {
+        zoom = static_cast<BandmapZoom>(static_cast<int>(zoom) - 1);
+    }
+    update();
+}
+
+void BandmapWidget::zoomOut() {
+    if (zoom < ZOOM_50KHZ) {
+        zoom = static_cast<BandmapZoom>(static_cast<int>(zoom) + 1);
+    }
     update();
 }
 

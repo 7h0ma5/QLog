@@ -148,7 +148,7 @@ void DxWidget::disconnectCluster() {
 void DxWidget::send() {
     QByteArray data;
     data.append(ui->commandEdit->text());
-    data.append("\n");
+    data.append("\r\n");
 
     socket->write(data);
 
@@ -163,7 +163,7 @@ void DxWidget::receive() {
     foreach (QString line, lines) {
         if (line.startsWith("login") || line.contains(QRegExp("enter your call(sign)?:"))) {
             QByteArray call = settings.value("station/callsign").toByteArray();
-            call.append("\n");
+            call.append("\r\n");
             socket->write(call);
         }
 

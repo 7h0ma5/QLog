@@ -69,7 +69,7 @@
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderDefaultSectionSize">
-          <number>28</number>
+          <number>30</number>
          </attribute>
         </widget>
        </item>
@@ -120,7 +120,7 @@
        </item>
        <item>
         <property name="text">
-         <string notr="true">telnet.reversebeacon.net:7300</string>
+         <string notr="true">telnet.reversebeacon.net:7000</string>
         </property>
        </item>
        <item>
