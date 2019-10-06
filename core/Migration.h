@@ -22,7 +22,7 @@ private:
     bool updateModes();
     bool updateDxcc();
 
-    static const int latestVersion = 3;
+    static const int latestVersion = 4;
 };
 
 #endif // MIGRATION_H
