@@ -12,7 +12,7 @@ BandmapWidget::BandmapWidget(QWidget *parent) :
     ui->setupUi(this);
 
     band = Data::band(14.100);
-    zoom = ZOOM_5KHZ;
+    zoom = ZOOM_1KHZ;
 
     bandmapScene = new QGraphicsScene(this);
     bandmapScene->setSceneRect(-50, 0, 300, 1000);
@@ -32,10 +32,13 @@ void BandmapWidget::update() {
     double step;
     int digits;
     switch (zoom) {
-    case ZOOM_50HZ: step = 0.00005; digits = 5; break;
+    case ZOOM_100HZ: step = 0.0001; digits = 4; break;
+    case ZOOM_250HZ: step = 0.00025; digits = 4; break;
     case ZOOM_500HZ: step = 0.0005; digits = 4; break;
+    case ZOOM_1KHZ: step = 0.001; digits = 3; break;
+    case ZOOM_2K5HZ: step = 0.0025; digits = 3; break;
     case ZOOM_5KHZ: step = 0.005; digits = 3; break;
-    case ZOOM_50KHZ: step = 0.05; digits = 2; break;
+    case ZOOM_10KHZ: step = 0.01; digits = 2; break;
     }
 
     int steps = static_cast<int>(round((band.end - band.start) / step));
@@ -71,8 +74,19 @@ void BandmapWidget::update() {
 
         min_y = text_y + text->boundingRect().height() / 2;
 
-        if (lower.value().status == DxccStatus::NewEntity) {
+        switch (lower.value().status) {
+        case DxccStatus::NewEntity:
             text->setDefaultTextColor(Qt::red);
+            break;
+        case DxccStatus::NewBand:
+        case DxccStatus::NewMode:
+        case DxccStatus::NewBandMode:
+            text->setDefaultTextColor(QColor(Qt::blue));
+            break;
+        case DxccStatus::NewSlot:
+            text->setDefaultTextColor(QColor(Qt::green));
+            break;
+        default: break;
         }
     }
 }
@@ -103,14 +117,14 @@ void BandmapWidget::clearSpots() {
 }
 
 void BandmapWidget::zoomIn() {
-    if (zoom > ZOOM_50HZ) {
+    if (zoom > ZOOM_100HZ) {
         zoom = static_cast<BandmapZoom>(static_cast<int>(zoom) - 1);
     }
     update();
 }
 
 void BandmapWidget::zoomOut() {
-    if (zoom < ZOOM_50KHZ) {
+    if (zoom < ZOOM_10KHZ) {
         zoom = static_cast<BandmapZoom>(static_cast<int>(zoom) + 1);
     }
     update();

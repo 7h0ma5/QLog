@@ -21,10 +21,13 @@ public:
     ~BandmapWidget();
 
     enum BandmapZoom {
-        ZOOM_50HZ,
+        ZOOM_100HZ,
+        ZOOM_250HZ,
         ZOOM_500HZ,
+        ZOOM_1KHZ,
+        ZOOM_2K5HZ,
         ZOOM_5KHZ,
-        ZOOM_50KHZ
+        ZOOM_10KHZ
     };
 
 public slots:
