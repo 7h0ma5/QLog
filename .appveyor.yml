@@ -34,3 +34,13 @@ after_build:
 artifacts:
   - name: installer
     path: qlog-installer.exe
+deploy:
+- provider: S3
+  access_key_id: AKIAXYSRXXQSSBOIRSWX
+  secret_access_key:
+    secure: OglRX95dO8sX52fJvZGBGmspHOXM1fDg/i6kaJLhmUBu1BVwi3tH13v9OCB3TB/i
+  region: eu-central-1
+  bucket: qlog.dl2ic.de
+  folder: build
+  artifact: installer
+  set_public: true
