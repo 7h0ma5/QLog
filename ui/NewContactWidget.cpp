@@ -318,6 +318,17 @@ void NewContactWidget::saveContact() {
     record.setValue("dxcc", dxccEntity.dxcc);
     record.setValue("country", dxccEntity.country);
     record.setValue("cont", ui->contEdit->currentText());
+    record.setValue("cnty", ui->countyEdit->text());
+    record.setValue("state", ui->stateEdit->text());
+    record.setValue("iota", ui->iotaEdit->text());
+    record.setValue("qsl_sent", "N");
+    record.setValue("qsl_rcvd", "N");
+    record.setValue("lotw_qsl_sent", "N");
+    record.setValue("lotw_qsl_rcvd", "N");
+
+    if (ui->powerEdit->value() != 0.0) {
+        record.setValue("tx_pwr", ui->powerEdit->value());
+    }
 
     QMap<QString, QVariant> fields;
 
@@ -327,10 +338,6 @@ void NewContactWidget::saveContact() {
 
     if (!ui->qslViaEdit->text().isEmpty()) {
         fields.insert("qsl_via", ui->qslViaEdit->text());
-    }
-
-    if (ui->powerEdit->value() != 0.0) {
-        fields.insert("tx_pwr", ui->powerEdit->value());
     }
 
     if (!ui->rigEdit->currentText().isEmpty()) {
