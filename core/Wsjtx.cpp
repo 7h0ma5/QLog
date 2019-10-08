@@ -122,6 +122,12 @@ void Wsjtx::insertContact(WsjtxLog log) {
     record.setValue("freq", freq);
     record.setValue("band", band);
     record.setValue("mode", log.mode);
+    record.setValue("qsl_sent", "N");
+    record.setValue("qsl_rcvd", "N");
+    record.setValue("lotw_qsl_sent", "N");
+    record.setValue("lotw_qsl_rcvd", "N");
+
+    if (!log.tx_pwr.isEmpty()) record.setValue("tx_pwr", log.tx_pwr);
 
     DxccEntity dxcc = Data::instance()->lookupDxcc(log.dx_call);
     if (!dxcc.country.isEmpty()) {
@@ -133,7 +139,6 @@ void Wsjtx::insertContact(WsjtxLog log) {
     }
 
     QVariantMap fields;
-    if (!log.tx_pwr.isEmpty()) fields.insert("tx_pwr", log.tx_pwr);
     if (!log.op_call.isEmpty()) fields.insert("operator", log.op_call);
     if (!log.my_grid.isEmpty()) fields.insert("my_gridsquare", log.my_grid);
     if (!log.my_call.isEmpty()) fields.insert("station_callsign", log.my_call);
@@ -143,7 +148,6 @@ void Wsjtx::insertContact(WsjtxLog log) {
 
     record.setValue("start_time", log.time_on);
     record.setValue("end_time", log.time_off);
-
 
     if (!model.insertRecord(-1, record)) {
         qDebug() << model.lastError();
