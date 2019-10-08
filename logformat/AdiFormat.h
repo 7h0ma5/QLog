@@ -13,6 +13,8 @@ public:
     void exportContact(QSqlRecord& record);
     void exportStart();
 
+    static QDate parseDate(QString date);
+    static QTime parseTime(QString time);
 private:
     enum ParserState {
         START,
@@ -26,7 +28,6 @@ private:
     void writeField(QString name, QString value, QString type="");
     void readField(QString& field, QString& value);
 
-    QTime parseTime(QString time);
 
     ParserState state = START;
     bool inHeader = false;

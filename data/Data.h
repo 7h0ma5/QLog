@@ -18,6 +18,7 @@ public:
     QStringList contestList() { return contests.values(); }
     QStringList propagationModesList() { return propagationModes.values(); }
     DxccEntity lookupDxcc(QString callsign);
+    QString dxccFlag(int dxcc);
 
 signals:
 

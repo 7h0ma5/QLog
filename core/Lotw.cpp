@@ -3,6 +3,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 #include "Lotw.h"
 #include "logformat/AdiFormat.h"
 
@@ -19,7 +22,7 @@ void Lotw::update() {
     QList<QPair<QString, QString>> params;
     params.append(qMakePair(QString("qso_query"), QString("1")));
     params.append(qMakePair(QString("qso_qsl"), QString("no")));
-    params.append(qMakePair(QString("qso_qsodetail"), QString("yes")));
+    params.append(qMakePair(QString("qso_qsldetail"), QString("yes")));
     get(params);
 }
 
@@ -51,13 +54,91 @@ void Lotw::processReply(QNetworkReply* reply) {
     QTextStream stream(reply);
     AdiFormat adi(stream);
 
+    QSqlDatabase db(QSqlDatabase::database());
     QVariantMap contact;
 
+    QSqlQuery query(db);
+    query.prepare("SELECT id, lotw_qsl_sent, lotw_qsl_rcvd, lotw_qslrdate, iota, cnty, state, gridsquare FROM contacts"
+                  " WHERE callsign = :callsign"
+                  " AND band = :band AND (start_time BETWEEN :start_time_min AND :start_time_max)"
+                  " LIMIT 1");
+
+    QSqlQuery update_status_query(db);
+    update_status_query.prepare("UPDATE contacts SET lotw_qsl_sent = :lotw_qsl_sent, lotw_qsl_rcvd = :lotw_qsl_rcvd,"
+                                " lotw_qslrdate = :lotw_qslrdate"
+                                " WHERE id = :id");
+
+    QSqlQuery update_iota_query(db);
+    update_iota_query.prepare("UPDATE contacts SET iota = :value WHERE id = :id");
+
+    QSqlQuery update_cnty_query(db);
+    update_cnty_query.prepare("UPDATE contacts SET cnty = :value WHERE id = :id");
+
+    QSqlQuery update_state_query(db);
+    update_state_query.prepare("UPDATE contacts SET state = :value WHERE id = :id");
+
+    QSqlQuery update_gridsquare_query(db);
+    update_gridsquare_query.prepare("UPDATE contacts SET gridsquare = :value WHERE id = :id");
+
     while (adi.readContact(contact)) {
-        qDebug() << contact;
+        QDate date_on = AdiFormat::parseDate(contact.value("qso_date").toString());
+        QTime time_on = AdiFormat::parseTime(contact.take("time_on").toString());
+        QDateTime start_time_min = QDateTime(date_on, time_on, Qt::UTC).addSecs(-10*60);
+        QDateTime start_time_max = QDateTime(date_on, time_on, Qt::UTC).addSecs(10*60);
+
+        query.bindValue(":callsign", contact.value("call").toString());
+        query.bindValue(":band", contact.value("band").toString().toLower());
+        query.bindValue(":start_time_min", start_time_min);
+        query.bindValue(":start_time_max", start_time_max);
+        query.exec();
+
+        if (query.next()) {
+            QVariant qslrdate;
+
+            if (!contact.value("qslrdate").toString().isEmpty()) {
+                qslrdate = AdiFormat::parseDate(contact.value("qslrdate").toString());
+            }
+
+            if (query.value(1) != "Y" || query.value(2) != contact.value("qsl_rcvd") || query.value(3) != qslrdate) {
+                update_status_query.bindValue(":lotw_qsl_sent", "Y");
+                update_status_query.bindValue(":lotw_qsl_rcvd", contact.value("qsl_rcvd"));
+                update_status_query.bindValue(":lotw_qslrdate", qslrdate);
+                update_status_query.bindValue(":id", query.value(0));
+                update_status_query.exec();
+            }
+
+            if (!contact.value("iota").toString().isEmpty() && query.value(4).toString().isEmpty()) {
+                update_iota_query.bindValue(":value", contact.value("iota"));
+                update_iota_query.bindValue(":id", query.value(0));
+                update_iota_query.exec();
+            }
+
+            if (!contact.value("cnty").toString().isEmpty() && query.value(5).toString().isEmpty()) {
+                update_cnty_query.bindValue(":value", contact.value("cnty"));
+                update_cnty_query.bindValue(":id", query.value(0));
+                update_cnty_query.exec();
+            }
+
+            if (!contact.value("state").toString().isEmpty() && query.value(6).toString().isEmpty()) {
+                update_state_query.bindValue(":value", contact.value("state"));
+                update_state_query.bindValue(":id", query.value(0));
+                update_state_query.exec();
+            }
+
+            if (!contact.value("gridsquare").toString().isEmpty() && query.value(7).toString().isEmpty()) {
+                update_gridsquare_query.bindValue(":value", contact.value("gridsquare"));
+                update_gridsquare_query.bindValue(":id", query.value(0));
+                update_gridsquare_query.exec();
+            }
+        }
+        else {
+            qDebug() << "Not Found!";
+        }
+
+        contact.clear();
     }
 
-    qDebug() << QString(reply->readAll());
+    qDebug() << "Done";
 
     delete reply;
 }

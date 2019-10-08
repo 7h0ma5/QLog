@@ -47,6 +47,7 @@ SOURCES += \
         logformat/JsonFormat.cpp \
         logformat/LogFormat.cpp \
         models/DxccTableModel.cpp \
+        models/LogbookModel.cpp \
         models/RigTypeModel.cpp \
         models/RotTypeModel.cpp \
         models/SqlListModel.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
         logformat/JsonFormat.h \
         logformat/LogFormat.h \
         models/DxccTableModel.h \
+        models/LogbookModel.h \
         models/RigTypeModel.h \
         models/RotTypeModel.h \
         models/SqlListModel.h \

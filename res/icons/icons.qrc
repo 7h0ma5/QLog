@@ -11,5 +11,11 @@
         <file>filter_list-24px.svg</file>
         <file>zoom_out-24px.svg</file>
         <file>zoom_in-24px.svg</file>
+        <file>done-24px.svg</file>
+        <file>check_circle-24px.svg</file>
+        <file>help-24px.svg</file>
+        <file>cancel-24px.svg</file>
+        <file>info-24px.svg</file>
+        <file>close-24px.svg</file>
     </qresource>
 </RCC>

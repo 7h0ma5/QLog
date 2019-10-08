@@ -6,7 +6,7 @@ INSERT INTO bands (name, start_freq, end_freq, enabled) VALUES
 ('80m', 3.5, 4.0, true),
 ('60m', 5.102, 5.4065, true),
 ('40m', 7.0, 7.3, true),
-('30m', 10.0, 10.15, true),
+('30m', 10.1, 10.15, true),
 ('20m', 14.0, 14.35, true),
 ('17m', 18.068, 18.168, true),
 ('15m', 21.0, 21.45, true),

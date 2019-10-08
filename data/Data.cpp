@@ -179,3 +179,7 @@ DxccEntity Data::lookupDxcc(QString callsign) {
     }
     return dxcc;
 }
+
+QString Data::dxccFlag(int dxcc) {
+    return flags.value(dxcc);
+}

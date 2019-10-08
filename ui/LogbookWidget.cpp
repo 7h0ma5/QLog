@@ -4,6 +4,7 @@
 #include <QStyledItemDelegate>
 #include <QDesktopServices>
 #include "logformat/AdiFormat.h"
+#include "models/LogbookModel.h"
 #include "models/SqlListModel.h"
 #include "core/ClubLog.h"
 #include "LogbookWidget.h"
@@ -104,44 +105,20 @@ private:
     double step;
 };
 
-
 LogbookWidget::LogbookWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LogbookWidget)
 {
     ui->setupUi(this);
 
-    model = new QSqlTableModel(this);
-    model->setTable("contacts");
-    model->setEditStrategy(QSqlTableModel::OnFieldChange);
-    model->setSort(1, Qt::DescendingOrder);
-
-    model->setHeaderData(1, Qt::Horizontal, tr("Time on"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Time off"));
-    model->setHeaderData(3, Qt::Horizontal, tr("Call"));
-    model->setHeaderData(4, Qt::Horizontal, tr("RST Sent"));
-    model->setHeaderData(5, Qt::Horizontal, tr("RST Rcvd"));
-    model->setHeaderData(6, Qt::Horizontal, tr("Frequency"));
-    model->setHeaderData(7, Qt::Horizontal, tr("Band"));
-    model->setHeaderData(8, Qt::Horizontal, tr("Mode"));
-    model->setHeaderData(9, Qt::Horizontal, tr("Submode"));
-    model->setHeaderData(10, Qt::Horizontal, tr("Name"));
-    model->setHeaderData(11, Qt::Horizontal, tr("QTH"));
-    model->setHeaderData(12, Qt::Horizontal, tr("Gridsquare"));
-    model->setHeaderData(13, Qt::Horizontal, tr("DXCC"));
-    model->setHeaderData(14, Qt::Horizontal, tr("Country"));
-    model->setHeaderData(15, Qt::Horizontal, tr("Continent"));
-    model->setHeaderData(16, Qt::Horizontal, tr("CQ"));
-    model->setHeaderData(17, Qt::Horizontal, tr("ITU"));
-    model->setHeaderData(18, Qt::Horizontal, tr("Prefix"));
+    model = new LogbookModel(this);
+    ui->contactTable->setModel(model);
 
     /*
     QSettings settings;
     QByteArray logbookState = settings.value("logbook/state").toByteArray();
     ui->contactTable->horizontalHeader()->restoreState(logbookState);
     */
-
-    ui->contactTable->setModel(model);
 
     ui->contactTable->addAction(ui->actionFilter);
     ui->contactTable->addAction(ui->actionLookup);
@@ -161,6 +138,10 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     ui->contactTable->hideColumn(15);
     ui->contactTable->hideColumn(18);
     ui->contactTable->hideColumn(19);
+    ui->contactTable->hideColumn(24);
+    ui->contactTable->hideColumn(26);
+    ui->contactTable->hideColumn(28);
+    ui->contactTable->hideColumn(30);
 
     ui->bandFilter->setModel(new SqlListModel("SELECT name FROM bands", "Band"));
     ui->countryFilter->setModel(new SqlListModel("SELECT name FROM dxcc_entities ORDER BY name", "Country"));

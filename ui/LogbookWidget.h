@@ -8,7 +8,7 @@ class LogbookWidget;
 }
 
 class ClubLog;
-class QSqlTableModel;
+class LogbookModel;
 
 class LogbookWidget : public QWidget {
     Q_OBJECT
@@ -29,7 +29,7 @@ public slots:
 
 private:
     ClubLog* clublog;
-    QSqlTableModel* model;
+    LogbookModel* model;
     Ui::LogbookWidget *ui;
 };
 

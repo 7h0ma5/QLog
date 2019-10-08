@@ -6,6 +6,7 @@ void AdxFormat::exportStart() {
     QString date = QDateTime::currentDateTimeUtc().toString("yyyyMMdd hhmmss");
 
     writer = new QXmlStreamWriter(stream.device());
+    writer->setAutoFormatting(true);
 
     writer->writeStartDocument();
     writer->writeStartElement("ADX");
@@ -28,34 +29,52 @@ void AdxFormat::exportEnd() {
 void AdxFormat::exportContact(QSqlRecord& record) {
     writer->writeStartElement("RECORD");
 
-    QDate date = QDate::fromString(record.value("date").toString(), Qt::ISODate);
-    QTime time_on = QTime::fromString(record.value("time_on").toString(), Qt::ISODate);
-    QTime time_off = QTime::fromString(record.value("time_off").toString(), Qt::ISODate);
+    QDateTime time_start = record.value("start_time").toDateTime().toTimeSpec(Qt::UTC);
+    QDateTime time_end = record.value("end_time").toDateTime().toTimeSpec(Qt::UTC);
 
-    writeField("CALL", record.value("callsign").toString());
-    writeField("QSO_DATE", date.toString("yyyyMMdd"));
-    writeField("TIME_ON", time_on.toString("hhmmss"));
-    writeField("TIME_OFF", time_off.toString("hhmmss"));
-    writeField("RST_RCVD", record.value("rst_rcvd").toString());
-    writeField("RST_SENT", record.value("rst_sent").toString());
-    writeField("NAME", record.value("name").toString());
-    writeField("QTH", record.value("qth").toString());
-    writeField("GRIDSQUARE", record.value("grid").toString());
-    writeField("MY_GRIDSQUARE", record.value("my_grid").toString());
-    writeField("CQZ", record.value("cqz").toString());
-    writeField("ITUZ", record.value("ituz").toString());
-    writeField("FREQ", record.value("frequency").toString());
-    writeField("BAND", record.value("band").toString());
-    writeField("MODE", record.value("mode").toString());
-    writeField("TX_PWR", record.value("tx_power").toString());
-    writeField("MY_RIG", record.value("my_rig").toString());
-    writeField("COMMENT", record.value("comment").toString());
-    writeField("QSL_VIA", record.value("qsl_via").toString());
+    writeField("call", record.value("callsign").toString());
+    writeField("qso_date", time_start.toString("yyyyMMdd"));
+    writeField("time_on", time_start.toString("hhmmss"));
+    writeField("qso_date_off", time_end.toString("yyyyMMdd"));
+    writeField("time_off", time_end.toString("hhmmss"));
+    writeField("rst_rcvd", record.value("rst_rcvd").toString());
+    writeField("rst_sent", record.value("rst_sent").toString());
+    writeField("name", record.value("name").toString());
+    writeField("qth", record.value("qth").toString());
+    writeField("gridsquare", record.value("gridsquare").toString());
+    writeField("cqz", record.value("cqz").toString());
+    writeField("ituz", record.value("ituz").toString());
+    writeField("freq", record.value("freq").toString());
+    writeField("band", record.value("band").toString());
+    writeField("mode", record.value("mode").toString());
+    writeField("submode", record.value("submode").toString());
+    writeField("cont", record.value("cont").toString());
+    writeField("dxcc", record.value("dxcc").toString());
+    writeField("country", record.value("country").toString());
+    writeField("pfx", record.value("pfx").toString());
+    writeField("state", record.value("state").toString());
+    writeField("cnty", record.value("cnty").toString());
+    writeField("iota", record.value("iota").toString());
+    writeField("qsl_rcvd", record.value("qsl_rcvd").toString());
+    writeField("qslrdate", record.value("qslrdate").toDate().toString("yyyyMMdd"));
+    writeField("qsl_sent", record.value("qsl_sent").toString());
+    writeField("qslsdate", record.value("qslsdate").toDate().toString("yyyyMMdd"));
+    writeField("lotw_qsl_rcvd", record.value("lotw_qsl_rcvd").toString());
+    writeField("lotw_qslrdate", record.value("lotw_qslrdate").toDate().toString("yyyyMMdd"));
+    writeField("lotw_qsl_sent", record.value("lotw_qsl_sent").toString());
+    writeField("lotw_qslsdate", record.value("lotw_qslsdate").toDate().toString("yyyyMMdd"));
+    writeField("tx_pwr", record.value("tx_pwr").toString());
+
+    QJsonObject fields = QJsonDocument::fromJson(record.value("fields").toByteArray()).object();
+
+    for (const QString& key : fields.keys()) {
+        writeField(key, fields.value(key).toString());
+    }
 
     writer->writeEndElement();
 }
 
 void AdxFormat::writeField(QString name, QString value) {
     if (value.isEmpty()) return;
-    writer->writeTextElement(name, value);
+    writer->writeTextElement(name.toUpper(), value);
 }

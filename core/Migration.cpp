@@ -73,7 +73,7 @@ int Migration::getVersion() {
  */
 bool Migration::setVersion(int version) {
     QSqlQuery query;
-    query.prepare("INSERT INTO schema_versions (version, updated)"
+    query.prepare("INSERT INTO schema_versions (version, updated) "
                   "VALUES (:version, timezone('utc', now()))");
 
     query.bindValue(":version", version);

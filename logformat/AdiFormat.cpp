@@ -35,6 +35,18 @@ void AdiFormat::exportContact(QSqlRecord& record) {
     writeField("dxcc", record.value("dxcc").toString());
     writeField("country", record.value("country").toString());
     writeField("pfx", record.value("pfx").toString());
+    writeField("state", record.value("state").toString());
+    writeField("cnty", record.value("cnty").toString());
+    writeField("iota", record.value("iota").toString());
+    writeField("qsl_rcvd", record.value("qsl_rcvd").toString());
+    writeField("qslrdate", record.value("qslrdate").toDate().toString("yyyyMMdd"));
+    writeField("qsl_sent", record.value("qsl_sent").toString());
+    writeField("qslsdate", record.value("qslsdate").toDate().toString("yyyyMMdd"));
+    writeField("lotw_qsl_rcvd", record.value("lotw_qsl_rcvd").toString());
+    writeField("lotw_qslrdate", record.value("lotw_qslrdate").toDate().toString("yyyyMMdd"));
+    writeField("lotw_qsl_sent", record.value("lotw_qsl_sent").toString());
+    writeField("lotw_qslsdate", record.value("lotw_qslsdate").toDate().toString("yyyyMMdd"));
+    writeField("tx_pwr", record.value("tx_pwr").toString());
 
     QJsonObject fields = QJsonDocument::fromJson(record.value("fields").toByteArray()).object();
 
@@ -209,10 +221,22 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("cont", contact.take("cont").toString().toUpper());
     record.setValue("dxcc", contact.take("dxcc"));
     record.setValue("country", contact.take("country"));
-    record.setValue("pfx", contact.take("pfx"));
+    record.setValue("pfx", contact.take("pfx").toString().toUpper());
+    record.setValue("state", contact.take("state").toString().toUpper());
+    record.setValue("cnty", contact.take("cnty"));
+    record.setValue("iota", contact.take("iota").toString().toUpper());
+    record.setValue("qsl_rcvd", contact.take("qsl_rcvd"));
+    record.setValue("qslrdate", parseDate(contact.take("qslrdate").toString()));
+    record.setValue("qsl_sent", contact.take("qsl_sent"));
+    record.setValue("qslsdate", parseDate(contact.take("qslsdate").toString()));
+    record.setValue("lotw_qsl_rcvd", contact.take("lotw_qsl_rcvd"));
+    record.setValue("lotw_qslrdate", parseDate(contact.take("lotw_qslrdate").toString()));
+    record.setValue("lotw_qsl_sent", contact.take("lotw_qsl_sent"));
+    record.setValue("lotw_qslsdate", parseDate(contact.take("lotw_qslsdate").toString()));
+    record.setValue("tx_pwr", contact.take("tx_pwr").toDouble());
 
-    QDate date_on = QDate::fromString(contact.take("qso_date").toString(), "yyyyMMdd");
-    QDate date_off = QDate::fromString(contact.take("qso_date_off").toString(), "yyyyMMdd");
+    QDate date_on = parseDate(contact.take("qso_date").toString());
+    QDate date_off = parseDate(contact.take("qso_date_off").toString());
 
     if (date_off.isNull() || !date_off.isValid()) {
         date_off = date_on;
@@ -250,6 +274,15 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("fields", QString(doc.toJson()));
 
     return true;
+}
+
+QDate AdiFormat::parseDate(QString date) {
+    if (date.length() == 8) {
+        return QDate::fromString(date, "yyyyMMdd");
+    }
+    else {
+        return QDate();
+    }
 }
 
 QTime AdiFormat::parseTime(QString time) {
