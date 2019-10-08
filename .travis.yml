@@ -18,8 +18,12 @@ matrix:
     - echo 'INCLUDEPATH += "/usr/local/include"' >> QLog.pro
     - echo 'LIBS += -L/usr/local/lib' >> QLog.pro
     before_deploy:
+    - macdeployqt qlog.app
+    - cp /usr/local/lib/libhamlib.dylib qlog.app/Contents/Frameworks/libhamlib.dylib
+    - otool -L qlog.app/Contents/MacOS/qlog
+    - install_name_tool -change /usr/local/lib/libhamlib.dylib @executable_path/../Frameworks/libhamlib.dylib qlog.app/Contents/MacOS/qlog
     - mkdir package
-    - zip -r package/qlog-osx.zip build/qlog.app
+    - zip -r package/qlog-osx.zip qlog.app
 
 script:
 - mkdir build
@@ -34,7 +38,7 @@ deploy:
   acl: public_read
   skip_cleanup: true
   local_dir: package
-  target_dir: build
+  upload_dir: build
   on:
     repo: 7h0ma5/QLog
     condition: $TRAVIS_OS_NAME = "osx"
