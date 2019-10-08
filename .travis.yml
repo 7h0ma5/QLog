@@ -1,0 +1,43 @@
+language: cpp
+matrix:
+  include:
+  - os: linux
+    dist: bionic
+    compiler: gcc
+    before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq qt5-default qt5-qmake qtbase5-dev-tools libqt5charts5-dev
+      libhamlib-dev libhamlib2
+  - os: osx
+    compiler: clang
+    before_install:
+    - brew install qt5
+    - brew link qt5 --force
+    - brew install hamlib
+    - brew link hamlib --force
+    - echo 'INCLUDEPATH += "/usr/local/include"' >> QLog.pro
+    - echo 'LIBS += -L/usr/local/lib' >> QLog.pro
+    before_deploy:
+    - mkdir package
+    - zip -r package/qlog-osx.zip build/qlog.app
+
+script:
+- mkdir build
+- cd build
+- qmake -config release ..
+- make
+
+deploy:
+  provider: s3
+  bucket: "qlog.dl2ic.de"
+  region: "eu-central-1"
+  acl: public_read
+  skip_cleanup: true
+  local_dir: package
+  target_dir: build
+  on:
+    repo: 7h0ma5/QLog
+    condition: $TRAVIS_OS_NAME = "osx"
+  access_key_id: AKIAXYSRXXQSSBOIRSWX
+  secret_access_key:
+    secure: ogiYsKXOsGbBPuOl56VgIJ2HZ0cPhUeGzhd4FAADI0FymxndIjMqDIOvvs1M1y2GcFGnTsbfv16C8aCby2qMbqg3W5UoGbaD82JAsOjOt/Qo0VVA204QvRogUwQQO51QfLXiZIEGp45o6AFrLeF76ZLTX/GcP0oC7l78EnvYZeXkAt+WRZ2dPxkiJTtQupBIogNl4NGlYRhBjHYvLmwtVWLRESgltlXvD0A33X5bt0kUWgAPyAqtzoGABxqIcoDX267ZYx2eYwwfhSOY1ltEM7+BeMzs2QdbFh8qi2SxHXYO8XNmfJLRswzOld9xwtOFdl0cjIHRGOnDZ1hP3j2GDlfC5Oy9zYaj0RS0UMDQZwZ5rldYNfm+g8pQDIbNATcZtUx98VhM4JRlbDE2o66tLqQfrGDtT6gZox5p5ZKfArHHtMSrx+kBc/NH7nxVcypQ0LIwX8XKOkd66QrHseXy56zehjaxvA4WV878SrXxQOPXrjRXVgmyAUk0zHKS4Dcr/q813IWUE6dXJFZ4BSIDnrBu8nVxTXlm6ZKQwwgdhwWzs+61bRsDzode9pPuc12QYbnWftp9FOY8CaRBZdW+cMGQQv44r46ppw12Pku2lRN9FQroQg0r3wuLqNZA9XcQh/+gAr2zSsc44EDGSpv3feCUp6zI2yRKfENL18sJ9VY=
