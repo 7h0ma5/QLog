@@ -40,5 +40,6 @@
   "QPSK125": { "mode": "PSK", "submode": "QPSK125" },
   "THRBX": { "mode": "THRB", "submode": "THRBX" },
   "USB": { "mode": "SSB", "submode": "USB" },
-  "LSB": { "mode": "SSB", "submode": "LSB" }
+  "LSB": { "mode": "SSB", "submode": "LSB" },
+  "FT4": { "mode": "MFSK", "submode": "FT4" }
 }

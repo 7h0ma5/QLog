@@ -6,6 +6,7 @@
 Data::Data(QObject *parent) : QObject(parent) {
     loadContests();
     loadPropagationModes();
+    loadLegacyModes();
     loadDxccFlags();
 }
 
@@ -83,6 +84,10 @@ Band Data::band(double freq) {
     }
 }
 
+QPair<QString, QString> Data::legacyMode(QString mode) {
+    return legacyModes.value(mode);
+}
+
 void Data::loadContests() {
     QFile file(":/res/data/contests.json");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -113,6 +118,23 @@ void Data::loadPropagationModes() {
     }
 }
 
+void Data::loadLegacyModes() {
+    QFile file(":/res/data/legacy_modes.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray data = file.readAll();
+
+    QVariantMap modes = QJsonDocument::fromJson(data).toVariant().toMap();
+
+    for (QString key : modes.keys()) {
+        QVariantMap legacyModeData = modes[key].toMap();
+
+        QString mode = legacyModeData.value("mode").toString();
+        QString submode = legacyModeData.value("submode").toString();
+        QPair<QString, QString> modes = QPair<QString, QString>(mode, submode);
+
+        legacyModes.insert(key, modes);
+    }
+}
 
 void Data::loadDxccFlags() {
     QFile file(":/res/data/dxcc.json");

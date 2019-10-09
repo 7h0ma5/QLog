@@ -1,5 +1,6 @@
 #include <QSqlRecord>
 #include <QDebug>
+#include "data/Data.h"
 #include "AdiFormat.h"
 
 void AdiFormat::exportStart() {
@@ -216,8 +217,6 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("ituz", contact.take("ituz"));
     record.setValue("freq", contact.take("freq"));
     record.setValue("band", contact.take("band").toString().toLower());
-    record.setValue("mode", contact.take("mode").toString().toUpper());
-    record.setValue("submode", contact.take("submode").toString().toUpper());
     record.setValue("cont", contact.take("cont").toString().toUpper());
     record.setValue("dxcc", contact.take("dxcc"));
     record.setValue("country", contact.take("country"));
@@ -234,6 +233,18 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("lotw_qsl_sent", contact.take("lotw_qsl_sent"));
     record.setValue("lotw_qslsdate", parseDate(contact.take("lotw_qslsdate").toString()));
     record.setValue("tx_pwr", contact.take("tx_pwr").toDouble());
+
+    QString mode = contact.take("mode").toString().toUpper();
+    QString submode = contact.take("submode").toString().toUpper();
+
+    QPair<QString, QString> legacy = Data::instance()->legacyMode(mode);
+    if (!legacy.first.isEmpty()) {
+        mode = legacy.first;
+        submode = legacy.second;
+    }
+
+    record.setValue("mode", mode);
+    record.setValue("submode", submode);
 
     QDate date_on = parseDate(contact.take("qso_date").toString());
     QDate date_off = parseDate(contact.take("qso_date_off").toString());

@@ -19,6 +19,7 @@ public:
     QStringList propagationModesList() { return propagationModes.values(); }
     DxccEntity lookupDxcc(QString callsign);
     QString dxccFlag(int dxcc);
+    QPair<QString, QString> legacyMode(QString mode);
 
 signals:
 
@@ -27,11 +28,13 @@ public slots:
 private:
     void loadContests();
     void loadPropagationModes();
+    void loadLegacyModes();
     void loadDxccFlags();
 
     QMap<int, QString> flags;
     QMap<QString, QString> contests;
     QMap<QString, QString> propagationModes;
+    QMap<QString, QPair<QString, QString>> legacyModes;
 };
 
 #endif // DATA_H
