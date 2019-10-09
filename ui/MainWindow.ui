@@ -67,7 +67,7 @@
     <addaction name="actionExport"/>
     <addaction name="separator"/>
     <addaction name="actionStatistics"/>
-    <addaction name="actionUpdateLotw"/>
+    <addaction name="actionLotw"/>
    </widget>
    <widget class="QMenu" name="menuRig">
     <property name="title">
@@ -308,9 +308,9 @@
     <string>Wsjtx</string>
    </property>
   </action>
-  <action name="actionUpdateLotw">
+  <action name="actionLotw">
    <property name="text">
-    <string>Update LotW</string>
+    <string>LotW</string>
    </property>
   </action>
   <action name="actionConnectRotator">
@@ -577,10 +577,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionUpdateLotw</sender>
+   <sender>actionLotw</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>updateLotw()</slot>
+   <slot>showLotw()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -731,7 +731,7 @@
   <slot>showAbout()</slot>
   <slot>rigConnect()</slot>
   <slot>showStatistics()</slot>
-  <slot>updateLotw()</slot>
+  <slot>showLotw()</slot>
   <slot>rotConnect()</slot>
  </slots>
 </ui>

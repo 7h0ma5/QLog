@@ -59,6 +59,7 @@ SOURCES += \
         ui/ExportDialog.cpp \
         ui/ImportDialog.cpp \
         ui/LogbookWidget.cpp \
+        ui/LotwDialog.cpp \
         ui/MainWindow.cpp \
         ui/MapWidget.cpp \
         ui/NewContactWidget.cpp \
@@ -101,6 +102,7 @@ HEADERS += \
         ui/ExportDialog.h \
         ui/ImportDialog.h \
         ui/LogbookWidget.h \
+        ui/LotwDialog.h \
         ui/MainWindow.h \
         ui/MapWidget.h \
         ui/NewContactWidget.h \
@@ -118,6 +120,7 @@ FORMS += \
         ui/ExportDialog.ui \
         ui/ImportDialog.ui \
         ui/LogbookWidget.ui \
+        ui/LotwDialog.ui \
         ui/MainWindow.ui \
         ui/NewContactWidget.ui \
         ui/RigWidget.ui \

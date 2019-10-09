@@ -29,7 +29,7 @@ private slots:
     void showStatistics();
     void importLog();
     void exportLog();
-    void updateLotw();
+    void showLotw();
     void showAbout();
     void conditionsUpdated();
 

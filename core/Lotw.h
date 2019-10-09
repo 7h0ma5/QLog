@@ -12,9 +12,12 @@ class Lotw : public QObject
 public:
     explicit Lotw(QObject *parent = nullptr);
 
-    void update();
+    void update(QDate start_date, bool qso_since);
 
 signals:
+    void updateProgress(int value);
+    void updateComplete();
+    void updateFailed();
 
 public slots:
     void processReply(QNetworkReply* reply);

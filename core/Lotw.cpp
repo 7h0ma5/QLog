@@ -18,11 +18,21 @@ Lotw::Lotw(QObject *parent) : QObject(parent)
             this, &Lotw::processReply);
 }
 
-void Lotw::update() {
+void Lotw::update(QDate start_date, bool qso_since) {
     QList<QPair<QString, QString>> params;
     params.append(qMakePair(QString("qso_query"), QString("1")));
-    params.append(qMakePair(QString("qso_qsl"), QString("no")));
     params.append(qMakePair(QString("qso_qsldetail"), QString("yes")));
+
+    QString start = start_date.toString("yyyy-MM-dd");
+    if (qso_since) {
+        params.append(qMakePair(QString("qso_qsl"), QString("no")));
+        params.append(qMakePair(QString("qso_qsorxsince"), start));
+    }
+    else {
+        params.append(qMakePair(QString("qso_qsl"), QString("yes")));
+        params.append(qMakePair(QString("qso_qslsince"), start));
+    }
+
     get(params);
 }
 
@@ -48,8 +58,13 @@ void Lotw::processReply(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "LotW error" << reply->errorString();
         delete reply;
+
+        emit updateFailed();
         return;
     }
+
+    qint64 size = reply->size();
+    qDebug() << "Reply received, size: " << size;
 
     QTextStream stream(reply);
     AdiFormat adi(stream);
@@ -59,8 +74,8 @@ void Lotw::processReply(QNetworkReply* reply) {
 
     QSqlQuery query(db);
     query.prepare("SELECT id, lotw_qsl_sent, lotw_qsl_rcvd, lotw_qslrdate, iota, cnty, state, gridsquare FROM contacts"
-                  " WHERE callsign = :callsign"
-                  " AND band = :band AND (start_time BETWEEN :start_time_min AND :start_time_max)"
+                  " WHERE callsign = :callsign AND band = :band AND mode = :mode"
+                  " AND (start_time BETWEEN :start_time_min AND :start_time_max)"
                   " LIMIT 1");
 
     QSqlQuery update_status_query(db);
@@ -81,6 +96,7 @@ void Lotw::processReply(QNetworkReply* reply) {
     update_gridsquare_query.prepare("UPDATE contacts SET gridsquare = :value WHERE id = :id");
 
     while (adi.readContact(contact)) {
+        qDebug() << "Reading contact";
         QDate date_on = AdiFormat::parseDate(contact.value("qso_date").toString());
         QTime time_on = AdiFormat::parseTime(contact.take("time_on").toString());
         QDateTime start_time_min = QDateTime(date_on, time_on, Qt::UTC).addSecs(-10*60);
@@ -88,6 +104,7 @@ void Lotw::processReply(QNetworkReply* reply) {
 
         query.bindValue(":callsign", contact.value("call").toString());
         query.bindValue(":band", contact.value("band").toString().toLower());
+        query.bindValue(":mode", contact.value("mode").toString().toUpper());
         query.bindValue(":start_time_min", start_time_min);
         query.bindValue(":start_time_max", start_time_max);
         query.exec();
@@ -132,11 +149,16 @@ void Lotw::processReply(QNetworkReply* reply) {
             }
         }
         else {
-            qDebug() << "Not Found!";
+            qDebug() << "Not Found! " << contact.value("call").toString() << contact.value("qso_date").toString();
         }
 
         contact.clear();
+        if (size > 0) {
+            emit updateProgress(static_cast<int>(stream.pos() * 100 / size));
+        }
     }
+
+    emit updateComplete();
 
     qDebug() << "Done";
 

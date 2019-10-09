@@ -8,9 +8,9 @@
 #include "ui/SettingsDialog.h"
 #include "ui/ImportDialog.h"
 #include "ui/ExportDialog.h"
+#include "ui/LotwDialog.h"
 #include "ui/StatisticsWidget.h"
 #include "core/Fldigi.h"
-#include "core/Lotw.h"
 #include "core/Rig.h"
 #include "core/Rotator.h"
 #include "core/Wsjtx.h"
@@ -99,7 +99,6 @@ void MainWindow::showSettings() {
 }
 
 void MainWindow::showStatistics() {
-    qDebug() << "statistics";
     StatisticsWidget* stats = new StatisticsWidget();
     stats->show();
 }
@@ -115,9 +114,9 @@ void MainWindow::exportLog() {
     dialog.exec();
 }
 
-void MainWindow::updateLotw() {
-    Lotw* lotw = new Lotw(this);
-    lotw->update();
+void MainWindow::showLotw() {
+    LotwDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::showAbout() {
