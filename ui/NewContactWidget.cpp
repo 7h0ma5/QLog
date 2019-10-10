@@ -170,29 +170,12 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
         return;
     }
 
-    if (!data.value("name").isEmpty() && ui->nameEdit->text().isEmpty()) {
-        ui->nameEdit->setText(data.value("name"));
-    }
-
-    if (!data.value("gridsquare").isEmpty() && ui->gridEdit->text().isEmpty()) {
-        ui->gridEdit->setText(data.value("gridsquare"));
-    }
-
-    if (!data.value("qth").isEmpty() && ui->qthEdit->text().isEmpty()) {
-        ui->qthEdit->setText(data.value("qth"));
-    }
-
-    if (!data.value("qsl_via").isEmpty() && ui->qslViaEdit->text().isEmpty()) {
-        ui->qslViaEdit->setText(data.value("qsl_via"));
-    }
-
-    if (!data.value("cqz").isEmpty() && ui->cqEdit->text().isEmpty()) {
-        ui->cqEdit->setText(data.value("cqz"));
-    }
-
-    if (!data.value("ituz").isEmpty() && ui->ituEdit->text().isEmpty()) {
-        ui->ituEdit->setText(data.value("ituz"));
-    }
+    ui->nameEdit->setPlaceholderText(data.value("name"));
+    ui->gridEdit->setPlaceholderText(data.value("gridsquare"));
+    ui->qthEdit->setPlaceholderText(data.value("qth"));
+    ui->qslViaEdit->setPlaceholderText(data.value("qsl_via"));
+    ui->cqEdit->setPlaceholderText(data.value("cqz"));
+    ui->ituEdit->setPlaceholderText(data.value("ituz"));
 
     if (ui->callsignEdit->styleSheet().isEmpty()) {
         ui->callsignEdit->setStyleSheet("background-color: #bbddff;");
@@ -278,6 +261,13 @@ void NewContactWidget::resetContact() {
     ui->ageEdit->clear();
     ui->emailEdit->clear();
     ui->urlEdit->clear();
+
+    ui->nameEdit->setPlaceholderText(QString());
+    ui->gridEdit->setPlaceholderText(QString());
+    ui->qthEdit->setPlaceholderText(QString());
+    ui->qslViaEdit->setPlaceholderText(QString());
+    ui->cqEdit->setPlaceholderText(QString());
+    ui->ituEdit->setPlaceholderText(QString());
 
     stopContactTimer();
     setDefaultReport();

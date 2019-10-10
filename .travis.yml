@@ -18,7 +18,7 @@ matrix:
     - echo 'INCLUDEPATH += "/usr/local/include"' >> QLog.pro
     - echo 'LIBS += -L/usr/local/lib' >> QLog.pro
     before_deploy:
-    - macdeployqt -verbose=3 -libpath=/usr/local/lib qlog.app
+    - macdeployqt -verbose=3 qlog.app
     - mkdir package
     - zip -r package/qlog-osx.zip qlog.app
 

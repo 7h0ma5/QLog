@@ -19,10 +19,8 @@ ClockWidget::ClockWidget(QWidget *parent) :
 
     sunScene = new QGraphicsScene(this);
 
-    sunScene->setSceneRect(0, 0, 100, 10);
+    sunScene->setSceneRect(0, 0, 200, 10);
     ui->sunGraphicsView->setScene(sunScene);
-//    ui->sunGraphicsView->setSceneRect(0, 0, 100, 10);
-    ui->sunGraphicsView->fitInView(sunScene->sceneRect(), Qt::IgnoreAspectRatio);
     ui->sunGraphicsView->setStyleSheet("background-color: transparent;");
 
     updateClock();
@@ -64,20 +62,37 @@ void ClockWidget::updateSun() {
     sunrise = QTime::fromMSecsSinceStartOfDay(static_cast<int>(fmod(Jrise, 1.0) * MSECS_PER_DAY));
     sunset = QTime::fromMSecsSinceStartOfDay(static_cast<int>(fmod(Jset, 1.0) * MSECS_PER_DAY));
 
-    ui->sunRiseLabel->setText(sunrise.toString() + " Z");
-    ui->sunSetLabel->setText(sunset.toString() + " Z");
+    ui->sunRiseLabel->setText(sunrise.toString() + " UTC");
+    ui->sunSetLabel->setText(sunset.toString() + " UTC");
 }
 
 void ClockWidget::updateSunGraph() {
-    double rise_percent = sunrise.msecsSinceStartOfDay() / MSECS_PER_DAY * 100.0;
-    double set_percent = sunset.msecsSinceStartOfDay() / MSECS_PER_DAY * 100.0;
-    double cur_percent = QDateTime::currentDateTimeUtc().time().msecsSinceStartOfDay() / MSECS_PER_DAY * 100.0;
+    QColor dayColor(255, 253, 59);
+    QColor nightColor(33, 150, 243);
+    QColor currentColor(229, 57, 53);
+
+    qreal width = sunScene->width();
+
+    double rise = sunrise.msecsSinceStartOfDay() / MSECS_PER_DAY * width;
+    double set = sunset.msecsSinceStartOfDay() / MSECS_PER_DAY * width;
+    double cur = QDateTime::currentDateTimeUtc().time().msecsSinceStartOfDay() / MSECS_PER_DAY * width;
 
     sunScene->clear();
-    sunScene->addRect(0, 0, rise_percent, 10, QPen(Qt::NoPen), QBrush(QColor(0, 0, 255), Qt::SolidPattern));
-    sunScene->addRect(rise_percent, 0, set_percent-rise_percent, 10, QPen(Qt::NoPen), QBrush(QColor(255, 255, 0), Qt::SolidPattern));
-    sunScene->addRect(set_percent, 0, 100-set_percent, 10, QPen(Qt::NoPen), QBrush(QColor(0, 0, 255), Qt::SolidPattern));
-    sunScene->addLine(cur_percent, 0, cur_percent, 10, QPen(QColor(255, 0, 0)));
+
+    if (set > rise) {
+        sunScene->addRect(0, 0, rise, 10, QPen(Qt::NoPen), QBrush(nightColor, Qt::SolidPattern));
+        sunScene->addRect(rise, 0, set-rise, 10, QPen(Qt::NoPen), QBrush(dayColor, Qt::SolidPattern));
+        sunScene->addRect(set, 0, width-set, 10, QPen(Qt::NoPen), QBrush(nightColor, Qt::SolidPattern));
+    }
+    else {
+        sunScene->addRect(0, 0, set, 10, QPen(Qt::NoPen), QBrush(dayColor, Qt::SolidPattern));
+        sunScene->addRect(set, 0, rise-set, 10, QPen(Qt::NoPen), QBrush(nightColor, Qt::SolidPattern));
+        sunScene->addRect(rise, 0, width-rise, 10, QPen(Qt::NoPen), QBrush(dayColor, Qt::SolidPattern));
+    }
+
+    QPen currentPen(currentColor);
+    currentPen.setWidthF(2.0);
+    sunScene->addLine(cur, 0, cur, 10, currentPen);
 }
 
 ClockWidget::~ClockWidget()
