@@ -144,6 +144,7 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     ui->contactTable->hideColumn(30);
 
     ui->bandFilter->setModel(new SqlListModel("SELECT name FROM bands", "Band"));
+    ui->modeFilter->setModel(new SqlListModel("SELECT name FROM modes", "Mode"));
     ui->countryFilter->setModel(new SqlListModel("SELECT name FROM dxcc_entities ORDER BY name", "Country"));
 
     clublog = new ClubLog(this);
@@ -183,6 +184,28 @@ void LogbookWidget::bandFilterChanged() {
     QString band = ui->bandFilter->currentText();
     if (ui->bandFilter->currentIndex() != 0 && !band.isEmpty()) {
         model->setFilter(QString("band = '%1'").arg(band));
+    }
+    else {
+        model->setFilter(nullptr);
+    }
+    updateTable();
+}
+
+void LogbookWidget::modeFilterChanged() {
+    QString mode = ui->modeFilter->currentText();
+    if (ui->modeFilter->currentIndex() != 0 && !mode.isEmpty()) {
+        model->setFilter(QString("mode = '%1'").arg(mode));
+    }
+    else {
+        model->setFilter(nullptr);
+    }
+    updateTable();
+}
+
+void LogbookWidget::countryFilterChanged() {
+    QString country = ui->countryFilter->currentText();
+    if (ui->countryFilter->currentIndex() != 0 && !country.isEmpty()) {
+        model->setFilter(QString("country = '%1'").arg(country));
     }
     else {
         model->setFilter(nullptr);

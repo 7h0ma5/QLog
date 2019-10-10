@@ -32,22 +32,32 @@ LotwDialog::LotwDialog(QWidget *parent) :
 void LotwDialog::download() {
     QProgressDialog* dialog = new QProgressDialog(tr("Updating from LotW"), tr("Cancel"), 0, 0, this);
     dialog->setWindowModality(Qt::WindowModal);
-    dialog->setRange(0, 100);
+    dialog->setRange(0, 0);
     dialog->show();
 
     bool qsl = ui->qslRadioButton->isChecked();
 
     Lotw* lotw = new Lotw(dialog);
     connect(lotw, &Lotw::updateProgress, dialog, &QProgressDialog::setValue);
-    connect(lotw, &Lotw::updateComplete, [dialog, qsl]() {
+    connect(lotw, &Lotw::updateStarted, [dialog] {
+        dialog->setRange(0, 100);
+    });
+    connect(lotw, &Lotw::updateComplete, [this, dialog, qsl](LotwUpdate update) {
         if (qsl) {
             QSettings settings;
             settings.setValue("lotw/last_update", QDateTime::currentDateTimeUtc().date());
         }
         dialog->close();
+        QMessageBox::information(this, tr("QLog Error"),
+                                 tr("LotW Update completed.") + "\n" +
+                                 tr("QSOs checked: %n", "", update.qsos_checked) + "\n" +
+                                 tr("New QSLs received: %n", "", update.qsls_updated) + "\n" +
+                                 tr("QSOs updated: %n", "", update.qsos_updated) + "\n" +
+                                 tr("Unmatched QSOs: %n", "", update.qsos_unmatched));
     });
-    connect(lotw, &Lotw::updateFailed, [dialog]() {
+    connect(lotw, &Lotw::updateFailed, [this, dialog]() {
         dialog->close();
+        QMessageBox::critical(this, tr("QLog Error"), tr("LotW Update failed."));
     });
 
     lotw->update(ui->dateEdit->date(), ui->qsoRadioButton->isChecked());

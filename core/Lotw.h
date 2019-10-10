@@ -6,6 +6,13 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+struct LotwUpdate {
+    int qsos_updated;
+    int qsls_updated;
+    int qsos_checked;
+    int qsos_unmatched;
+};
+
 class Lotw : public QObject
 {
     Q_OBJECT
@@ -16,7 +23,8 @@ public:
 
 signals:
     void updateProgress(int value);
-    void updateComplete();
+    void updateStarted();
+    void updateComplete(LotwUpdate update);
     void updateFailed();
 
 public slots:

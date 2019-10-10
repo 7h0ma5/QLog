@@ -46,6 +46,15 @@
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="modeFilter">
+         <item>
+          <property name="text">
+           <string>Mode</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QComboBox" name="countryFilter">
          <item>
           <property name="text">
@@ -241,6 +250,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>modeFilter</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>LogbookWidget</receiver>
+   <slot>modeFilterChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>countryFilter</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>LogbookWidget</receiver>
+   <slot>countryFilterChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>449</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>168</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteContact()</slot>
@@ -249,5 +290,7 @@
   <slot>uploadClublog()</slot>
   <slot>filterSelectedCallsign()</slot>
   <slot>lookupSelectedCallsign()</slot>
+  <slot>modeFilterChanged()</slot>
+  <slot>countryFilterChanged()</slot>
  </slots>
 </ui>

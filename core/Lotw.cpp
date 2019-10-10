@@ -66,6 +66,8 @@ void Lotw::processReply(QNetworkReply* reply) {
     qint64 size = reply->size();
     qDebug() << "Reply received, size: " << size;
 
+    emit updateStarted();
+
     QTextStream stream(reply);
     AdiFormat adi(stream);
 
@@ -95,8 +97,11 @@ void Lotw::processReply(QNetworkReply* reply) {
     QSqlQuery update_gridsquare_query(db);
     update_gridsquare_query.prepare("UPDATE contacts SET gridsquare = :value WHERE id = :id");
 
+    LotwUpdate status = { 0, 0, 0, 0 };
+
     while (adi.readContact(contact)) {
-        qDebug() << "Reading contact";
+        status.qsos_checked++;
+
         QDate date_on = AdiFormat::parseDate(contact.value("qso_date").toString());
         QTime time_on = AdiFormat::parseTime(contact.take("time_on").toString());
         QDateTime start_time_min = QDateTime(date_on, time_on, Qt::UTC).addSecs(-10*60);
@@ -110,18 +115,25 @@ void Lotw::processReply(QNetworkReply* reply) {
         query.exec();
 
         if (query.next()) {
-            QVariant qslrdate;
+            QDate qslrdate;
 
             if (!contact.value("qslrdate").toString().isEmpty()) {
                 qslrdate = AdiFormat::parseDate(contact.value("qslrdate").toString());
             }
 
-            if (query.value(1) != "Y" || query.value(2) != contact.value("qsl_rcvd") || query.value(3) != qslrdate) {
+            if (query.value(1) != "Y" || query.value(2) != contact.value("qsl_rcvd") || query.value(3).toDate() != qslrdate) {
                 update_status_query.bindValue(":lotw_qsl_sent", "Y");
                 update_status_query.bindValue(":lotw_qsl_rcvd", contact.value("qsl_rcvd"));
                 update_status_query.bindValue(":lotw_qslrdate", qslrdate);
                 update_status_query.bindValue(":id", query.value(0));
                 update_status_query.exec();
+
+                qDebug() << query.value(1) << query.value(2) << contact.value("qsl_rcvd") << query.value(3) << qslrdate;
+
+                status.qsos_updated++;
+                if (query.value(2) != contact.value("qsl_rcvd")) {
+                    status.qsls_updated++;
+                }
             }
 
             if (!contact.value("iota").toString().isEmpty() && query.value(4).toString().isEmpty()) {
@@ -150,15 +162,17 @@ void Lotw::processReply(QNetworkReply* reply) {
         }
         else {
             qDebug() << "Not Found! " << contact.value("call").toString() << contact.value("qso_date").toString();
+            status.qsos_unmatched++;
         }
 
         contact.clear();
         if (size > 0) {
-            emit updateProgress(static_cast<int>(stream.pos() * 100 / size));
+            double progress = static_cast<double>(stream.pos()) * 100.0 / static_cast<double>(size);
+            emit updateProgress(static_cast<int>(progress));
         }
     }
 
-    emit updateComplete();
+    emit updateComplete(status);
 
     qDebug() << "Done";
 
