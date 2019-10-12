@@ -255,6 +255,9 @@ void NewContactWidget::resetContact() {
     ui->cqEdit->clear();
     ui->ituEdit->clear();
     ui->contEdit->setCurrentText("");
+    ui->countyEdit->clear();
+    ui->stateEdit->clear();
+    ui->iotaEdit->clear();
     ui->dxccTableWidget->clear();
     ui->dxccStatus->clear();
     ui->flagView->setPixmap(QPixmap());
