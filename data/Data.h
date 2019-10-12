@@ -14,6 +14,9 @@ public:
 
     static DxccStatus dxccStatus(int dxcc, QString band, QString mode);
     static Band band(double freq);
+    static QString freqToMode(double freq);
+    static QColor statusToColor(DxccStatus status, QColor defaultColor);
+    static QColor statusToInverseColor(DxccStatus status, QColor defaultColor);
 
     QStringList contestList() { return contests.values(); }
     QStringList propagationModesList() { return propagationModes.values(); }

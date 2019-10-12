@@ -39,34 +39,11 @@ QVariant WsjtxTableModel::data(const QModelIndex& index, int role) const {
     }
     else if (index.column() == 1 && role == Qt::BackgroundRole) {
         WsjtxEntry entry = wsjtxData.at(index.row());
-        switch (entry.status) {
-        case DxccStatus::NewEntity:
-            return QColor(Qt::red);
-        case DxccStatus::NewBand:
-        case DxccStatus::NewMode:
-        case DxccStatus::NewBandMode:
-            return QColor(Qt::blue);
-        case DxccStatus::NewSlot:
-            return QColor(Qt::green);
-
-        default:
-            return QVariant();
-        }
+        return Data::statusToColor(entry.status, QColor(Qt::white));
     }
     else if (index.column() == 1 && role == Qt::TextColorRole) {
         WsjtxEntry entry = wsjtxData.at(index.row());
-        switch (entry.status) {
-        case DxccStatus::NewEntity:
-            return QColor(Qt::white);
-        case DxccStatus::NewBand:
-        case DxccStatus::NewMode:
-        case DxccStatus::NewBandMode:
-            return QColor(Qt::white);
-        case DxccStatus::NewSlot:
-            return QColor(Qt::black);
-        default:
-            return QVariant();
-        }
+        return Data::statusToInverseColor(entry.status, QColor(Qt::black));
     }
     return QVariant();
 }

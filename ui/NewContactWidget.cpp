@@ -156,11 +156,9 @@ void NewContactWidget::queryDatabase(QString callsign) {
         ui->nameEdit->setText(query.value(0).toString());
         ui->qthEdit->setText(query.value(1).toString());
         ui->gridEdit->setText(query.value(2).toString());
-        ui->callsignEdit->setStyleSheet("background-color: #99ff99;");
         emit filterCallsign(callsign);
     }
     else {
-        ui->callsignEdit->setStyleSheet("");
         emit filterCallsign(QString());
     }
 }
@@ -176,10 +174,6 @@ void NewContactWidget::callsignResult(const QMap<QString, QString>& data) {
     ui->qslViaEdit->setPlaceholderText(data.value("qsl_via"));
     ui->cqEdit->setPlaceholderText(data.value("cqz"));
     ui->ituEdit->setPlaceholderText(data.value("ituz"));
-
-    if (ui->callsignEdit->styleSheet().isEmpty()) {
-        ui->callsignEdit->setStyleSheet("background-color: #bbddff;");
-    }
 }
 
 void NewContactWidget::frequencyChanged() {
@@ -275,7 +269,7 @@ void NewContactWidget::resetContact() {
     stopContactTimer();
     setDefaultReport();
 
-    ui->callsignEdit->setStyleSheet("");
+    ui->callsignEdit->setPalette(QPalette());
     ui->callsignEdit->setFocus();
     callsign = QString();
     coordPrec = COORD_NONE;
@@ -433,6 +427,7 @@ void NewContactWidget::updateCoordinates(double lat, double lon, CoordPrecision 
 void NewContactWidget::updateDxccStatus() {
     if (callsign.isEmpty()) {
         ui->dxccStatus->clear();
+        ui->callsignEdit->setPalette(QPalette());
         return;
     }
 
@@ -456,6 +451,10 @@ void NewContactWidget::updateDxccStatus() {
     default:
         ui->dxccStatus->clear();
     }
+
+    QPalette palette;
+    palette.setColor(QPalette::Text, Data::statusToColor(status, QColor(Qt::black)));
+    ui->callsignEdit->setPalette(palette);
 }
 
 void NewContactWidget::changeFrequency(double freq) {

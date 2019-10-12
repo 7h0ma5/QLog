@@ -35,21 +35,11 @@ QVariant DxTableModel::data(const QModelIndex& index, int role) const {
     }
     else if (index.column() == 1 && role == Qt::BackgroundRole) {
         DxSpot spot = dxData.at(index.row());
-        switch (spot.status) {
-        case DxccStatus::NewEntity:
-            return QColor(Qt::red);
-        default:
-            return QVariant();
-        }
+        return Data::statusToColor(spot.status, QColor(Qt::white));
     }
     else if (index.column() == 1 && role == Qt::TextColorRole) {
         DxSpot spot = dxData.at(index.row());
-        switch (spot.status) {
-        case DxccStatus::NewEntity:
-            return QColor(Qt::white);
-        default:
-            return QVariant();
-        }
+        return Data::statusToInverseColor(spot.status, QColor(Qt::black));
     }
 
     return QVariant();
@@ -201,7 +191,7 @@ void DxWidget::receive() {
             spot.spotter = spotter;
             spot.comment = comment;
             spot.dxcc = dxcc;
-            spot.status = Data::dxccStatus(spot.dxcc.dxcc, spot.band, "");
+            spot.status = Data::dxccStatus(spot.dxcc.dxcc, spot.band, Data::freqToMode(spot.freq));
 
             emit newSpot(spot);
 

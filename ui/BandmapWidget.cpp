@@ -74,20 +74,8 @@ void BandmapWidget::update() {
 
         min_y = text_y + text->boundingRect().height() / 2;
 
-        switch (lower.value().status) {
-        case DxccStatus::NewEntity:
-            text->setDefaultTextColor(Qt::red);
-            break;
-        case DxccStatus::NewBand:
-        case DxccStatus::NewMode:
-        case DxccStatus::NewBandMode:
-            text->setDefaultTextColor(QColor(Qt::blue));
-            break;
-        case DxccStatus::NewSlot:
-            text->setDefaultTextColor(QColor(Qt::green));
-            break;
-        default: break;
-        }
+        QColor textColor = Data::statusToColor(lower.value().status, QColor(Qt::black));
+        text->setDefaultTextColor(textColor);
     }
 }
 
