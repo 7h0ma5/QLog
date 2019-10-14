@@ -9,6 +9,7 @@ LogbookModel::LogbookModel(QObject* parent, QSqlDatabase db)
     setEditStrategy(QSqlTableModel::OnFieldChange);
     setSort(1, Qt::DescendingOrder);
 
+    setHeaderData(0, Qt::Horizontal, tr("ID"));
     setHeaderData(1, Qt::Horizontal, tr("Time on"));
     setHeaderData(2, Qt::Horizontal, tr("Time off"));
     setHeaderData(3, Qt::Horizontal, tr("Call"));
@@ -27,13 +28,18 @@ LogbookModel::LogbookModel(QObject* parent, QSqlDatabase db)
     setHeaderData(16, Qt::Horizontal, tr("CQ"));
     setHeaderData(17, Qt::Horizontal, tr("ITU"));
     setHeaderData(18, Qt::Horizontal, tr("Prefix"));
+    setHeaderData(19, Qt::Horizontal, tr("Fields"));
     setHeaderData(20, Qt::Horizontal, tr("State"));
     setHeaderData(21, Qt::Horizontal, tr("County"));
     setHeaderData(22, Qt::Horizontal, tr("IOTA"));
     setHeaderData(23, Qt::Horizontal, tr("QSL Rcvd"));
+    setHeaderData(24, Qt::Horizontal, tr("QSL Rcvd Date"));
     setHeaderData(25, Qt::Horizontal, tr("QSL Sent"));
+    setHeaderData(26, Qt::Horizontal, tr("QSL Sent Date"));
     setHeaderData(27, Qt::Horizontal, tr("LotW Rcvd"));
+    setHeaderData(28, Qt::Horizontal, tr("LotW Rcvd Date"));
     setHeaderData(29, Qt::Horizontal, tr("LotW Sent"));
+    setHeaderData(30, Qt::Horizontal, tr("LotW Sent Date"));
     setHeaderData(31, Qt::Horizontal, tr("TX Power"));
 }
 

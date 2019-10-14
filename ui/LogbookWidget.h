@@ -28,6 +28,8 @@ public slots:
     void updateTable();
     void uploadClublog();
     void deleteContact();
+    void saveTableHeaderState();
+    void showTableHeaderContextMenu(const QPoint& point);
 
 private:
     ClubLog* clublog;

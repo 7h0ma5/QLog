@@ -3,6 +3,7 @@
 #include <QDoubleSpinBox>
 #include <QStyledItemDelegate>
 #include <QDesktopServices>
+#include <QMenu>
 #include "logformat/AdiFormat.h"
 #include "models/LogbookModel.h"
 #include "models/SqlListModel.h"
@@ -114,34 +115,41 @@ LogbookWidget::LogbookWidget(QWidget *parent) :
     model = new LogbookModel(this);
     ui->contactTable->setModel(model);
 
-    /*
-    QSettings settings;
-    QByteArray logbookState = settings.value("logbook/state").toByteArray();
-    ui->contactTable->horizontalHeader()->restoreState(logbookState);
-    */
-
     ui->contactTable->addAction(ui->actionFilter);
     ui->contactTable->addAction(ui->actionLookup);
     ui->contactTable->addAction(ui->actionUploadClublog);
     ui->contactTable->addAction(ui->actionDeleteContact);
     //ui->contactTable->sortByColumn(1, Qt::DescendingOrder);
 
+    ui->contactTable->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->contactTable->horizontalHeader(), &QHeaderView::customContextMenuRequested,
+            this, &LogbookWidget::showTableHeaderContextMenu);
+
     ui->contactTable->setItemDelegateForColumn(1, new TimestampFormatDelegate(ui->contactTable));
     ui->contactTable->setItemDelegateForColumn(2, new TimestampFormatDelegate(ui->contactTable));
     ui->contactTable->setItemDelegateForColumn(3, new CallsignDelegate(ui->contactTable));
     ui->contactTable->setItemDelegateForColumn(6, new UnitFormatDelegate("MHz", 6, 0.001, ui->contactTable));
 
-    ui->contactTable->hideColumn(0);
-    ui->contactTable->hideColumn(2);
-    ui->contactTable->hideColumn(9);
-    ui->contactTable->hideColumn(13);
-    ui->contactTable->hideColumn(15);
-    ui->contactTable->hideColumn(18);
-    ui->contactTable->hideColumn(19);
-    ui->contactTable->hideColumn(24);
-    ui->contactTable->hideColumn(26);
-    ui->contactTable->hideColumn(28);
-    ui->contactTable->hideColumn(30);
+    QSettings settings;
+    QVariant logbookState = settings.value("logbook/state");
+    if (!logbookState.isNull()) {
+        ui->contactTable->horizontalHeader()->restoreState(logbookState.toByteArray());
+    }
+    else {
+        ui->contactTable->hideColumn(0);
+        ui->contactTable->hideColumn(2);
+        ui->contactTable->hideColumn(9);
+        ui->contactTable->hideColumn(13);
+        ui->contactTable->hideColumn(15);
+        ui->contactTable->hideColumn(18);
+        ui->contactTable->hideColumn(19);
+        ui->contactTable->hideColumn(24);
+        ui->contactTable->hideColumn(26);
+        ui->contactTable->hideColumn(28);
+        ui->contactTable->hideColumn(30);
+    }
+
+    ui->contactTable->horizontalHeader()->setSectionsMovable(true);
 
     ui->bandFilter->setModel(new SqlListModel("SELECT name FROM bands", "Band"));
     ui->modeFilter->setModel(new SqlListModel("SELECT name FROM modes", "Mode"));
@@ -249,9 +257,31 @@ void LogbookWidget::updateTable() {
     ui->contactTable->resizeColumnsToContents();
 }
 
-LogbookWidget::~LogbookWidget() {
+void LogbookWidget::saveTableHeaderState() {
     QSettings settings;
     QByteArray logbookState = ui->contactTable->horizontalHeader()->saveState();
     settings.setValue("logbook/state", logbookState);
+}
+
+void LogbookWidget::showTableHeaderContextMenu(const QPoint& point) {
+    QMenu* contextMenu = new QMenu(this);
+    for (int i = 0; i < model->columnCount(); i++) {
+        QString name = model->headerData(i, Qt::Horizontal).toString();
+        QAction* action = new QAction(name, contextMenu);
+        action->setCheckable(true);
+        action->setChecked(!ui->contactTable->isColumnHidden(i));
+
+        connect(action, &QAction::triggered, [this, i]() {
+            ui->contactTable->setColumnHidden(i, !ui->contactTable->isColumnHidden(i));
+            saveTableHeaderState();
+        });
+
+        contextMenu->addAction(action);
+    }
+    contextMenu->exec(point);
+}
+
+LogbookWidget::~LogbookWidget() {
+    saveTableHeaderState();
     delete ui;
 }
