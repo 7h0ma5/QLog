@@ -27,6 +27,8 @@ private:
 
     void writeField(QString name, QString value, QString type="");
     void readField(QString& field, QString& value);
+    QString parseQslRcvd(QString value);
+    QString parseQslSent(QString value);
 
     ParserState state = START;
     bool inHeader = false;

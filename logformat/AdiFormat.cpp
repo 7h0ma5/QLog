@@ -224,13 +224,13 @@ bool AdiFormat::importNext(QSqlRecord& record) {
     record.setValue("state", contact.take("state").toString().toUpper());
     record.setValue("cnty", contact.take("cnty"));
     record.setValue("iota", contact.take("iota").toString().toUpper());
-    record.setValue("qsl_rcvd", contact.take("qsl_rcvd"));
+    record.setValue("qsl_rcvd", parseQslRcvd(contact.take("qsl_rcvd").toString()));
     record.setValue("qslrdate", parseDate(contact.take("qslrdate").toString()));
-    record.setValue("qsl_sent", contact.take("qsl_sent"));
+    record.setValue("qsl_sent", parseQslSent(contact.take("qsl_sent").toString()));
     record.setValue("qslsdate", parseDate(contact.take("qslsdate").toString()));
-    record.setValue("lotw_qsl_rcvd", contact.take("lotw_qsl_rcvd"));
+    record.setValue("lotw_qsl_rcvd", parseQslRcvd(contact.take("lotw_qsl_rcvd").toString()));
     record.setValue("lotw_qslrdate", parseDate(contact.take("lotw_qslrdate").toString()));
-    record.setValue("lotw_qsl_sent", contact.take("lotw_qsl_sent"));
+    record.setValue("lotw_qsl_sent", parseQslSent(contact.take("lotw_qsl_sent").toString()));
     record.setValue("lotw_qslsdate", parseDate(contact.take("lotw_qslsdate").toString()));
     record.setValue("tx_pwr", contact.take("tx_pwr").toDouble());
 
@@ -306,5 +306,37 @@ QTime AdiFormat::parseTime(QString time) {
 
     default:
         return QTime();
+    }
+}
+
+QString AdiFormat::parseQslRcvd(QString value) {
+    if (!value.isEmpty()) {
+        switch (value.at(0).toLatin1()) {
+        case 'Y': return "Y";
+        case 'N': return "N";
+        case 'R': return "R";
+        case 'I': return "I";
+        case 'V': return "Y";
+        default: return "N";
+        }
+    }
+    else {
+        return "N";
+    }
+}
+
+QString AdiFormat::parseQslSent(QString value) {
+    if (!value.isEmpty()) {
+        switch (value.at(0).toLatin1()) {
+        case 'Y': return "Y";
+        case 'N': return "N";
+        case 'R': return "R";
+        case 'Q': return "Q";
+        case 'I': return "I";
+        default: return "N";
+        }
+    }
+    else {
+        return "N";
     }
 }
