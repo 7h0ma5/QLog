@@ -2,12 +2,30 @@ language: cpp
 matrix:
   include:
   - os: linux
-    dist: bionic
+    dist: trusty
     compiler: gcc
+    sudo: require
     before_install:
+    - sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y
     - sudo apt-get update -qq
-    - sudo apt-get install -qq qt5-default qt5-qmake qtbase5-dev-tools libqt5charts5-dev
-      libhamlib-dev libhamlib2
+    install:
+    - sudo apt-get -y install qt510base qt510tools qt510charts-no-lgpl libgl1-mesa-dev libhamlib-dev libhamlib2
+    - source /opt/qt*/bin/qt*-env.sh
+    script:
+    - mkdir build
+    - cd build
+    - qmake CONFIG+=release PREFIX=/usr ..
+    - make -j$(nproc)
+    before_deploy:
+    - make INSTALL_ROOT=appdir -j$(nproc) install
+    - find appdir
+    - mkdir -p appdir/usr/lib/
+    - cp /usr/lib/hamlib/*.so appdir/usr/lib/
+    - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+    - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+    - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=sqldrivers,platformthemes,iconengines/libqsvgicon.so -appimage
+    - mkdir package
+    - mv QLog*.AppImage* package/QLog.AppImage
   - os: osx
     compiler: clang
     before_install:
@@ -17,16 +35,15 @@ matrix:
     - brew link hamlib --force
     - echo 'INCLUDEPATH += "/usr/local/include"' >> QLog.pro
     - echo 'LIBS += -L/usr/local/lib' >> QLog.pro
+    script:
+    - mkdir build
+    - cd build
+    - qmake -config release ..
+    - make
     before_deploy:
     - macdeployqt -verbose=3 qlog.app
     - mkdir package
     - zip -r package/qlog-osx.zip qlog.app
-
-script:
-- mkdir build
-- cd build
-- qmake -config release ..
-- make
 
 deploy:
   provider: s3
@@ -38,7 +55,6 @@ deploy:
   upload_dir: build
   on:
     repo: 7h0ma5/QLog
-    condition: $TRAVIS_OS_NAME = "osx"
   access_key_id: AKIAXYSRXXQSSBOIRSWX
   secret_access_key:
     secure: ogiYsKXOsGbBPuOl56VgIJ2HZ0cPhUeGzhd4FAADI0FymxndIjMqDIOvvs1M1y2GcFGnTsbfv16C8aCby2qMbqg3W5UoGbaD82JAsOjOt/Qo0VVA204QvRogUwQQO51QfLXiZIEGp45o6AFrLeF76ZLTX/GcP0oC7l78EnvYZeXkAt+WRZ2dPxkiJTtQupBIogNl4NGlYRhBjHYvLmwtVWLRESgltlXvD0A33X5bt0kUWgAPyAqtzoGABxqIcoDX267ZYx2eYwwfhSOY1ltEM7+BeMzs2QdbFh8qi2SxHXYO8XNmfJLRswzOld9xwtOFdl0cjIHRGOnDZ1hP3j2GDlfC5Oy9zYaj0RS0UMDQZwZ5rldYNfm+g8pQDIbNATcZtUx98VhM4JRlbDE2o66tLqQfrGDtT6gZox5p5ZKfArHHtMSrx+kBc/NH7nxVcypQ0LIwX8XKOkd66QrHseXy56zehjaxvA4WV878SrXxQOPXrjRXVgmyAUk0zHKS4Dcr/q813IWUE6dXJFZ4BSIDnrBu8nVxTXlm6ZKQwwgdhwWzs+61bRsDzode9pPuc12QYbnWftp9FOY8CaRBZdW+cMGQQv44r46ppw12Pku2lRN9FQroQg0r3wuLqNZA9XcQh/+gAr2zSsc44EDGSpv3feCUp6zI2yRKfENL18sJ9VY=
