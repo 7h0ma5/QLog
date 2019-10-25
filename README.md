@@ -8,10 +8,27 @@ is based on the Qt 5 framework und uses PostgreSQL as database backend.
 ## Features
 
 - ADIF import/export
+- Rig and rotator control via Hamlib
+- HamQTH callbook integration
 - DX cluster integration
+- LotW and Clublog integration
 - Grey-line map
-- HamQTH integration
-- Rig control via hamlib
+- Bandmap
+
+## Installation
+
+### Windows
+You can download an installer for the latest build here: [qlog-installer.exe](https://qlog.dl2ic.de/build/qlog-installer.exe)
+
+### Linux
+There is an AppImage available here: [QLog.AppImage](https://qlog.dl2ic.de/build/QLog.AppImage)
+
+The permissions of the file have to set to executable before running it:
+
+```
+chmod +x QLog.AppImage
+./QLog.AppImage
+```
 
 ## License
 
