@@ -8,13 +8,9 @@
         <file>data/legacy_modes.json</file>
         <file>data/contests.json</file>
         <file>data/propagation_modes.json</file>
-        <file>sql/migration_003.sql</file>
         <file>sql/migration_001.sql</file>
-        <file>sql/migration_002.sql</file>
         <file>sql/bands.sql</file>
         <file>sql/modes.sql</file>
         <file>sql/contests.sql</file>
-        <file>sql/migration_004.sql</file>
-        <file>sql/migration_005.sql</file>
     </qresource>
 </RCC>

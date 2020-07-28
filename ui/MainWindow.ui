@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>894</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -203,6 +203,9 @@
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
   </action>
   <action name="actionSettings">
    <property name="icon">
@@ -213,7 +216,7 @@
     <string>Settings</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::QuitRole</enum>
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="actionNewContact">
@@ -262,6 +265,9 @@
    </property>
    <property name="text">
     <string>About</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionSaveContact">

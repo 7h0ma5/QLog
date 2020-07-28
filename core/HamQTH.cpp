@@ -43,20 +43,22 @@ void HamQTH::authenticate() {
     QString username = settings.value("hamqth/username").toString();
     QString password = settings.value("hamqth/password").toString();
 
-    QUrlQuery query;
-    query.addQueryItem("u", username);
-    query.addQueryItem("p", password);
+    if (!username.isEmpty() && !password.isEmpty()) {
+        QUrlQuery query;
+        query.addQueryItem("u", username);
+        query.addQueryItem("p", password);
 
-    QUrl url(API_URL);
-    url.setQuery(query);
+        QUrl url(API_URL);
+        url.setQuery(query);
 
-    nam->get(QNetworkRequest(url));
+        nam->get(QNetworkRequest(url));
+    }
 }
 
 void HamQTH::processReply(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "HamQTH error" << reply->errorString();
-        delete reply;
+        reply->deleteLater();
         return;
     }
 
@@ -95,7 +97,7 @@ void HamQTH::processReply(QNetworkReply* reply) {
         }
     }
 
-    delete reply;
+    reply->deleteLater();
 
     if (data.size()) {
         emit callsignResult(data);

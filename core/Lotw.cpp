@@ -57,8 +57,7 @@ void Lotw::get(QList<QPair<QString, QString>> params) {
 void Lotw::processReply(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "LotW error" << reply->errorString();
-        delete reply;
-
+        reply->deleteLater();
         emit updateFailed();
         return;
     }
@@ -172,9 +171,6 @@ void Lotw::processReply(QNetworkReply* reply) {
         }
     }
 
+    reply->deleteLater();
     emit updateComplete(status);
-
-    qDebug() << "Done";
-
-    delete reply;
 }

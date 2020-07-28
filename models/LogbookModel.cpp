@@ -28,19 +28,19 @@ LogbookModel::LogbookModel(QObject* parent, QSqlDatabase db)
     setHeaderData(16, Qt::Horizontal, tr("CQ"));
     setHeaderData(17, Qt::Horizontal, tr("ITU"));
     setHeaderData(18, Qt::Horizontal, tr("Prefix"));
-    setHeaderData(19, Qt::Horizontal, tr("Fields"));
-    setHeaderData(20, Qt::Horizontal, tr("State"));
-    setHeaderData(21, Qt::Horizontal, tr("County"));
-    setHeaderData(22, Qt::Horizontal, tr("IOTA"));
-    setHeaderData(23, Qt::Horizontal, tr("QSL Rcvd"));
-    setHeaderData(24, Qt::Horizontal, tr("QSL Rcvd Date"));
-    setHeaderData(25, Qt::Horizontal, tr("QSL Sent"));
-    setHeaderData(26, Qt::Horizontal, tr("QSL Sent Date"));
-    setHeaderData(27, Qt::Horizontal, tr("LotW Rcvd"));
-    setHeaderData(28, Qt::Horizontal, tr("LotW Rcvd Date"));
-    setHeaderData(29, Qt::Horizontal, tr("LotW Sent"));
-    setHeaderData(30, Qt::Horizontal, tr("LotW Sent Date"));
-    setHeaderData(31, Qt::Horizontal, tr("TX Power"));
+    setHeaderData(19, Qt::Horizontal, tr("State"));
+    setHeaderData(20, Qt::Horizontal, tr("County"));
+    setHeaderData(21, Qt::Horizontal, tr("IOTA"));
+    setHeaderData(22, Qt::Horizontal, tr("QSL Rcvd"));
+    setHeaderData(23, Qt::Horizontal, tr("QSL Rcvd Date"));
+    setHeaderData(24, Qt::Horizontal, tr("QSL Sent"));
+    setHeaderData(25, Qt::Horizontal, tr("QSL Sent Date"));
+    setHeaderData(26, Qt::Horizontal, tr("LotW Rcvd"));
+    setHeaderData(27, Qt::Horizontal, tr("LotW Rcvd Date"));
+    setHeaderData(28, Qt::Horizontal, tr("LotW Sent"));
+    setHeaderData(29, Qt::Horizontal, tr("LotW Sent Date"));
+    setHeaderData(30, Qt::Horizontal, tr("TX Power"));
+    setHeaderData(31, Qt::Horizontal, tr("Fields"));
 }
 
 QVariant LogbookModel::data(const QModelIndex &index, int role) const
@@ -61,8 +61,8 @@ QVariant LogbookModel::data(const QModelIndex &index, int role) const
         }
     }
 
-    if (role == Qt::DecorationRole && (index.column() == 23 || index.column() == 25 ||
-                                       index.column() == 27 || index.column() == 29))
+    if (role == Qt::DecorationRole && (index.column() == 22 || index.column() == 24 ||
+                                       index.column() == 26 || index.column() == 28))
     {
         QVariant value = QSqlTableModel::data(index, Qt::DisplayRole);
         if (value.toString() == "Y") {

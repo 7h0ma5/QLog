@@ -7,7 +7,6 @@
 #include <QStandardPaths>
 #include <QDebug>
 #include "Migration.h"
-#include "ui/DbDialog.h"
 #include "ui/MainWindow.h"
 #include "Rig.h"
 #include "Rotator.h"
@@ -39,19 +38,10 @@ static void createDataDirectory() {
 }
 
 static bool openDatabase() {
-    QSettings settings;
-
-    QString hostname = settings.value("db/hostname").toString();
-    QString dbname = settings.value("db/dbname").toString();
-
-    if (hostname.isEmpty() || dbname.isEmpty()) return false;
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName(hostname);
-    db.setPort(settings.value("db/port").toInt());
-    db.setDatabaseName(dbname);
-    db.setUserName(settings.value("db/username").toString());
-    db.setPassword(settings.value("db/password").toString());
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    QString path = dir.filePath("qlog.db");
+    db.setDatabaseName(path);
 
     if (!db.open()) {
         qCritical() << db.lastError();
@@ -94,14 +84,10 @@ int main(int argc, char* argv[]) {
     setupTranslator(&app);
     createDataDirectory();
 
-    while (!openDatabase()) {
+    if (!openDatabase()) {
         QMessageBox::critical(nullptr, QMessageBox::tr("QLog Error"),
                               QMessageBox::tr("Could not connect to database."));
-
-        DbDialog dbDialog;
-        if (!dbDialog.exec()) {
-            return 0;
-        }
+        return 1;
     }
 
     if (!migrateDatabase()) {

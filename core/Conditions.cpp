@@ -41,13 +41,12 @@ void Conditions::processReply(QNetworkReply* reply) {
         else if (reply->url() == K_INDEX_URL) {
             k_index = doc.array().last().toArray().at(2).toString().toDouble();
         }
-        delete reply;
+        reply->deleteLater();
         emit conditionsUpdated();
     }
     else {
-        delete reply;
+        reply->deleteLater();
     }
-
 }
 
 Conditions::~Conditions() {

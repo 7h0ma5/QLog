@@ -66,15 +66,13 @@ void Cty::processReply(QNetworkReply* reply) {
         file.flush();
         file.close();
 
-        delete reply;
-
+        reply->deleteLater();
         loadData();
     }
     else {
         qDebug() << "failed to download cty.csv";
 
-        delete reply;
-
+        reply->deleteLater();
         emit finished(false);
     }
 

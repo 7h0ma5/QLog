@@ -53,7 +53,6 @@ SOURCES += \
         models/SqlListModel.cpp \
         ui/BandmapWidget.cpp \
         ui/ClockWidget.cpp \
-        ui/DbDialog.cpp \
         ui/DxWidget.cpp \
         ui/DxccTableWidget.cpp \
         ui/ExportDialog.cpp \
@@ -96,7 +95,6 @@ HEADERS += \
         models/SqlListModel.h \
         ui/BandmapWidget.h \
         ui/ClockWidget.h \
-        ui/DbDialog.h \
         ui/DxWidget.h \
         ui/DxccTableWidget.h \
         ui/ExportDialog.h \
@@ -115,7 +113,6 @@ HEADERS += \
 FORMS += \
         ui/BandmapWidget.ui \
         ui/ClockWidget.ui \
-        ui/DbDialog.ui \
         ui/DxWidget.ui \
         ui/ExportDialog.ui \
         ui/ImportDialog.ui \
@@ -145,7 +142,7 @@ TRANSLATIONS = i18n/qlog_de.ts
 RC_ICONS = res/qlog.ico
 ICON = res/qlog.icns
 
-unix {
+unix:!macx {
   isEmpty(PREFIX) {
     PREFIX = /usr/local
   }
@@ -161,4 +158,8 @@ unix {
   INSTALLS += target desktop icon
 }
 
-LIBS += -lhamlib
+macx: {
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib -lhamlib
+    DISTFILES +=
+}

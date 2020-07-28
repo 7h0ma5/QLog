@@ -74,7 +74,7 @@ int Migration::getVersion() {
 bool Migration::setVersion(int version) {
     QSqlQuery query;
     query.prepare("INSERT INTO schema_versions (version, updated) "
-                  "VALUES (:version, timezone('utc', now()))");
+                  "VALUES (:version, datetime('now'))");
 
     query.bindValue(":version", version);
 
@@ -115,11 +115,29 @@ bool Migration::migrate(int toVersion) {
 }
 
 bool Migration::runSqlFile(QString filename) {
-    QFile sql_file(filename);
-    sql_file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString sql = QString(sql_file.readAll());
-    QSqlQuery query;
-    return query.exec(sql);
+    QFile sqlFile(filename);
+    sqlFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QStringList sqlQueries = QTextStream(&sqlFile).readAll().split('\n').join("").split(';');
+    qDebug() << sqlQueries;
+
+    foreach (QString sqlQuery, sqlQueries) {
+        if (sqlQuery.trimmed().isEmpty()) {
+            continue;
+        }
+
+        qDebug() << sqlQuery;
+
+        QSqlQuery query;
+        if (!query.exec(sqlQuery))
+        {
+            qDebug() << query.lastError();
+            return false;
+        }
+        query.finish();
+    }
+
+    return true;
 }
 
 int Migration::tableRows(QString name) {

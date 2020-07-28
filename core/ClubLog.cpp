@@ -107,12 +107,12 @@ void ClubLog::uploadAdif(QByteArray& data) {
 void ClubLog::processReply(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "ClubLog error" << reply->errorString();
-        delete reply;
+        reply->deleteLater();
         return;
     }
     else {
         qDebug() << "ClubLog update sent.";
-        delete reply;
+        reply->deleteLater();
         return;
     }
 }

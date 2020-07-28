@@ -1,1 +1,0 @@
-ALTER TABLE contacts ALTER COLUMN fields TYPE JSONB USING fields::JSONB;
