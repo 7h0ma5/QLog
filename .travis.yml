@@ -33,15 +33,16 @@ matrix:
     - brew link qt5 --force
     - brew install hamlib
     - brew link hamlib --force
-    - echo 'INCLUDEPATH += "/usr/local/include"' >> QLog.pro
-    - echo 'LIBS += -L/usr/local/lib' >> QLog.pro
     script:
     - mkdir build
     - cd build
     - qmake -config release ..
     - make
     before_deploy:
-    - macdeployqt -verbose=3 qlog.app
+    - macdeployqt qlog.app
+    - cp /usr/local/lib/libhamlib.dylib qlog.app/Contents/Frameworks/libhamlib.dylib
+    - otool -L qlog.app/Contents/MacOS/qlog
+    - install_name_tool -change /usr/local/lib/libhamlib.dylib @executable_path/../Frameworks/libhamlib.dylib qlog.app/Contents/MacOS/qlog
     - mkdir package
     - zip -r package/qlog-osx.zip qlog.app
 

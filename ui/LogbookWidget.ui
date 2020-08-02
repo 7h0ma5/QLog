@@ -76,13 +76,6 @@
          </property>
         </spacer>
        </item>
-       <item>
-        <widget class="QLabel" name="countLabel">
-         <property name="text">
-          <string>0 contacts</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>
