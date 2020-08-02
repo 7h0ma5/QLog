@@ -253,7 +253,6 @@ void LogbookWidget::deleteContact() {
 
 void LogbookWidget::updateTable() {
     model->select();
-    ui->countLabel->setText(tr("%n contacts", "", model->rowCount()));
     ui->contactTable->resizeColumnsToContents();
 }
 

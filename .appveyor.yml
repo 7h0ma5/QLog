@@ -1,9 +1,8 @@
 install:
-  - set QTDIR="C:\Qt\5.13.0\mingw73_64"
+  - set QTDIR="C:\Qt\5.13\mingw73_64"
   - set QTINSTALLERDIR="C:\Qt\Tools\QtInstallerFramework\3.1"
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_64\bin;%QTINSTALLERDIR%\bin;%PATH%
   - set HAMLIBDIR="hamlib-w64-3.3"
-  - set POSTGRESQLDIR="C:\Program Files\PostgreSQL\10"
   - set OPENSSLDIR="C:\OpenSSL-v111-Win64"
   - set PACKAGEDIR="installer\packages\de.dl2ic.qlog\data"
   - ps: Start-FileDownload 'https://github.com/Hamlib/Hamlib/releases/download/3.3/hamlib-w64-3.3.zip'
