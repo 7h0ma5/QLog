@@ -40,20 +40,24 @@ void DxccTableWidget::setDxcc(int dxcc) {
                              "count(CASE WHEN modes.dxcc = 'DIGITAL' THEN 1 END) as digital\n"
                              "FROM contacts\n"
                              "INNER JOIN modes ON (contacts.dxcc = %1 AND contacts.mode = modes.name)\n"
-                             "RIGHT JOIN bands ON (contacts.band = bands.name)\n"
+                             "INNER JOIN bands ON (contacts.band = bands.name)\n"
                              "WHERE bands.enabled = true " + filter + "\n"
                              "GROUP BY bands.name, bands.start_freq\n"
                              "ORDER BY bands.start_freq").arg(dxcc));
 
-        dxccTableModel->setHeaderData(0, Qt::Horizontal, tr("Band"));
-        dxccTableModel->setHeaderData(1, Qt::Horizontal, tr("CW"));
-        dxccTableModel->setHeaderData(2, Qt::Horizontal, tr("PH"));
-        dxccTableModel->setHeaderData(3, Qt::Horizontal, tr("DIG"));
+        if (dxccTableModel->columnCount() >= 4) {
+            dxccTableModel->setHeaderData(0, Qt::Horizontal, tr("Band"));
+            dxccTableModel->setHeaderData(1, Qt::Horizontal, tr("CW"));
+            dxccTableModel->setHeaderData(2, Qt::Horizontal, tr("PH"));
+            dxccTableModel->setHeaderData(3, Qt::Horizontal, tr("DIG"));
+        }
 
-        this->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-        this->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-        this->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-        this->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+        if (this->horizontalHeader()->count() >= 4) {
+            this->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+            this->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+            this->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+            this->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+        }
     }
     else {
         dxccTableModel->clear();
