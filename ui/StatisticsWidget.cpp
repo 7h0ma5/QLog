@@ -21,10 +21,9 @@ StatisticsWidget::StatisticsWidget(QWidget *parent) :
     QBarSet* set = new QBarSet("Total QSOs");
     QBarCategoryAxis* axisX = new QBarCategoryAxis();
 
-    QSqlQuery query("SELECT date_trunc('year', start_time) AS year, count(1) from contacts group by year order by year ASC");
+    QSqlQuery query("SELECT strftime('%Y', start_time) AS year, count(1) from contacts group by year order by year ASC");
     while (query.next()) {
-        QDateTime year = query.value(0).toDateTime();
-        axisX->append(year.toString("yyyy"));
+        axisX->append(query.value(0).toString());
         *set << query.value(1).toInt();
     }
 
